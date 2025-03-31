@@ -1,0 +1,12 @@
+﻿@using Functions.Client.Components
+@page "/"
+
+<HeaderComponent></HeaderComponent>
+@if (!IsPersonComponent)
+{
+    <LandingPage SwitchPage="SwitchToPerson"></LandingPage>
+} else
+{
+<PersonComponent></PersonComponent>
+    
+}
