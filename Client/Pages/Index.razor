@@ -1,12 +1,30 @@
-﻿@using Functions.Client.Components
-@page "/"
+﻿@page "/"
+@using Functions.Shared.DTOs
+@using Functions.Shared.Interfaces
 
-<HeaderComponent></HeaderComponent>
-@if (!IsPersonComponent)
+<form @onsubmit="Submit">
+    <input type="text" placeholder="Name" @bind="newEventName">
+    <input type="text" placeholder="Ort" @bind="newEventLocation">
+    <input type="text" placeholder="Beschreibung" @bind="newEventDescription">
+    <input type="datetime" placeholder="Start Zeit" @bind="newEventStartDateTime">
+    <input type="datetime" placeholder="End Zeit" @bind="newEventEndDateTime">
+
+    <button type="submit">Neues Event erstellen </button>
+</form>
+
+@if (events != null)
 {
-    <LandingPage SwitchPage="SwitchToPerson"></LandingPage>
-} else
-{
-<PersonComponent></PersonComponent>
-    
+    @if (events != null)
+    {
+        @foreach (var eventItem in events)
+        {
+            <div style="border: 1px solid black">
+                <h3>@eventItem.Name</h3>
+                <p>@eventItem.Location</p>
+                <p>@eventItem.Description</p>
+                <p>@eventItem.StartDateTime</p>
+                <p>@eventItem.EndDateTime</p>
+            </div>
+        }
+    }
 }

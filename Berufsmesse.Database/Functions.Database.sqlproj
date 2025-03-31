@@ -59,6 +59,8 @@
     <Folder Include="Tables\" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Tables\Persons.sql" />
+    <Build Include="Tables\Events.sql" />
+    <Build Include="Tables\Files.sql" />
+    <Build Include="Tables\FileContent.sql" />
   </ItemGroup>
 </Project>
