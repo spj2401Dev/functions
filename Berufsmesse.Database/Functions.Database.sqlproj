@@ -11,8 +11,8 @@
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
-    <RootNamespace>Berufsmesse.Database</RootNamespace>
-    <AssemblyName>Berufsmesse.Database</AssemblyName>
+    <RootNamespace>Functions.Database</RootNamespace>
+    <AssemblyName>Functions.Database</AssemblyName>
     <ModelCollation>1033, CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
@@ -60,11 +60,5 @@
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Persons.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Berufsmesse.Database.publish.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="Berufsmesse.Database.refactorlog" />
   </ItemGroup>
 </Project>
