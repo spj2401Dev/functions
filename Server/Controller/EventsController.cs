@@ -7,40 +7,90 @@ using System.Net;
 
 [Route("api/[controller]")]
 [ApiController]
-public class EventsController(IRepository<Events> eventRepository) : ControllerBase, IEventsProxy
+public class EventsController(
+    IRepository<Events> eventRepository, 
+    IRepository<Files> fileRepository) : ControllerBase, IEventsProxy
 {
     [HttpGet]
     public async Task<List<EventsDTO>> GetEventsAsync()
     {
         var events = await eventRepository.GetAllAsync();
-        return events.Select(e => new EventsDTO
-        (
-            e.Id,
-            e.Host,
-            e.Name,
-            e.Location,
-            e.Description,
-            e.StartDateTime,
-            e.EndDateTime,
-            null // TODO mf!
-        )).ToList();
+        var result = new List<EventsDTO>();
+
+        foreach (var e in events)
+        {
+            string? base64Image = null;
+            if (e.PictureId.HasValue)
+            {
+                var file = await fileRepository.GetByIdAsync(e.PictureId.Value);
+                if (file != null && file.FileContent != null)
+                {
+                    base64Image = file.FileContent.Base64Content;
+                }
+            }
+
+            result.Add(new EventsDTO(
+                e.Id,
+                e.Host,
+                e.Name,
+                e.Location,
+                e.Description,
+                e.StartDateTime,
+                e.EndDateTime,
+                base64Image
+            ));
+        }
+
+        return result;
     }
 
     [HttpPost]
     public async Task<HttpResponseMessage> PostEventAsync([FromBody] EventsDTO request)
     {
-        Events events = new()
+        var newEvent = new Events
         {
+            Id = Guid.NewGuid(),
             Host = Guid.Empty, // TODO via User Claims
             Name = request.Name,
             Location = request.Location,
             Description = request.Description,
             StartDateTime = request.StartDateTime,
-            EndDateTime = request.EndDateTime,
-            PictureId = null // TODO via Robust Upload Sytem
+            EndDateTime = request.EndDateTime
         };
 
-        await eventRepository.AddAsync(events);
+        if (!string.IsNullOrEmpty(request.ProfilePictureBase64) && 
+            !string.IsNullOrEmpty(request.FileName) && 
+            !string.IsNullOrEmpty(request.FileType))
+        {
+            try
+            {
+                var fileContent = new FileContent
+                {
+                    Id = Guid.NewGuid(), // think about it
+                    Base64Content = request.ProfilePictureBase64
+                };
+
+                var fileRecord = new Files
+                {
+                    Id = Guid.NewGuid(),
+                    FileName = request.FileName,
+                    FileType = request.FileType,
+                    FileContentId = fileContent.Id,
+                    FileContent = fileContent
+                };
+                
+                newEvent.PictureId = fileRecord.Id;
+                
+                await fileRepository.AddAsync(fileRecord);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving file: {ex.Message}"); // logger implementation?
+                newEvent.PictureId = null;
+            }
+        }
+
+        await eventRepository.AddAsync(newEvent);
 
         return new HttpResponseMessage(HttpStatusCode.Created);
     }

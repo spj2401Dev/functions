@@ -19,6 +19,14 @@ namespace Functions.Server.Repsitorys
 
         public async Task AddAsync(Files entity)
         {
+            if (entity.FileContent != null)
+            {
+                if (context.Entry(entity.FileContent).State == EntityState.Detached)
+                {
+                    context.FileContent.Add(entity.FileContent);
+                }
+            }
+
             await context.Files.AddAsync(entity);
             await context.SaveChangesAsync();
         }
