@@ -1,5 +1,5 @@
 CREATE TABLE [dbo].[FileContent]
 (
 	Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT newId(), 
-    [Base64Content] NCHAR(255) NULL,
+    [Base64Content] VARCHAR(MAX) NULL,
 )
