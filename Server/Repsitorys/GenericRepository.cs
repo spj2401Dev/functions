@@ -1,61 +1,32 @@
 ﻿using Functions.Server.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace Functions.Server.Repsitorys
 {
-    public class GenericRepository<T>(DbContext context) where T : class, IRepository<T>
+    public class GenericRepository<T> where T : class, IRepository<T>
     {
-        private readonly DbContext _context;
-        private readonly DbSet<T> _dbSet;
-
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await _dbSet.ToListAsync();
+            throw new NotImplementedException();
         }
 
         public async Task<T?> GetByIdAsnyc(object id)
         {
-            return await _dbSet.FindAsync(id);
+            throw new NotImplementedException();
         }
 
-        public void Insert(T entity)
+        public async Task AddAsync(T entity)
         {
-            _dbSet.Add(entity);
+            throw new NotImplementedException();
         }
 
-        public void Update(T entity)
+        public async Task UpdateAsync(Guid id)
         {
-            _dbSet.Attach(entity);
-            _context.Entry(entity).State = EntityState.Modified;
+            throw new NotImplementedException();
         }
 
-        public void Delete(object id)
+        public Task DeleteAsync(Guid id)
         {
-            T? entityToDelete = _dbSet.Find(id);
-            if (entityToDelete != null)
-            {
-                Delete(entityToDelete);
-            }
-        }
-
-        public void Delete(T entity)
-        {
-            if (_context.Entry(entity).State == EntityState.Detached)
-            {
-                _dbSet.Attach(entity);
-            }
-            _dbSet.Remove(entity);
-        }
-
-        public IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
-        {
-            return _dbSet.Where(predicate).ToList();
-        }
-
-        public void Save()
-        {
-            _context.SaveChanges();
+            throw new NotImplementedException();
         }
     }
 }

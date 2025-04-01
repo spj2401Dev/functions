@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Shared\Functions.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Forms\" />
+  </ItemGroup>
+
 </Project>
