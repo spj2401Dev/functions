@@ -9,7 +9,7 @@ namespace Functions.Client.Proxys
     {
         public async Task<List<EventsDTO>> GetEventsAsync()
         {
-            var response = await httpClient.GetAsync("api/events");
+            var response = await httpClient.GetAsync("api/events/getEvents");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<List<EventsDTO>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
@@ -22,6 +22,14 @@ namespace Functions.Client.Proxys
             var response = await httpClient.PostAsync("api/events", data);
             response.EnsureSuccessStatusCode();
             return response;
+        }
+
+        public async Task<EventsDTO?> GetEventsbyIdAsync(Guid Id)
+        {
+            var response = await httpClient.GetAsync($"api/events/getEventbyID?id={Id}");
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<EventsDTO>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
     }
 }

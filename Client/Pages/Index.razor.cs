@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Functions.Shared.DTOs;
 using Functions.Shared.Interfaces;
 using Microsoft.AspNetCore.Components;
@@ -8,6 +9,9 @@ namespace Functions.Client.Pages
     public partial class Index
     {
         [Inject] private IEventsProxy eventProxy { get; set; } = default!;
+
+        [Inject] private NavigationManager navigationManager { get; set; } = default!;
+
         private string newEventName = string.Empty;
         private string newEventLocation = string.Empty;
         private string newEventDescription = string.Empty;
@@ -90,6 +94,11 @@ namespace Functions.Client.Pages
             uploadStatusMessage = string.Empty;
             
             await LoadData();
+            
         }
+		private async Task OnEventButtonClick(Guid eventID)
+		{
+            navigationManager.NavigateTo($"/event/{eventID}");
+		}
     }
 }

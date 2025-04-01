@@ -8,10 +8,10 @@ using System.Net;
 [Route("api/[controller]")]
 [ApiController]
 public class EventsController(
-    IRepository<Events> eventRepository, 
+    IRepository<Events> eventRepository,
     IRepository<Files> fileRepository) : ControllerBase, IEventsProxy
 {
-    [HttpGet]
+    [HttpGet("getEvents")]
     public async Task<List<EventsDTO>> GetEventsAsync()
     {
         var events = await eventRepository.GetAllAsync();
@@ -44,6 +44,26 @@ public class EventsController(
         return result;
     }
 
+    [HttpGet("getEventbyID")]
+    public async Task<EventsDTO?> GetEventsbyIdAsync([FromQuery] Guid Id)
+    {
+        var @event = await eventRepository.GetByIdAsync(Id);
+        if (@event == null)
+        {
+            return null;
+        }
+        return new EventsDTO(
+            @event.Id,
+            @event.Host,
+            @event.Name,
+            @event.Location,
+            @event.Description,
+            @event.StartDateTime,
+            @event.EndDateTime,
+            null);
+
+    }
+
     [HttpPost]
     public async Task<HttpResponseMessage> PostEventAsync([FromBody] EventsDTO request)
     {
@@ -58,8 +78,8 @@ public class EventsController(
             EndDateTime = request.EndDateTime
         };
 
-        if (!string.IsNullOrEmpty(request.ProfilePictureBase64) && 
-            !string.IsNullOrEmpty(request.FileName) && 
+        if (!string.IsNullOrEmpty(request.ProfilePictureBase64) &&
+            !string.IsNullOrEmpty(request.FileName) &&
             !string.IsNullOrEmpty(request.FileType))
         {
             try
@@ -78,9 +98,9 @@ public class EventsController(
                     FileContentId = fileContent.Id,
                     FileContent = fileContent
                 };
-                
+
                 newEvent.PictureId = fileRecord.Id;
-                
+
                 await fileRepository.AddAsync(fileRecord);
             }
             catch (Exception ex)
