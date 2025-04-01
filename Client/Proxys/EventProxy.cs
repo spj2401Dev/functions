@@ -26,7 +26,7 @@ namespace Functions.Client.Proxys
 
         public async Task<EventsDTO?> GetEventsbyIdAsync(Guid Id)
         {
-            var response = await httpClient.GetAsync($"api/events/getEventbyID?{Id}");
+            var response = await httpClient.GetAsync($"api/events/getEventbyID?id={Id}");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<EventsDTO>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });

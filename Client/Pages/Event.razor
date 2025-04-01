@@ -1,18 +1,22 @@
-﻿@page "/event/{eventid}"
+﻿@page "/event/{eventid:guid}"
 @using Functions.Shared.DTOs
 @using Functions.Shared.Interfaces
 
 
-@if (eventid != null)
+@if (eventItem?.Id != null)
 {
     <div style="border: 1px solid black">
-        <h3>@eventItem.Name</h3>
+        <h3 >@eventItem.Name</h3>
         <p>@eventItem.Location</p>
         <p>@eventItem.Description</p>
         <p>@eventItem.StartDateTime</p>
         <p>@eventItem.EndDateTime</p>
+        <button @onclick="() => ReturnToMainPage()">Back to Main Page</button>
     </div>
 } else
 {
-    
+   <div>
+       <h3>No Event</h3>
+        <button @onclick="() => ReturnToMainPage()">Back to Main Page</button>
+   </div>
 }
