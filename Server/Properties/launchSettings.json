@@ -18,7 +18,8 @@
       },
       "dotnetRunMessages": true,
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
-      "applicationUrl": "https://localhost:7099;http://localhost:5146"
+      "applicationUrl": "https://localhost:7099;http://localhost:5146",
+      "launchUrl": "swagger"
     },
     "IIS Express": {
       "commandName": "IISExpress",
