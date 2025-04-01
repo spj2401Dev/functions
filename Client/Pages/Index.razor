@@ -11,8 +11,7 @@
     <button type="submit">Neues Event erstellen </button>
 </form>
 
-@if (events != null)
-{
+@if (events != null) 
     @if (events != null)
     {
         @foreach (var eventItem in events)
@@ -23,6 +22,7 @@
                 <p>@eventItem.Description</p>
                 <p>@eventItem.StartDateTime</p>
                 <p>@eventItem.EndDateTime</p>
+                <button @onclick="OnClick" type="button">Test</button>
             </div>
         }
     }

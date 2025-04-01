@@ -1,0 +1,18 @@
+﻿@page "/event/{eventid}"
+@using Functions.Shared.DTOs
+@using Functions.Shared.Interfaces
+
+
+@if (eventid != null)
+{
+    <div style="border: 1px solid black">
+        <h3>@eventItem.Name</h3>
+        <p>@eventItem.Location</p>
+        <p>@eventItem.Description</p>
+        <p>@eventItem.StartDateTime</p>
+        <p>@eventItem.EndDateTime</p>
+    </div>
+} else
+{
+    
+}

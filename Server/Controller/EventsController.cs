@@ -9,7 +9,7 @@ using System.Net;
 [ApiController]
 public class EventsController(IRepository<Events> eventRepository) : ControllerBase, IEventsProxy
 {
-    [HttpGet]
+    [HttpGet("getEvents")]
     public async Task<List<EventsDTO>> GetEventsAsync()
     {
         var events = await eventRepository.GetAllAsync();
@@ -22,8 +22,28 @@ public class EventsController(IRepository<Events> eventRepository) : ControllerB
             e.Description,
             e.StartDateTime,
             e.EndDateTime,
-            null // TODO mf!
+            null // TODO mf!x
         )).ToList();
+    }
+
+    [HttpGet("getEventbyID")]
+    public async Task<EventsDTO?> GetEventsbyIdAsync( Guid Id)
+    {
+        var @event = await eventRepository.GetByIdAsync(Id);
+        if( @event == null)
+        {
+            return null;
+        }
+        return new EventsDTO(
+            @event.Id,
+            @event.Host,
+            @event.Name,
+            @event.Location,
+            @event.Description,
+            @event.StartDateTime,
+            @event.EndDateTime,
+            null);
+
     }
 
     [HttpPost]

@@ -40,6 +40,22 @@ namespace Functions.Client.Pages
 
             await eventProxy.PostEventAsync(newEvent);
             await LoadData();
+            await ClearData();
+            
+        }
+
+        private async Task ClearData()
+        {
+            newEventName = string.Empty;
+            newEventLocation = string.Empty;
+            newEventDescription = string.Empty;
+            newEventStartDateTime = DateTime.Now;
+            newEventEndDateTime = DateTime.Now;
+        }
+
+        private async Task OnClick()
+        {
+            
         }
     }
 }
