@@ -1,0 +1,9 @@
+CREATE TABLE [dbo].[EventVisitors]
+(
+	Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT newId(), 
+    [UserId] UNIQUEIDENTIFIER NOT NULL,
+	[Type] int NOT NULL,
+	[EventId] UNIQUEIDENTIFIER NOT NULL,
+	CONSTRAINT [FK_EventVisitors_User] FOREIGN KEY ([UserId]) REFERENCES [User]([Id]),
+	CONSTRAINT [FK_EventVisitors_Event] FOREIGN KEY ([EventId]) REFERENCES [Events]([Id])
+)

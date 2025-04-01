@@ -62,5 +62,11 @@
     <Build Include="Tables\Events.sql" />
     <Build Include="Tables\Files.sql" />
     <Build Include="Tables\FileContent.sql" />
+    <Build Include="Tables\EventVisitors.sql" />
+    <Build Include="Tables\User.sql" />
+    <Build Include="Tables\Message.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="Functions.Database.refactorlog" />
   </ItemGroup>
 </Project>
