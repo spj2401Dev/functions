@@ -1,9 +1,16 @@
 using Functions.Server.Interfaces;
+using Functions.Server.Interfaces.Auth;
 using Functions.Server.Model;
 using Functions.Server.Repsitorys;
 using Functions.Server.Services;
+using Functions.Server.Services.Auth;
+using Functions.Server.UseCases;
+using Functions.Server.UseCases.Auth;
 using MapsterMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +26,10 @@ builder.Services.AddScoped<IMapper, Mapper>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IRepository<Events>, EventsRepository>();
 builder.Services.AddScoped<IRepository<Files>, FilesRepository>();
+builder.Services.AddScoped<IRepository<User>, UserRepository>();
+builder.Services.AddScoped<IRegistrationUseCase, RegistrationUseCase>();
+builder.Services.AddScoped<ILoginUseCase, LoginUseCase>();
+builder.Services.AddScoped<JwtService>();
 
 string[]? corsAllowedAddresses = builder.Configuration.GetSection("CORS:Allowed").Get<string[]>() ?? ["*"];
 builder.Services.AddCors(options =>
@@ -27,6 +38,27 @@ builder.Services.AddCors(options =>
         policy.WithOrigins(corsAllowedAddresses)
             .AllowAnyMethod()
             .AllowAnyHeader());
+});
+
+// Add JWT Authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]))
+    };
 });
 
 var app = builder.Build();
@@ -51,6 +83,8 @@ else
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
