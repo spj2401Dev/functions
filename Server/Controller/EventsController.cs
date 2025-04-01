@@ -36,6 +36,7 @@ public class EventsController(IRepository<Events> eventRepository) : ControllerB
             Location = request.Location,
             Description = request.Description,
             StartDateTime = request.StartDateTime,
+            EndDateTime = request.EndDateTime,
             PictureId = null // TODO via Robust Upload Sytem
         };
 
