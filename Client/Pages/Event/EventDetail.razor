@@ -1,0 +1,33 @@
+﻿@page "/events/{eventid:guid}"
+@using Functions.Shared.DTOs
+@using Functions.Shared.Interfaces
+
+<div class="event-detail" >
+    @if (eventItem?.Id != null)
+    {
+        <PageTitle>@eventItem.Name</PageTitle>
+
+        <div class="event-detail-content">
+            @if (!string.IsNullOrEmpty(eventItem.ProfilePictureBase64))
+            {
+                <img src="data:image/png;base64,@eventItem.ProfilePictureBase64" class="card-img-top" alt="@eventItem.Name" />
+            }
+
+            <h1>@eventItem.Name</h1>
+            <p>Location: @eventItem.Location</p>
+            <p>Description: @eventItem.Description</p>
+            <p>Start: @eventItem.StartDateTime</p>
+            <p>End: @eventItem.EndDateTime</p>
+        </div>
+        <button @onclick="() => ReturnToMainPage()">Back to Main Page</button>
+    }
+    else
+    {
+        <PageTitle>Event</PageTitle>
+
+        <div class="event-detail-content">
+            <h1>No Event</h1>
+            <button @onclick="() => ReturnToMainPage()">Back to Main Page</button>
+        </div>
+    }
+</div>

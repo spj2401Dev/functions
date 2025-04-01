@@ -21,8 +21,9 @@
 }
 
 .headerLink {
-    color:aliceblue;
-    text-decoration: none
+    color: aliceblue;
+    text-decoration: none;
+    padding-right: 1em;
 }
 
 .headerLink:hover {
