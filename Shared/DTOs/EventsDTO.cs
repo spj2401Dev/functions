@@ -9,6 +9,8 @@
         string Description,
         DateTime StartDateTime,
         DateTime EndDateTime,
-        string? ProfilePictureBase64
+        string? ProfilePictureBase64,
+        string? FileName = null,
+        string? FileType = null
     );
 }

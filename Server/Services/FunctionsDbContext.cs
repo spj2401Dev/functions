@@ -24,16 +24,13 @@ namespace Functions.Server.Services
             }
 
             modelBuilder.Entity<Files>()
-                .HasOne<FileContent>()
-                .WithMany()
-                .HasForeignKey(f => f.FileContentId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(f => f.FileContent)
+                .WithOne()
+                .HasForeignKey<Files>(f => f.FileContentId);
 
             modelBuilder.Entity<Events>()
-                .HasOne<Files>()
-                .WithMany()
-                .HasForeignKey(e => e.PictureId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .Property(e => e.PictureId)
+                .IsRequired(false);
 
             base.OnModelCreating(modelBuilder);
         }
