@@ -1,11 +1,13 @@
 using Functions.Server.Interfaces;
 using Functions.Server.Interfaces.Auth;
+using Functions.Server.Interfaces.Event;
 using Functions.Server.Model;
 using Functions.Server.Repsitorys;
 using Functions.Server.Services;
 using Functions.Server.Services.Auth;
 using Functions.Server.UseCases;
 using Functions.Server.UseCases.Auth;
+using Functions.Server.UseCases.Event;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +32,10 @@ builder.Services.AddScoped<IRepository<User>, UserRepository>();
 builder.Services.AddScoped<IRegistrationUseCase, RegistrationUseCase>();
 builder.Services.AddScoped<ILoginUseCase, LoginUseCase>();
 builder.Services.AddScoped<JwtService>();
+builder.Services.AddScoped<FunctionsControllerBase>();
+builder.Services.AddScoped<IGetEventsUseCase, GetEventsUseCase>();
+builder.Services.AddScoped<IGetEventByIdUseCase, GetEventByIdUseCase>();
+builder.Services.AddScoped<ICreateEventUseCase, CreateEventUseCase>();
 
 string[]? corsAllowedAddresses = builder.Configuration.GetSection("CORS:Allowed").Get<string[]>() ?? ["*"];
 builder.Services.AddCors(options =>

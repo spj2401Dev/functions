@@ -7,23 +7,14 @@ namespace Functions.Server.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase, IAuthProxy
+    public class AuthController(IRegistrationUseCase registration, ILoginUseCase login) : ControllerBase, IAuthProxy
     {
-        private readonly IRegistrationUseCase _registration;
-        private readonly ILoginUseCase _login;
-
-        public AuthController(IRegistrationUseCase registration, ILoginUseCase login)
-        {
-            _registration = registration;
-            _login = login;
-        }
-
         [HttpPost("register")]
         public async Task<HttpResponseMessage> Register(RegisterRequestDTO request)
         {
             try
             {
-                await _registration.Handle(request);
+                await registration.Handle(request);
                 return new HttpResponseMessage(HttpStatusCode.Created);
             }
             catch (Exception e)
@@ -37,7 +28,7 @@ namespace Functions.Server.Controller
         {
             try
             {
-                var response = await _login.Handle(request);
+                var response = await login.Handle(request);
                 return Ok(response);
             }
             catch (Exception e)

@@ -41,11 +41,11 @@ namespace Functions.Client.Pages.Auth
 
                 if (string.IsNullOrEmpty(ReturnUrl))
                 {
-                    navigationManager.NavigateTo("/");
+                    navigationManager.NavigateTo("/", true);
                 }
                 else
                 {
-                    navigationManager.NavigateTo(ReturnUrl);
+                    navigationManager.NavigateTo(ReturnUrl, true);
                 }
             }
             catch
