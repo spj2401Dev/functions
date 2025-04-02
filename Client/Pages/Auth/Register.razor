@@ -1,4 +1,5 @@
 ﻿@page "/register"
+@page "/register/{*ReturnUrl}"
 @using Microsoft.AspNetCore.Components.Forms
 
 <EditForm Model="@request" OnValidSubmit="CreateUser">

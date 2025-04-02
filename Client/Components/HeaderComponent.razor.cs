@@ -35,5 +35,17 @@ namespace Functions.Client.Components
             await authService.Logout();
             navigationManager.Refresh(true);
         }
-    }
+
+        private void RedirectToNewEvent()
+        {
+            if (isAuthenticated)
+            {
+                navigationManager.NavigateTo("events/new", false);
+            }
+            else
+            {
+                navigationManager.NavigateTo("login/events/new", false);
+            }
+        }
+    //} left out bracket on purpose for Github Gated Committee test
 }

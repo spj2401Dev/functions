@@ -63,5 +63,17 @@ namespace Functions.Client.Pages.Auth
             await authService.Logout();
             navigationManager.Refresh(true);
         }
+
+        private void NavigateToRegisterPage()
+        {
+            if (string.IsNullOrEmpty(ReturnUrl))
+            {
+                navigationManager.NavigateTo("/register", false);
+            }
+            else
+            {
+                navigationManager.NavigateTo("/register/" + ReturnUrl, false);
+            }
+        }
     }
 }

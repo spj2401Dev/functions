@@ -1,5 +1,5 @@
 @page "/login"
-@page "/login/{ReturnUrl}"
+@page "/login/{*ReturnUrl}"
 @using Functions.Client.Services
 @using Microsoft.AspNetCore.Components.Forms
 @inject AuthService jwtAuthService
@@ -50,7 +50,7 @@
 }
 
 <div class="mt-3">
-    <p>Don't have an account? <a href="/register">Register here</a></p>
+    <p>Don't have an account? <a @onclick="NavigateToRegisterPage">Register here</a></p>
 </div>
 
 <div class="mt-3">
