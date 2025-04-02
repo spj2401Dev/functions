@@ -30,7 +30,7 @@
             <input type="datetime-local" class="form-control" id="eventEndDate" @bind="newEventEndDateTime" />
         </div>
         <div class="mb-3">
-            <label for="eventPicture" class="form-label">Event Picture</label
+            <label for="eventPicture" class="form-label">Event Picture</label>
             <Microsoft.AspNetCore.Components.Forms.InputFile OnChange="HandleFileSelection" class="form-control" id="eventPicture" accept="image/*" />
             @if (!string.IsNullOrEmpty(uploadStatusMessage))
             {
@@ -44,6 +44,10 @@
                     <img src="data:@profilePictureContentType;base64,@profilePictureBase64" style="max-width: 200px; max-height: 200px;" />
                 </div>
             }
+        </div>
+        <div class="IsPublic">
+            <label for="eventIsPublic" class="form-label">Public:</label>
+           <input type="checkbox" class="isPublicInput" id="eventIsPublic" @bind="isPublic" />
         </div>
         <div class="card-buttons">
             <button class="btn btn-primary" @onclick="Submit">Create Event</button>

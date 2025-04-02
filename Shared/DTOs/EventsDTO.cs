@@ -11,6 +11,7 @@
         DateTime EndDateTime,
         string? ProfilePictureBase64,
         string? FileName = null,
-        string? FileType = null
+        string? FileType = null,
+        bool isPublic = false
     );
 }

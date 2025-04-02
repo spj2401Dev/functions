@@ -37,7 +37,8 @@ public class EventsController(
                 e.Description,
                 e.StartDateTime,
                 e.EndDateTime,
-                base64Image
+                base64Image,
+                isPublic: e.IsPublic
             ));
         }
 
@@ -71,7 +72,8 @@ public class EventsController(
             @event.Description,
             @event.StartDateTime,
             @event.EndDateTime,
-            base64Image);
+            base64Image,
+            isPublic:@event.IsPublic);
 
     }
 
@@ -86,7 +88,8 @@ public class EventsController(
             Location = request.Location,
             Description = request.Description,
             StartDateTime = request.StartDateTime,
-            EndDateTime = request.EndDateTime
+            EndDateTime = request.EndDateTime,
+            IsPublic = request.isPublic
         };
 
         if (!string.IsNullOrEmpty(request.ProfilePictureBase64) &&
