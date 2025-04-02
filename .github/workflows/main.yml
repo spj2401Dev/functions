@@ -63,8 +63,8 @@ jobs:
       env:
         SSHPASS: ${{ secrets.SERVER_PASSWORD }}
       run: |
-        sshpass -e rsync -avz --delete publish/server/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/path/to/your/app/server/
-        sshpass -e rsync -avz --delete publish/client/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/path/to/your/app/client/
+        sshpass -e rsync -avz --delete publish/server/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/root/Functions/Server
+        sshpass -e rsync -avz --delete publish/client/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/root/Functions/Client
     
     - name: Build Database Project
       run: dotnet build Functions.Database/ --configuration Release
