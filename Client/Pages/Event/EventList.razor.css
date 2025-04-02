@@ -1,0 +1,57 @@
+﻿.no-events {
+    padding-left: 1em;
+    color: black;
+}
+
+.page-name {
+    margin-left: auto;
+    margin-right: auto;
+    width: auto;
+    text-align: left;
+    padding: 0.5em;
+    color: black;
+}
+
+.card {
+    margin: 4px;
+    border: 5px solid black;
+}
+
+.card-img-top {
+    padding: 1em;
+    max-width: 50%;
+}
+
+.card-body {
+    display: block;
+    padding-left: 1em;
+}
+
+.card-title {
+    align-items: center;
+    height: 15%;
+    color: black;
+}
+
+.card-text {
+    margin-right: auto;
+    margin-left: auto;
+    color: black;
+}
+
+.card-footer {
+    padding-left: 1em;
+    padding-bottom: 1em;
+}
+
+.detail-button {
+    padding: 6px;
+    border: 1px solid black;
+    border-radius: 10px 10px;
+}
+
+
+.detail-button:hover {
+    text-decoration: underline;
+}
+

@@ -1,0 +1,40 @@
+﻿@page "/events"
+@using Functions.Shared.DTOs
+@using Functions.Shared.Interfaces
+
+<PageTitle>Events</PageTitle>
+
+<h1 class="page-name" >Event List</h1>
+
+<div class="list">
+     @if (events.Count == 0)
+     {
+         <p class="no-events">No events available.</p>
+     }
+     else
+     {
+         <div class="rows">
+             @foreach (var evt in events)
+             {
+                <div class="card">
+                     @if (!string.IsNullOrEmpty(evt.ProfilePictureBase64))
+                     {
+                         <img src="data:image/png;base64,@evt.ProfilePictureBase64" class="card-img-top" alt="@evt.Name" />
+                     }
+                     <div class="card-body">
+                         <h2 class="card-title">@evt.Name</h2>
+                         <p class="card-text">Location: @evt.Location</p>
+                         <p class="card-text">Start: @evt.StartDateTime.ToString("g") - End: @evt.EndDateTime.ToString("g")</p>
+                         @if (!string.IsNullOrEmpty(evt.Description))
+                         {
+                             <p class="card-text">Description: @evt.Description</p>
+                         }                         
+                     </div>
+                     <div class="card-footer">
+                        <button class="detail-button" @onclick="() => OnDetailButtonClick(evt.Id)">Details</button>
+                     </div>
+                </div>
+             }
+         </div>
+     }
+</div>

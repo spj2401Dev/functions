@@ -1,0 +1,10 @@
+﻿.card-buttons button {
+    padding: 6px;
+    border: 1px solid black;
+    border-radius: 10px 10px;
+    margin: 4px;
+}
+
+.card-buttons button:hover {
+    text-decoration: underline;
+}

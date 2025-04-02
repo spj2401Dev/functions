@@ -1,11 +1,10 @@
 ﻿using Functions.Shared.DTOs;
 using Functions.Shared.Interfaces;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
 
-namespace Functions.Client.Pages
+namespace Functions.Client.Pages.Event
 {
-    public partial class Event
+    public partial class EventDetail
     {
         [Inject] private IEventsProxy eventProxy { get; set; } = default!;
         [Inject] private NavigationManager navigationManager { get; set; } = default!;
@@ -25,7 +24,7 @@ namespace Functions.Client.Pages
 
         private async Task ReturnToMainPage()
         {
-            navigationManager.NavigateTo("/");
+            navigationManager.NavigateTo("/events");
         }
 
     }

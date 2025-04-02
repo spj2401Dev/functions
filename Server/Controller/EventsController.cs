@@ -44,7 +44,7 @@ public class EventsController(
         return result;
     }
 
-    [HttpGet("getEventbyID")]
+    [HttpGet("getEventbyId")]
     public async Task<EventsDTO?> GetEventsbyIdAsync([FromQuery] Guid Id)
     {
         var @event = await eventRepository.GetByIdAsync(Id);
@@ -52,6 +52,17 @@ public class EventsController(
         {
             return null;
         }
+
+        string? base64Image = null;
+        if (@event.PictureId.HasValue)
+        {
+            var file = await fileRepository.GetByIdAsync(@event.PictureId.Value);
+            if (file != null && file.FileContent != null)
+            {
+                base64Image = file.FileContent.Base64Content;
+            }
+        }
+
         return new EventsDTO(
             @event.Id,
             @event.Host,
@@ -60,7 +71,7 @@ public class EventsController(
             @event.Description,
             @event.StartDateTime,
             @event.EndDateTime,
-            null);
+            base64Image);
 
     }
 
