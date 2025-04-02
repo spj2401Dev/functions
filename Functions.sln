@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Functions.Client", "Client\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Functions.Shared", "Shared\Functions.Shared.csproj", "{81D34291-A8F6-4F49-84AC-631436CD17BF}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Functions.Database", "Berufsmesse.Database\Functions.Database.sqlproj", "{04110F56-5366-4D3D-83C0-F2D41D25A364}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Functions.Database", "Functions.Database\Functions.Database.sqlproj", "{04110F56-5366-4D3D-83C0-F2D41D25A364}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
