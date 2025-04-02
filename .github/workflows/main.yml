@@ -84,14 +84,11 @@ jobs:
     - name: Build Database Project (Generate DACPAC)
       run: msbuild Functions.Database/Functions.Database.sqlproj /p:Configuration=Release /t:Build
       
-    - name: Deploy Database Changes (Using SQLPackage)
+    - name: Deploy Database Changes (Using SQLPackage with Connection String)
       run: |
         C:\sqlpackage\sqlpackage.exe /Action:Publish `
         /SourceFile:Functions.Database/bin/Release/Functions.Database.dacpac `
-        /TargetServerName:${{ secrets.DB_SERVER }} `
-        /TargetDatabaseName:${{ secrets.DB_NAME }} `
-        /TargetUser:${{ secrets.DB_USER }} `
-        /TargetPassword:${{ secrets.DB_PASSWORD }}
+        /TargetConnectionString:${{ secrets.DB_CONNECTION_STRING }}
 
   restart-server:
     runs-on: ubuntu-latest
@@ -102,5 +99,5 @@ jobs:
       env:
         SSHPASS: ${{ secrets.SERVER_PASSWORD }}
       run: |
-        sshpass -e ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} 'sudo systemctl restart functions-blazor.service'
+        sshpass -e ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} 'sudo systemctl restart your-service-name'
         echo "Application restarted successfully"
