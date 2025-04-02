@@ -6,15 +6,8 @@ using System.Text;
 
 namespace Functions.Server.Services.Auth
 {
-    public class JwtService
+    public class JwtService(IConfiguration configuration)
     {
-        private readonly IConfiguration _configuration;
-
-        public JwtService(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
         public LoginResponseDTO GenerateToken(string username, string userId, IEnumerable<string> roles = null)
         {
             var claims = new List<Claim>
@@ -33,13 +26,13 @@ namespace Functions.Server.Services.Auth
             }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                _configuration["JwtSettings:Key"]));
+                configuration["JwtSettings:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var expiry = DateTime.Now.AddDays(1);
 
             var token = new JwtSecurityToken(
-                issuer: _configuration["JwtSettings:Issuer"],
-                audience: _configuration["JwtSettings:Audience"],
+                issuer: configuration["JwtSettings:Issuer"],
+                audience: configuration["JwtSettings:Audience"],
                 claims: claims,
                 expires: expiry,
                 signingCredentials: creds

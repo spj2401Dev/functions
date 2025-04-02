@@ -14,7 +14,7 @@ namespace Functions.Client.Services
             await localStorage.SetItemAsync(TOKEN_KEY, loginResponse.Token);
         }
 
-        private async Task<string> GetToken()
+        public async Task<string> GetToken()
         {
             return await localStorage.GetItemAsync<string>(TOKEN_KEY);
         }
