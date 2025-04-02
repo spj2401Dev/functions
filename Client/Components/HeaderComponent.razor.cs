@@ -47,5 +47,5 @@ namespace Functions.Client.Components
                 navigationManager.NavigateTo("login/events/new", false);
             }
         }
-    //} left out bracket on purpose for Github Gated Committee test
+    }
 }
