@@ -68,6 +68,7 @@ jobs:
 
   build-database:
     runs-on: windows-latest  # SSDT/SQL tools only work on Windows
+    environment: Production
     
     steps:
     - uses: actions/checkout@v3
