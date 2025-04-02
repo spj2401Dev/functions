@@ -17,7 +17,8 @@ namespace Functions.Server.UseCases.Event
                 Location = request.Location,
                 Description = request.Description,
                 StartDateTime = request.StartDateTime,
-                EndDateTime = request.EndDateTime
+                EndDateTime = request.EndDateTime,
+                IsPublic = request.isPublic,
             };
 
             if (!string.IsNullOrEmpty(request.ProfilePictureBase64) &&

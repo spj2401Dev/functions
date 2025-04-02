@@ -8,3 +8,15 @@
 .card-buttons button:hover {
     text-decoration: underline;
 }
+
+.IsPublic {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2em;
+}
+
+.isPublicInput {
+    width: auto;
+    height: auto;
+    margin: 0px;
+}

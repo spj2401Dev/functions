@@ -23,4 +23,6 @@ public partial class Events
     public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
 
     public virtual Files? Picture { get; set; }
+
+    public bool IsPublic { get; set; } = false;
 }

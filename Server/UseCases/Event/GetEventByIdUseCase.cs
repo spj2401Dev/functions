@@ -33,7 +33,10 @@ namespace Functions.Server.UseCases.Event
                 @event.Description ?? string.Empty,
                 @event.StartDateTime,
                 @event.EndDateTime,
-                base64Image);
+                base64Image,
+                null,
+                null,
+                @event.IsPublic);
         }
     }
 }
