@@ -65,20 +65,37 @@ jobs:
       run: |
         sshpass -e rsync -avz --delete publish/server/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/root/Functions/Server
         sshpass -e rsync -avz --delete publish/client/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/root/Functions/Client
+
+  build-database:
+    runs-on: windows-latest  # Use Windows because SSDT/SQL tools are not in Ubuntu runners
+
+    steps:
+    - uses: actions/checkout@v3
     
-    - name: Build Database Project
-      run: dotnet build Functions.Database/ --configuration Release
-    
-    - name: Publish Database Project
-      run: dotnet publish Functions.Database/ --configuration Release --output publish/db
-    
-    - name: Deploy Database Changes
-      env:
-        DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
+
+    - name: Install SQLPackage (For Database Deployment)
       run: |
-        cd publish/db
-        dotnet Functions.Database.dll /connectionString:"$DB_CONNECTION_STRING"
-    
+        Invoke-WebRequest -Uri "https://aka.ms/sqlpackage-windows" -OutFile "sqlpackage.zip"
+        Expand-Archive -Path "sqlpackage.zip" -DestinationPath "C:\sqlpackage"
+        echo "C:\sqlpackage" | Out-File -Append -FilePath $env:GITHUB_PATH
+
+    - name: Build Database Project
+      run: msbuild Functions.Database/Functions.Database.sqlproj /p:Configuration=Release
+
+    - name: Publish Database DACPAC
+      run: msbuild Functions.Database/Functions.Database.sqlproj /t:Publish /p:TargetServerName=${{ secrets.DB_SERVER }} /p:TargetDatabaseName=${{ secrets.DB_NAME }} /p:TargetUser=${{ secrets.DB_USER }} /p:TargetPassword=${{ secrets.DB_PASSWORD }}
+
+    - name: Deploy Database Changes
+      run: |
+        C:\sqlpackage\sqlpackage.exe /Action:Publish /SourceFile:Functions.Database/bin/Release/Functions.Database.dacpac /TargetServerName:${{ secrets.DB_SERVER }} /TargetDatabaseName:${{ secrets.DB_NAME }} /TargetUser:${{ secrets.DB_USER }} /TargetPassword:${{ secrets.DB_PASSWORD }}
+
+  restart-server:
+    runs-on: ubuntu-latest
+    needs: [build-and-deploy, build-database]  # Restart after both jobs finish
+
+    steps:
     - name: Restart Application
       env:
         SSHPASS: ${{ secrets.SERVER_PASSWORD }}
