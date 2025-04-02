@@ -67,8 +67,8 @@ jobs:
         sshpass -e rsync -avz --delete publish/client/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/root/Functions/Client
 
   build-database:
-    runs-on: windows-latest  # Use Windows because SSDT/SQL tools are not in Ubuntu runners
-
+    runs-on: windows-latest  # SSDT/SQL tools only work on Windows
+    
     steps:
     - uses: actions/checkout@v3
     
@@ -81,15 +81,17 @@ jobs:
         Expand-Archive -Path "sqlpackage.zip" -DestinationPath "C:\sqlpackage"
         echo "C:\sqlpackage" | Out-File -Append -FilePath $env:GITHUB_PATH
 
-    - name: Build Database Project
-      run: msbuild Functions.Database/Functions.Database.sqlproj /p:Configuration=Release
-
-    - name: Publish Database DACPAC
-      run: msbuild Functions.Database/Functions.Database.sqlproj /t:Publish /p:TargetServerName=${{ secrets.DB_SERVER }} /p:TargetDatabaseName=${{ secrets.DB_NAME }} /p:TargetUser=${{ secrets.DB_USER }} /p:TargetPassword=${{ secrets.DB_PASSWORD }}
-
-    - name: Deploy Database Changes
+    - name: Build Database Project (Generate DACPAC)
+      run: msbuild Functions.Database/Functions.Database.sqlproj /p:Configuration=Release /t:Build
+      
+    - name: Deploy Database Changes (Using SQLPackage)
       run: |
-        C:\sqlpackage\sqlpackage.exe /Action:Publish /SourceFile:Functions.Database/bin/Release/Functions.Database.dacpac /TargetServerName:${{ secrets.DB_SERVER }} /TargetDatabaseName:${{ secrets.DB_NAME }} /TargetUser:${{ secrets.DB_USER }} /TargetPassword:${{ secrets.DB_PASSWORD }}
+        C:\sqlpackage\sqlpackage.exe /Action:Publish `
+        /SourceFile:Functions.Database/bin/Release/Functions.Database.dacpac `
+        /TargetServerName:${{ secrets.DB_SERVER }} `
+        /TargetDatabaseName:${{ secrets.DB_NAME }} `
+        /TargetUser:${{ secrets.DB_USER }} `
+        /TargetPassword:${{ secrets.DB_PASSWORD }}
 
   restart-server:
     runs-on: ubuntu-latest
@@ -100,5 +102,5 @@ jobs:
       env:
         SSHPASS: ${{ secrets.SERVER_PASSWORD }}
       run: |
-        sshpass -e ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} 'sudo systemctl restart your-service-name'
+        sshpass -e ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} 'sudo systemctl restart functions-blazor.service'
         echo "Application restarted successfully"
