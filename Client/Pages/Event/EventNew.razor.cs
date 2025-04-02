@@ -20,6 +20,7 @@ namespace Functions.Client.Pages.Event
         private string? profilePictureFileName = null;
         private string? profilePictureContentType = null;
         private IBrowserFile? selectedFile = null;
+        private bool isPublic = false;
         private string uploadStatusMessage = string.Empty;
 
         private async Task HandleFileSelection(InputFileChangeEventArgs e)
@@ -63,7 +64,8 @@ namespace Functions.Client.Pages.Event
                 newEventEndDateTime,
                 profilePictureBase64,
                 profilePictureFileName,
-                profilePictureContentType
+                profilePictureContentType,
+                isPublic
             );
 
             await eventProxy.PostEventAsync(newEvent);
@@ -91,6 +93,7 @@ namespace Functions.Client.Pages.Event
             profilePictureContentType = null;
             selectedFile = null;
             uploadStatusMessage = string.Empty;
+            isPublic = false;
         }
 
     }
