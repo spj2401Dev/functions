@@ -1,0 +1,87 @@
+name: Deploy Blazor App and Database
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: Production  # Specify environment to use those secrets
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'  # Adjust version as needed
+    
+    - name: Restore dependencies
+      run: |
+        dotnet restore Server/
+        dotnet restore Client/
+    
+    - name: Build Server
+      run: dotnet build Server/ --configuration Release --no-restore
+    
+    - name: Build Client
+      run: dotnet build Client/ --configuration Release --no-restore
+    
+    - name: Publish Server
+      run: dotnet publish Server/ --configuration Release --no-build --output publish/server
+    
+    - name: Publish Client
+      run: dotnet publish Client/ --configuration Release --no-build --output publish/client
+    
+    - name: Create server appsettings.json from secrets
+      env:
+        SERVER_APP_SETTINGS: ${{ secrets.SERVER_APP_SETTINGS }}
+      run: |
+        echo "$SERVER_APP_SETTINGS" > publish/server/appsettings.json
+        echo "Overwritten server appsettings.json with secrets"
+        
+    - name: Create client appsettings.json from secrets
+      env:
+        CLIENT_APP_SETTINGS: ${{ secrets.CLIENT_APP_SETTINGS }}
+      run: |
+        echo "$CLIENT_APP_SETTINGS" > publish/client/wwwroot/appsettings.json
+        echo "Overwritten client appsettings.json with secrets"
+    
+    - name: Install sshpass for password authentication
+      run: sudo apt-get install -y sshpass
+    
+    - name: Add host key to known hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+    
+    - name: Deploy to Ubuntu Server (Password)
+      env:
+        SSHPASS: ${{ secrets.SERVER_PASSWORD }}
+      run: |
+        sshpass -e rsync -avz --delete publish/server/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/path/to/your/app/server/
+        sshpass -e rsync -avz --delete publish/client/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/path/to/your/app/client/
+    
+    - name: Build Database Project
+      run: dotnet build Functions.Database/ --configuration Release
+    
+    - name: Publish Database Project
+      run: dotnet publish Functions.Database/ --configuration Release --output publish/db
+    
+    - name: Deploy Database Changes
+      env:
+        DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
+      run: |
+        cd publish/db
+        dotnet Functions.Database.dll /connectionString:"$DB_CONNECTION_STRING"
+    
+    - name: Restart Application
+      env:
+        SSHPASS: ${{ secrets.SERVER_PASSWORD }}
+      run: |
+        sshpass -e ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} 'sudo systemctl restart your-service-name'
+        echo "Application restarted successfully"
