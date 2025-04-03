@@ -13,13 +13,12 @@ namespace Functions.Client.Pages.Event
         [Inject] private IEventsProxy eventProxy { get; set; } = default!;
         [Inject] private IMessageProxy messageProxy { get; set; } = default!;
         [Inject] private NavigationManager navigationManager { get; set; } = default!;
-<<<<<<< HEAD
+
         [Parameter] 
         public Guid eventid { get; set; }
-=======
+
         [Inject] private AuthService authService { get; set; } = default!;
         [Parameter] public Guid eventId { get; set; }
->>>>>>> 98d62ed7c282573caecd465f9c2648ea04ac9657
 
         private EventsDTO? eventItem;
         private List<MessageDTO> messages = new();
