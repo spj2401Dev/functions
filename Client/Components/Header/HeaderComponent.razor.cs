@@ -1,10 +1,11 @@
 ﻿using Functions.Client.Services;
 using Microsoft.AspNetCore.Components;
+using System.Threading.Tasks;
 
 namespace Functions.Client.Components
 {
-    public partial class HeaderComponent
-    {
+    public partial class HeaderComponent 
+     {
         [Inject] private NavigationManager navigationManager { get; set; }
         [Inject] private AuthService authService { get; set; }
 
@@ -18,6 +19,7 @@ namespace Functions.Client.Components
             {
                 username = "@" + await authService.GetUsername();
             }
+            await base.OnInitializedAsync(); 
         }
 
         private void NavigateToRegister()
@@ -33,7 +35,7 @@ namespace Functions.Client.Components
         private async Task Logout()
         {
             await authService.Logout();
-            navigationManager.Refresh(true);
+            navigationManager.NavigateTo(navigationManager.Uri, forceLoad: true);
         }
 
         private void RedirectToNewEvent()
@@ -44,7 +46,8 @@ namespace Functions.Client.Components
             }
             else
             {
-                navigationManager.NavigateTo("login/events/new", false);
+                var returnUrl = System.Net.WebUtility.UrlEncode("events/new");
+                navigationManager.NavigateTo($"login?returnUrl={returnUrl}", false);
             }
         }
     }
