@@ -8,7 +8,8 @@ namespace Functions.Client.Pages.Event
     {
         [Inject] private IEventsProxy eventProxy { get; set; } = default!;
         [Inject] private NavigationManager navigationManager { get; set; } = default!;
-        [Parameter] public Guid eventid { get; set; }
+        [Parameter] 
+        public Guid eventid { get; set; }
 
         private EventsDTO? eventItem;
 

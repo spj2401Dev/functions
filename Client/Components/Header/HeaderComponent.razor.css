@@ -1,0 +1,31 @@
+﻿.container-header {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 20%;
+    background: #eca241;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding: 1rem;
+  }
+  .container-header a:hover {
+    text-decoration: underline;
+    color: white;
+  }
+  
+.button {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
