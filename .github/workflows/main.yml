@@ -5,12 +5,12 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  workflow_dispatch:  # Allows manual triggering
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment: Production  # Specify environment to use those secrets
+    environment: Production
     
     steps:
     - uses: actions/checkout@v3
@@ -18,7 +18,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0.x'  # Adjust version as needed
+        dotnet-version: '8.0.x'
     
     - name: Restore dependencies
       run: |
@@ -51,7 +51,7 @@ jobs:
         echo "$CLIENT_APP_SETTINGS" > publish/client/wwwroot/appsettings.json
         echo "Overwritten client appsettings.json with secrets"
     
-    - name: Install sshpass for password authentication
+    - name: Install sshpass
       run: sudo apt-get install -y sshpass
     
     - name: Add host key to known hosts
@@ -59,7 +59,7 @@ jobs:
         mkdir -p ~/.ssh
         ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
     
-    - name: Deploy to Ubuntu Server (Password)
+    - name: Deploy to Ubuntu Server
       env:
         SSHPASS: ${{ secrets.SERVER_PASSWORD }}
       run: |
@@ -67,7 +67,7 @@ jobs:
         sshpass -e rsync -avz --delete publish/client/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/root/Functions/Client
 
   build-database:
-    runs-on: windows-latest  # SSDT/SQL tools only work on Windows
+    runs-on: windows-latest
     environment: Production
     
     steps:
@@ -76,25 +76,34 @@ jobs:
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1
 
-    - name: Install SQLPackage (For Database Deployment)
+    - name: Install SQLPackage
       run: |
         Invoke-WebRequest -Uri "https://aka.ms/sqlpackage-windows" -OutFile "sqlpackage.zip"
-        Expand-Archive -Path "sqlpackage.zip" -DestinationPath "C:\sqlpackage"
-        echo "C:\sqlpackage" | Out-File -Append -FilePath $env:GITHUB_PATH
-
-    - name: Build Database Project (Generate DACPAC)
+        Expand-Archive -Path "sqlpackage.zip" -DestinationPath "C:\\sqlpackage"
+        echo "C:\\sqlpackage" | Out-File -Append -FilePath $env:GITHUB_PATH
+    
+    - name: Build Database Project
       run: msbuild Functions.Database/Functions.Database.sqlproj /p:Configuration=Release /t:Build
-      
-    - name: Deploy Database Changes (Using SQLPackage with Connection String)
+    
+    - name: Deploy Database Changes
+      env:
+        DB_SERVER: ${{ secrets.DB_SERVER }}
+        DB_NAME: ${{ secrets.DB_NAME }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       run: |
-        C:\sqlpackage\sqlpackage.exe /Action:Publish `
+        C:\\sqlpackage\\sqlpackage.exe /Action:Publish `
         /SourceFile:Functions.Database/bin/Release/Functions.Database.dacpac `
-        /TargetConnectionString:${{ secrets.DB_CONNECTION_STRING }}
+        /TargetServerName:$env:DB_SERVER `
+        /TargetDatabaseName:$env:DB_NAME `
+        /TargetUser:$env:DB_USER `
+        /TargetPassword:$env:DB_PASSWORD `
+        /p:TrustServerCertificate=true
 
   restart-server:
     runs-on: ubuntu-latest
-    needs: [build-and-deploy, build-database]  # Restart after both jobs finish
-
+    needs: [build-and-deploy, build-database]
+    
     steps:
     - name: Restart Application
       env:
