@@ -1,6 +1,7 @@
 ﻿@page "/events"
 @using Functions.Shared.DTOs
 @using Functions.Shared.Interfaces
+@using Functions.Client.Components
 
 <PageTitle>Events</PageTitle>
 
@@ -17,9 +18,9 @@
              @foreach (var evt in events)
              {
                 <div class="card">
-                     @if (!string.IsNullOrEmpty(evt.ProfilePictureBase64))
+                     @if (evt.FileId != null && evt.FileId != Guid.Empty)
                      {
-                         <img src="data:image/png;base64,@evt.ProfilePictureBase64" class="card-img-top" alt="@evt.Name" />
+                         <FnImage FileId="@evt.FileId.Value" CssClass=" card-img-top" />
                      }
                      <div class="card-body">
                          <h2 class="card-title">@evt.Name</h2>

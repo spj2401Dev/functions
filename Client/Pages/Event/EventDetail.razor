@@ -1,6 +1,7 @@
 ﻿@page "/events/{eventid:guid}"
 @using Functions.Shared.DTOs
 @using Functions.Shared.Interfaces
+@using Functions.Client.Components
 
 <div class="event-detail" >
     @if (eventItem?.Id != null)
@@ -8,9 +9,9 @@
         <PageTitle>@eventItem.Name</PageTitle>
 
         <div class="event-detail-content">
-            @if (!string.IsNullOrEmpty(eventItem.ProfilePictureBase64))
+            @if (eventItem.FileId != null)
             {
-                <img src="data:image/png;base64,@eventItem.ProfilePictureBase64" class="card-img-top" alt="@eventItem.Name" />
+                <FnImage FileId="@eventItem.FileId.Value" CssClass="card-img-top"/>
             }
 
             <h1>@eventItem.Name</h1>

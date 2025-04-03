@@ -5,7 +5,7 @@ using Functions.Shared.DTOs;
 
 namespace Functions.Server.UseCases.Event
 {
-    public class GetEventByIdUseCase(IRepository<Events> eventRepository, IRepository<Files> fileRepository) : IGetEventByIdUseCase
+    public class GetEventByIdUseCase(IRepository<Events> eventRepository) : IGetEventByIdUseCase
     {
         public async Task<EventsDTO> Handle(Guid id)
         {
@@ -13,16 +13,6 @@ namespace Functions.Server.UseCases.Event
             if (@event == null)
             {
                 throw new ArgumentNullException(nameof(@event));
-            }
-
-            string? base64Image = null;
-            if (@event.PictureId.HasValue)
-            {
-                var file = await fileRepository.GetByIdAsync(@event.PictureId.Value);
-                if (file != null && file.FileContent != null)
-                {
-                    base64Image = file.FileContent.Base64Content;
-                }
             }
 
             return new EventsDTO(
@@ -33,10 +23,11 @@ namespace Functions.Server.UseCases.Event
                 @event.Description ?? string.Empty,
                 @event.StartDateTime,
                 @event.EndDateTime,
-                base64Image,
+                @event.IsPublic,
                 null,
                 null,
-                @event.IsPublic);
+                null,
+                @event.PictureId);
         }
     }
 }
