@@ -8,5 +8,7 @@ namespace Functions.Shared.Interfaces
 
         Task<EventsDTO?> GetEventsbyIdAsync(Guid Id);
         Task<HttpResponseMessage> PostEventAsync(EventsDTO request);
+
+        Task<List<EventsDTO>> GetFilteredEventsAsync(bool isPublic);
     }
 }
