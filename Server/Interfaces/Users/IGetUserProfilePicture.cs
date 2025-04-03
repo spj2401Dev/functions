@@ -2,8 +2,8 @@
 
 namespace Functions.Server.Interfaces.Users
 {
-    public interface IGetAllUserUseCase
+    public interface IGetUserProfilePicture
     {
-        Task<List<UserDTO>> Handle();
+        Task<ProfilePictureDTO> Handle(Guid id);
     }
 }

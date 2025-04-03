@@ -30,7 +30,8 @@ namespace Functions.Server.Repsitorys
 
         public async Task UpdateAsync(User entity)
         {
-            throw new NotImplementedException();
+            context.Users.Update(entity);
+            await context.SaveChangesAsync();
         }
     }
 }

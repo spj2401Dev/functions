@@ -39,8 +39,9 @@ builder.Services.AddScoped<IGetEventsUseCase, GetEventsUseCase>();
 builder.Services.AddScoped<IGetEventByIdUseCase, GetEventByIdUseCase>();
 builder.Services.AddScoped<ICreateEventUseCase, CreateEventUseCase>();
 
-builder.Services.AddScoped<IGetAllUserUseCase, GetAllUserUseCase>();
+builder.Services.AddScoped<IGetUserProfilePicture, GetUserProfilePicture>();
 builder.Services.AddScoped<IGetUserByIdUseCase, GetUserByIdUseCase>();
+builder.Services.AddScoped<IUpdateUserUseCase, UpdateUserUseCase>();
 
 string[]? corsAllowedAddresses = builder.Configuration.GetSection("CORS:Allowed").Get<string[]>() ?? ["*"];
 builder.Services.AddCors(options =>

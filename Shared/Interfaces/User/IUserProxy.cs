@@ -4,8 +4,10 @@ namespace Functions.Shared.Interfaces.User
 {
     public interface IUserProxy
     {
-        Task<List<UserDTO>> GetAllUsers();
-
         Task<UserDTO> GetUserById(Guid id);
+
+        Task<ProfilePictureDTO> GetUserProfilePicture(Guid id);
+
+        Task<HttpResponseMessage> UpdaetUser(UpdateUserRequestDTO updateUserRequestDTO);
     }
 }
