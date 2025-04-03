@@ -1,6 +1,7 @@
 using Functions.Server.Interfaces;
 using Functions.Server.Interfaces.Auth;
 using Functions.Server.Interfaces.Event;
+using Functions.Server.Interfaces.Users;
 using Functions.Server.Interfaces.Messages;
 using Functions.Server.Model;
 using Functions.Server.Repsitorys;
@@ -10,6 +11,7 @@ using Functions.Server.UseCases;
 using Functions.Server.UseCases.Auth;
 using Functions.Server.UseCases.Event;
 using Functions.Server.UseCases.Messages;
+using Functions.Server.UseCases.Users;
 using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +43,10 @@ builder.Services.AddScoped<IGetEventByIdUseCase, GetEventByIdUseCase>();
 builder.Services.AddScoped<ICreateEventUseCase, CreateEventUseCase>();
 builder.Services.AddScoped<IGetMessagesByEventIdQuery, GetMessagesByEventIdQuery>();
 builder.Services.AddScoped<IPostAnnouncementUseCase, PostAnnouncementUseCase>();
+
+builder.Services.AddScoped<IGetUserProfilePicture, GetUserProfilePicture>();
+builder.Services.AddScoped<IGetUserByIdUseCase, GetUserByIdUseCase>();
+builder.Services.AddScoped<IUpdateUserUseCase, UpdateUserUseCase>();
 
 string[]? corsAllowedAddresses = builder.Configuration.GetSection("CORS:Allowed").Get<string[]>() ?? ["*"];
 builder.Services.AddCors(options =>

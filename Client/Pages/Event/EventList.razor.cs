@@ -1,3 +1,4 @@
+using Functions.Client.Services;
 using Functions.Shared.DTOs;
 using Functions.Shared.Interfaces;
 using Microsoft.AspNetCore.Components;
@@ -10,10 +11,15 @@ namespace Functions.Client.Pages.Event
 
         [Inject] private NavigationManager navigationManager { get; set; }
 
+        [Inject] private AuthService authService { get; set; }
+
+
+        private bool isAuthenticated;
         private List<EventsDTO> events = new List<EventsDTO>();
 
         protected override async Task OnInitializedAsync()
         {
+            isAuthenticated = await authService.IsAuthenticated();
             await LoadData();
         }
 
@@ -23,11 +29,15 @@ namespace Functions.Client.Pages.Event
         }
 		private void OnDetailButtonClick(Guid eventID)
 		{
-            navigationManager.NavigateTo($"/events/{eventID}");
-		}
-		private void OnNewEventButtonClick()
-		{
-            navigationManager.NavigateTo("/events/new");
+            if(isAuthenticated)
+            {
+                navigationManager.NavigateTo($"/events/{eventID}");
+            } else
+            {
+                navigationManager.NavigateTo($"/login/events/{eventID}");
+            }
+
+
 		}
     }
 }

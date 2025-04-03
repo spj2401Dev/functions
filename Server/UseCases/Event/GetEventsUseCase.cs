@@ -10,6 +10,7 @@ namespace Functions.Server.UseCases.Event
         public async Task<List<EventsDTO>> Handle()
         {
             var events = await eventRepository.GetAllAsync();
+
             var result = new List<EventsDTO>();
 
             foreach (var e in events)
