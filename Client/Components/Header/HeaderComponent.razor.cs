@@ -35,7 +35,11 @@ namespace Functions.Client.Components
         private async Task Logout()
         {
             await authService.Logout();
+<<<<<<< HEAD:Client/Components/Header/HeaderComponent.razor.cs
             navigationManager.NavigateTo(navigationManager.Uri, forceLoad: true);
+=======
+            navigationManager.NavigateTo("/", true);
+>>>>>>> 98d62ed7c282573caecd465f9c2648ea04ac9657:Client/Components/HeaderComponent.razor.cs
         }
 
         private void RedirectToNewEvent()

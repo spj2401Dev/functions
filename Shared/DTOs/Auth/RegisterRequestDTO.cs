@@ -7,7 +7,7 @@ namespace Functions.Shared.DTOs.Auth
         [Required]
         [MinLength(3)]
         [MaxLength(20)]
-        public string Username { get; set; }
+        public string UserName { get; set; }
 
         [Required]
         [EmailAddress]

@@ -3,7 +3,7 @@
     public record EventsDTO
     (
         Guid Id,
-        Guid Host,
+        Guid HostId,
         string Name,
         string Location,
         string Description,
