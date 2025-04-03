@@ -19,6 +19,29 @@
             <p>Start: @eventItem.StartDateTime</p>
             <p>End: @eventItem.EndDateTime</p>
         </div>
+
+        @if (eventItem.HostId == userId)
+        {
+            <div>
+                <h1>Ankündigung schreiben</h1>
+                <textarea @bind="@announcemenRequest.Message" rows="4" cols="50"></textarea>
+                <button @onclick="CreateAnnouncement">Erstellen</button>
+            </div>
+        }
+
+        @if (messages.Any()) {
+            <h1>Messages</h1>
+            <ul>
+                @foreach (var message in messages)
+                {
+                    <li>
+                        <p>@message.Text</p>
+                        <p style="font-size: 11px;">@message.MessageDate</p>
+                    </li>
+                }
+            </ul>
+        }
+
         <button @onclick="() => ReturnToMainPage()">Back to Main Page</button>
     }
     else

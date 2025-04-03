@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Functions.Shared.Enum;
 
 namespace Functions.Server.Model;
 
@@ -17,7 +16,7 @@ public partial class Message
 
     public DateTime MessageDate { get; set; }
 
-    public int Type { get; set; }
+    public MessageTypes Type { get; set; }
 
     public string Text { get; set; } = null!;
 

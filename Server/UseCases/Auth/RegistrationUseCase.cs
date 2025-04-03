@@ -11,7 +11,7 @@ namespace Functions.Server.UseCases
         {
             var existingUsers = await userRepository.GetAllAsync();
 
-            if (existingUsers.Any(u => u.Username == request.Username))
+            if (existingUsers.Any(u => u.Username == request.UserName))
             {
                 throw new Exception("Username already exists");
             }
@@ -23,7 +23,7 @@ namespace Functions.Server.UseCases
 
             var user = new User
             {
-                Username = request.Username,
+                Username = request.UserName,
                 Email = request.Email,
                 Firstname = request.FirstName,
                 Lastname = request.LastName,

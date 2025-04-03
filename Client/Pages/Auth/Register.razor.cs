@@ -36,7 +36,7 @@ namespace Functions.Client.Pages.Auth
 
                 var loginRequest = new LoginRequestDTO
                 {
-                    Username = request.Username,
+                    Username = request.UserName,
                     Password = request.Password
                 };
 
