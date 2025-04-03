@@ -92,13 +92,9 @@ jobs:
         DB_USER: ${{ secrets.DB_USER }}
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       run: |
-        C:\\sqlpackage\\sqlpackage.exe /Action:Publish `
+        C:\sqlpackage\sqlpackage.exe /Action:Publish `
         /SourceFile:Functions.Database/bin/Release/Functions.Database.dacpac `
-        /TargetServerName:$env:DB_SERVER `
-        /TargetDatabaseName:$env:DB_NAME `
-        /TargetUser:$env:DB_USER `
-        /TargetPassword:$env:DB_PASSWORD `
-        /p:TrustServerCertificate=true
+        /TargetConnectionString:"Server=$env:DB_SERVER;Database=$env:DB_NAME;User Id=$env:DB_USER;Password=$env:DB_PASSWORD;TrustServerCertificate=True"
 
   restart-server:
     runs-on: ubuntu-latest
