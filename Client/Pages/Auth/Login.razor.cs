@@ -19,7 +19,7 @@ namespace Functions.Client.Pages.Auth
 
         private bool isAuthenticated; // Debugging :)
         private string? username;
-        private string? userId;
+        private Guid? userId;
 
         protected override async Task OnInitializedAsync() 
         {

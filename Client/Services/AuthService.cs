@@ -45,11 +45,12 @@ namespace Functions.Client.Services
             return claims?.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name")?.Value;
         }
 
-        public async Task<string?> GetUserId()
+        public async Task<Guid?> GetUserId()
         {
             var token = await GetToken();
             var claims = DecodeJwtToken(token);
-            return claims?.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+            var userIdClaim = claims?.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+            return Guid.TryParse(userIdClaim, out var userId) ? userId : null;
         }
 
         public async Task<bool> IsAuthenticated()
