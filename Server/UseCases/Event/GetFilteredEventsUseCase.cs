@@ -36,10 +36,10 @@ namespace Functions.Server.UseCases.Event
                     e.Description ?? string.Empty,
                     e.StartDateTime,
                     e.EndDateTime,
+                    e.IsPublic,
                     base64Image,
                     null,
-                    null,
-                    e.IsPublic
+                    null
                 ));
             }
 
