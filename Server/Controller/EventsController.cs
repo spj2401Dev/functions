@@ -14,7 +14,6 @@ public class EventsController(IRepository<Events> eventRepository,
                               FunctionsControllerBase functionsControllerBase,
                               IConfiguration configuration,
                               IGetEventsUseCase getEventUseCase,
-                              IGetFilteredEventsUseCase getFilteredEventsUseCase,
                               IGetEventByIdUseCase getEventByIdUseCase,
                               ICreateEventUseCase createEventUseCase) : FunctionsControllerBase(configuration), IEventsProxy
 {
@@ -29,12 +28,6 @@ public class EventsController(IRepository<Events> eventRepository,
     {
         
         return await getEventByIdUseCase.Handle(Id);
-    }
-
-    [HttpGet("getfilteredevents")]
-    public async Task<List<EventsDTO>> GetFilteredEventsAsync([FromQuery] bool isPublic)
-    {
-        return await getFilteredEventsUseCase.Handle(isPublic);
     }
 
     [HttpPost]
