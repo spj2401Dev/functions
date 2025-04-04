@@ -26,9 +26,9 @@ namespace Functions.Server.UseCases.Event
                 !string.IsNullOrEmpty(request.FileName) &&
                 !string.IsNullOrEmpty(request.FileType))
             {
-                var fileID = await filesService.SaveFileAsync(request.ProfilePictureBase64, request.FileName, request.FileType);
+                var fileId = await filesService.SaveFileAsync(request.ProfilePictureBase64, request.FileName, request.FileType);
                 
-                newEvent.PictureId = fileID;
+                newEvent.PictureId = fileId;
             }
 
             await eventRepository.AddAsync(newEvent);
