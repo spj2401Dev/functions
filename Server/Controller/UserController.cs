@@ -10,7 +10,6 @@ namespace Functions.Server.Controller
     [Route("api/[controller]")]
     [ApiController]
     public class UserController(
-        IGetUserProfilePicture getUserProfilePicture, 
         IGetUserByIdUseCase getUserById,
         IUpdateUserUseCase updateUserUseCase) : ControllerBase, IUserProxy
     {
@@ -19,12 +18,6 @@ namespace Functions.Server.Controller
         public async Task<UserDTO> GetUserById([FromQuery] Guid id)
         {
             return await getUserById.Handle(id);
-        }
-
-        [HttpGet("getuserprofilepicture")]
-        public async Task<ProfilePictureDTO> GetUserProfilePicture([FromQuery] Guid id)
-        {
-            return await getUserProfilePicture.Handle(id);
         }
 
         [HttpPost("updateuser")]

@@ -1,11 +1,12 @@
 ﻿using Functions.Server.Interfaces;
 using Functions.Server.Interfaces.Event;
 using Functions.Server.Model;
+using Functions.Server.Services.File;
 using Functions.Shared.DTOs;
 
 namespace Functions.Server.UseCases.Event
 {
-    public class CreateEventUseCase(IRepository<Events> eventRepository, IRepository<Files> fileRepository) : ICreateEventUseCase
+    public class CreateEventUseCase(IRepository<Events> eventRepository, FilesService filesService) : ICreateEventUseCase
     {
         public async Task Handle(EventsDTO request, Guid userId)
         {
@@ -25,31 +26,9 @@ namespace Functions.Server.UseCases.Event
                 !string.IsNullOrEmpty(request.FileName) &&
                 !string.IsNullOrEmpty(request.FileType))
             {
-                try
-                {
-                    var fileContent = new FileContent
-                    {
-                        Id = Guid.NewGuid(), // think about it
-                        Base64Content = request.ProfilePictureBase64
-                    };
-
-                    var fileRecord = new Files
-                    {
-                        Id = Guid.NewGuid(),
-                        FileName = request.FileName,
-                        FileType = request.FileType,
-                        FileContentId = fileContent.Id,
-                        FileContent = fileContent
-                    };
-                    newEvent.PictureId = fileRecord.Id;
-
-                    await fileRepository.AddAsync(fileRecord);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error saving file: {ex.Message}"); // logger implementation?
-                    newEvent.PictureId = null;
-                }
+                var fileId = await filesService.SaveFileAsync(request.ProfilePictureBase64, request.FileName, request.FileType);
+                
+                newEvent.PictureId = fileId;
             }
 
             await eventRepository.AddAsync(newEvent);

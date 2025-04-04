@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Functions.Server.Services.File;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,7 +46,7 @@ builder.Services.AddScoped<ICreateEventUseCase, CreateEventUseCase>();
 builder.Services.AddScoped<IGetMessagesByEventIdQuery, GetMessagesByEventIdQuery>();
 builder.Services.AddScoped<IPostAnnouncementUseCase, PostAnnouncementUseCase>();
 
-builder.Services.AddScoped<IGetUserProfilePicture, GetUserProfilePicture>();
+builder.Services.AddScoped<FilesService>();
 builder.Services.AddScoped<IGetUserByIdUseCase, GetUserByIdUseCase>();
 builder.Services.AddScoped<IUpdateUserUseCase, UpdateUserUseCase>();
 

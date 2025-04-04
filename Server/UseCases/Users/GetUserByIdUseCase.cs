@@ -24,7 +24,8 @@ namespace Functions.Server.UseCases.Users
                 user.Firstname,
                 user.Lastname,
                 user.Email,
-                user.Notifications
+                user.Notifications,
+                user.ProfilePictureId
                 );
         }
     }
