@@ -5,12 +5,12 @@ using Functions.Shared.DTOs;
 
 namespace Functions.Server.UseCases.Event
 {
-    public class GetFilteredEventsUseCase(IRepository<Events> eventRepository, IRepository<Files> fileRepository) : IGetFilteredEventsUseCase
+    public class GetPublicEventsUseCase(IRepository<Events> eventRepository, IRepository<Files> fileRepository) : IGetPublicEventsUseCase
     {
-        public async Task<List<EventsDTO>> Handle(bool isPublic)
+        public async Task<List<EventsDTO>> Handle()
         {
             var events = await eventRepository.GetAllAsync();
-            events = events.Where(e => e.IsPublic == isPublic)
+            events = events.Where(e => e.IsPublic == true)
                            .Where(e => e.StartDateTime >= DateTime.UtcNow)
                            .OrderBy(e => e.StartDateTime).ToList();
 
