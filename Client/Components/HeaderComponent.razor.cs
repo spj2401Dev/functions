@@ -33,7 +33,7 @@ namespace Functions.Client.Components
         private async Task Logout()
         {
             await authService.Logout();
-            navigationManager.Refresh(true);
+            navigationManager.NavigateTo("/", true);
         }
 
         private void RedirectToNewEvent()

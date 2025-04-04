@@ -62,10 +62,11 @@ namespace Functions.Client.Pages.Event
                 newEventDescription,
                 newEventStartDateTime,
                 newEventEndDateTime,
+                isPublic,
                 profilePictureBase64,
                 profilePictureFileName,
                 profilePictureContentType,
-                isPublic
+                null
             );
 
             await eventProxy.PostEventAsync(newEvent);
