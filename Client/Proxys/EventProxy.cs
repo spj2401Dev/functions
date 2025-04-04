@@ -42,13 +42,5 @@ namespace Functions.Client.Proxys
             var content = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<EventsDTO>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
-
-        public async Task<List<EventsDTO>> GetPublicEventsAsync()
-        {
-            var response = await httpClient.GetAsync($"api/Events/getpublicevents");
-            response.EnsureSuccessStatusCode();
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<EventsDTO>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-        }
     }
 }

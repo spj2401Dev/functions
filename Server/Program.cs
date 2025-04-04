@@ -39,7 +39,6 @@ builder.Services.AddScoped<ILoginUseCase, LoginUseCase>();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<FunctionsControllerBase>();
 builder.Services.AddScoped<IGetEventsUseCase, GetEventsUseCase>();
-builder.Services.AddScoped<IGetPublicEventsUseCase, GetPublicEventsUseCase>();
 builder.Services.AddScoped<IGetEventByIdUseCase, GetEventByIdUseCase>();
 builder.Services.AddScoped<ICreateEventUseCase, CreateEventUseCase>();
 builder.Services.AddScoped<IGetMessagesByEventIdQuery, GetMessagesByEventIdQuery>();
