@@ -64,7 +64,7 @@ namespace Functions.Server.Services
                     .HasConstraintName("FK_EventVisitors_User");
             });
 
-            modelBuilder.Entity<File>(entity =>
+            modelBuilder.Entity<Files>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("PK__Files__3214EC07CDD25E87");
 
