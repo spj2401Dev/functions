@@ -9,12 +9,12 @@ namespace Functions.Server.Repsitorys
     {
         public async Task<IEnumerable<Files>> GetAllAsync()
         {
-            return await context.Files.Include(f => f.FileContent).ToListAsync();
+            return await context.Files.Include(f => f.FileContent).AsNoTracking().ToListAsync();
         }
 
         public async Task<Files> GetByIdAsync(Guid Id)
         {
-            return await context.Files.Include(f => f.FileContent).FirstOrDefaultAsync(f => f.Id == Id);
+            return await context.Files.Include(f => f.FileContent).AsNoTracking().FirstOrDefaultAsync(f => f.Id == Id);
         }
 
         public async Task AddAsync(Files entity)
