@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Functions.Server.Interfaces.Participation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +44,7 @@ builder.Services.AddScoped<IGetEventByIdUseCase, GetEventByIdUseCase>();
 builder.Services.AddScoped<ICreateEventUseCase, CreateEventUseCase>();
 builder.Services.AddScoped<IGetMessagesByEventIdQuery, GetMessagesByEventIdQuery>();
 builder.Services.AddScoped<IPostAnnouncementUseCase, PostAnnouncementUseCase>();
+builder.Services.AddScoped<IEventVisitorQuery,  EventVisitorQuery>();
 
 builder.Services.AddScoped<IGetUserProfilePicture, GetUserProfilePicture>();
 builder.Services.AddScoped<IGetUserByIdUseCase, GetUserByIdUseCase>();
