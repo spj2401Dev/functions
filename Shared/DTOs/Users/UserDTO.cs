@@ -2,11 +2,12 @@
 {
     public record UserDTO
     (
-        Guid Id,
-        string Username ,
+        Guid UserId,
+        string Username,
         string Firstname,
         string Lastname, 
         string Email,
-        bool Notificaions
+        bool Notificaions,
+        Guid? profilePictureID
     );
 }

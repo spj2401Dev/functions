@@ -17,14 +17,6 @@ namespace Functions.Client.Proxys.Users
             return JsonSerializer.Deserialize<UserDTO>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
 
-        public async Task<ProfilePictureDTO> GetUserProfilePicture(Guid id)
-        {
-            var response = await httpClient.GetAsync($"api/user/getuserprofilepicture?id={id}");
-            response.EnsureSuccessStatusCode();
-            var content = await response.Content.ReadAsStreamAsync();
-            return JsonSerializer.Deserialize<ProfilePictureDTO>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-        }
-
         public async Task<HttpResponseMessage> UpdaetUser(UpdateUserRequestDTO updateUserRequestDTO)
         {
             return await httpClient.PostAsJsonAsync("api/user/updateuser", updateUserRequestDTO);
