@@ -35,6 +35,7 @@ builder.Services.AddScoped<IRepository<Events>, EventsRepository>();
 builder.Services.AddScoped<IRepository<Files>, FilesRepository>();
 builder.Services.AddScoped<IRepository<User>, UserRepository>();
 builder.Services.AddScoped<IRepository<Message>, MessageRepository>();
+builder.Services.AddScoped<IRepository<EventVisitor>, EventVisitorsRepository>();
 builder.Services.AddScoped<IRegistrationUseCase, RegistrationUseCase>();
 builder.Services.AddScoped<ILoginUseCase, LoginUseCase>();
 builder.Services.AddScoped<JwtService>();

@@ -1,10 +1,12 @@
 ﻿using Functions.Client.Services;
 using Functions.Shared.DTOs;
 using Functions.Shared.DTOs.Messages;
+using Functions.Shared.DTOs.Participation;
+using Functions.Shared.Enum;
 using Functions.Shared.Interfaces;
 using Functions.Shared.Interfaces.Messages;
+using Functions.Shared.Interfaces.Participation;
 using Microsoft.AspNetCore.Components;
-using System.Runtime.InteropServices;
 
 namespace Functions.Client.Pages.Event
 {
@@ -12,12 +14,14 @@ namespace Functions.Client.Pages.Event
     {
         [Inject] private IEventsProxy eventProxy { get; set; } = default!;
         [Inject] private IMessageProxy messageProxy { get; set; } = default!;
+        [Inject] private IParticipationProxy participationProxy { get; set; } = default!;
         [Inject] private NavigationManager navigationManager { get; set; } = default!;
         [Inject] private AuthService authService { get; set; } = default!;
         [Parameter] public Guid eventId { get; set; }
 
         private EventsDTO? eventItem;
         private List<MessageDTO> messages = new();
+        private GetParticipationResponseDTO participations = new();
         private AnnouncementRequestDTO announcemenRequest = new();
         private Guid? userId = Guid.Empty;
         private bool isAuthenticated = false;
@@ -27,6 +31,7 @@ namespace Functions.Client.Pages.Event
             userId = await authService.GetUserId() ?? Guid.Empty;
             isAuthenticated = await authService.IsAuthenticated();
             await LoadData();
+            await LoadParticipation();
             await LoadMessages();
         }
 
@@ -61,6 +66,38 @@ namespace Functions.Client.Pages.Event
             {
                 messages = await messageProxy.GetMessagesForEvent(eventItem.Id);
             }
+        }
+
+        private async Task LoadParticipation()
+        {
+            if (eventItem?.Id == Guid.Empty || eventItem == null)
+            {
+                return;
+            }
+
+            participations = await participationProxy.GetParticipaton(eventItem.Id);
+        }
+
+        private async Task PostParticipation(ParticipationStatus status)
+        {
+            if (eventItem?.Id == Guid.Empty || eventItem == null)
+            {
+                return;
+            }
+
+            if (!await authService.IsAuthenticated())
+            {
+                navigationManager.NavigateTo($"/login/events/{eventItem.Id}");
+            }
+
+            var requestDTO = new PostParticipationDTO
+            {
+                EventId = eventItem.Id,
+                Type = status
+            };
+
+            await participationProxy.PostParticipation(requestDTO);
+            await LoadParticipation();
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Functions.Server.Repsitorys
 {
     public class EventVisitorsRepository(FunctionsDbContext context) : IRepository<EventVisitor>
     {
-        public async Task<List<EventVisitor>> GetAllAsync()
+        public async Task<IEnumerable<EventVisitor>> GetAllAsync()
         {
             throw new NotSupportedException();
         }
@@ -26,6 +26,11 @@ namespace Functions.Server.Repsitorys
         {
             context.EventVisitors.Update(entity);
             await context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(Guid Id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

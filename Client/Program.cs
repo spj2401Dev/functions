@@ -3,10 +3,12 @@ using Functions.Client;
 using Functions.Client.Proxys;
 using Functions.Client.Proxys.Auth;
 using Functions.Client.Proxys.Message;
+using Functions.Client.Proxys.Participation;
 using Functions.Client.Services;
 using Functions.Shared.Interfaces;
 using Functions.Shared.Interfaces.Auth;
 using Functions.Shared.Interfaces.Messages;
+using Functions.Shared.Interfaces.Participation;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -19,6 +21,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddScoped<IEventsProxy, EventProxy>();
 builder.Services.AddScoped<IAuthProxy, AuthProxy>();
 builder.Services.AddScoped<IMessageProxy, MessageProxy>();
+builder.Services.AddScoped<IParticipationProxy, ParticipationProxy>();
 
 builder.Services.AddBlazoredLocalStorage();
 

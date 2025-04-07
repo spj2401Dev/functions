@@ -2,6 +2,7 @@
 {
     public enum ParticipationStatus
     {
+        NotSet,
         Accepted,
         Declined,
         Unsure
