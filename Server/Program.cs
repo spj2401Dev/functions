@@ -19,6 +19,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Functions.Server.Interfaces.Participation;
 using Functions.Server.Services.File;
+using Functions.Server.UseCases.Participation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +53,8 @@ builder.Services.AddScoped<IEventVisitorQuery,  EventVisitorQuery>();
 builder.Services.AddScoped<FilesService>();
 builder.Services.AddScoped<IGetUserByIdUseCase, GetUserByIdUseCase>();
 builder.Services.AddScoped<IUpdateUserUseCase, UpdateUserUseCase>();
+builder.Services.AddScoped<IGetAllEventsByUserUseCase, GetAllEventsByUserUseCase>();
+builder.Services.AddScoped<IPostParticipationUseCase, PostParticipationUseCase>();
 
 string[]? corsAllowedAddresses = builder.Configuration.GetSection("CORS:Allowed").Get<string[]>() ?? ["*"];
 builder.Services.AddCors(options =>

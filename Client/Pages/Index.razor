@@ -1,7 +1,21 @@
 ﻿@page "/"
+@using Functions.Client.Components
+@inject NavigationManager navigationManager
 
 <PageTitle>Start</PageTitle>
 
 <h1>Hallo</h1>
 
-
+@if (userEvents.Any())
+{
+    <h2>Teilgenomme Events:</h2>
+    @foreach (var userEvent in userEvents)
+    {
+        <EventCardComponent Event="userEvent" OnEventClicked="@(id => navigationManager.NavigateTo($"/events/{id}"))" />
+    }
+} else
+{
+    <h2>Du hast noch an keinem Event Teilgenommen!</h2>
+    <p>Hier kannst du nach öffentlichen Events suchen</p>
+    <button class="btn btn-primary" @onclick="@(() => navigationManager.NavigateTo("/events"))">Öffentliche Events</button>
+}

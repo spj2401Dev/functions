@@ -1,5 +1,5 @@
 ﻿using Functions.Client.Services;
-using Functions.Shared.DTOs;
+using Functions.Shared.DTOs.Event;
 using Functions.Shared.DTOs.Messages;
 using Functions.Shared.DTOs.Participation;
 using Functions.Shared.Enum;

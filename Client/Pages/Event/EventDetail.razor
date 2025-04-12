@@ -1,6 +1,7 @@
 ﻿@page "/events/{eventid:guid}"
 @using Functions.Shared.DTOs
 @using Functions.Shared.Enum
+@using Functions.Shared.Extensions
 @using Functions.Shared.Interfaces
 @using Functions.Client.Components
 
@@ -35,7 +36,7 @@
                 {
                     <li>
                         <p>@participant.FullName</p>
-                        <p style="font-size: 11px;">@participant.Status</p>
+                        <p style="font-size: 11px;">@participant.Status.GetDescription()</p>
                     </li>
                 }
             </ul>

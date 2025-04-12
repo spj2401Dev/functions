@@ -1,6 +1,4 @@
-﻿using Functions.Server.Interfaces;
-using Functions.Server.Interfaces.Participation;
-using Functions.Server.Model;
+﻿using Functions.Server.Interfaces.Participation;
 using Functions.Server.Services;
 using Functions.Shared.DTOs.Participation;
 using Functions.Shared.Interfaces.Participation;
@@ -12,39 +10,13 @@ namespace Functions.Server.Controller
     [Route("api/[controller]")]
     public class ParticipationController(IConfiguration configuration,
                                          IEventVisitorQuery eventVisitorQuery,
-                                         IRepository<EventVisitor> eventVisitorRepository) : FunctionsControllerBase(configuration), IParticipationProxy
+                                         IPostParticipationUseCase postParticipationUseCase) : FunctionsControllerBase(configuration), IParticipationProxy
     {
         [HttpPost("PostParticipation")]
         public async Task PostParticipation([FromBody] PostParticipationDTO request)
         {
-            var userId = await GetUserIdFromTokenAsync();
-
-            if (userId == null)
-            {
-                Response.StatusCode = StatusCodes.Status401Unauthorized;
-                return;
-            }
-
-            EventVisitor? eventVisitorEntity = await eventVisitorQuery.GetVisitorByEventAndUserId(userId.Value, request.EventId);
-
-            var newEventVisitor = new EventVisitor
-            {
-                UserId = userId.Value,
-                EventId = request.EventId,
-                Type = request.Type
-            };
-
-            if (eventVisitorEntity == null)
-            {
-                await eventVisitorRepository.AddAsync(newEventVisitor);
-            }
-            else
-            {
-                newEventVisitor.Id = eventVisitorEntity.Id;
-                await eventVisitorRepository.UpdateAsync(newEventVisitor);
-            }
-
-            Response.StatusCode = StatusCodes.Status200OK;
+            var userId = await GetUserIdFromTokenAsync() ?? throw new UnauthorizedAccessException();
+            await postParticipationUseCase.Handle(userId, request.EventId, request.Type);
         }
 
         [HttpGet("GetParticipation")]
@@ -61,6 +33,7 @@ namespace Functions.Server.Controller
                     UserName = ev.User.Username,
                     LastName = ev.User.Lastname,
                     FirstName = ev.User.Firstname,
+                    Status = ev.Type,
                 }).ToList(),
                 Status = requestorStatus
             };

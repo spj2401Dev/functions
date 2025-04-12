@@ -1,7 +1,7 @@
 using Blazored.LocalStorage;
 using Functions.Client;
-using Functions.Client.Proxys;
 using Functions.Client.Proxys.Auth;
+using Functions.Client.Proxys.Events;
 using Functions.Client.Proxys.Message;
 using Functions.Client.Proxys.Participation;
 using Functions.Client.Services;
