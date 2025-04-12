@@ -10,9 +10,10 @@ namespace Functions.Server.UseCases.Event
         public async Task<List<EventsDTO>> Handle()
         {
             var events = await eventRepository.GetAllAsync();
-            events = await events.Where(e => e.IsPublic == true)
-                           .Where(e => e.StartDateTime >= DateTime.Now)
-                           .OrderBy(e => e.StartDateTime).ToListAsync();
+            events =  events.Where(e => e.IsPublic == true)
+                            .Where(e => e.StartDateTime >= DateTime.Now)
+                            .OrderBy(e => e.StartDateTime)
+                            .ToList();
 
             var result = events.Select(e => new EventsDTO(
                 Id: e.Id,
