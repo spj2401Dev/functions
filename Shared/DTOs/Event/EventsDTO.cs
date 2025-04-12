@@ -1,4 +1,4 @@
-﻿namespace Functions.Shared.DTOs
+﻿namespace Functions.Shared.DTOs.Event
 {
     public record EventsDTO
     (

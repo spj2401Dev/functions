@@ -1,20 +1,20 @@
 ﻿using Functions.Client.Services;
-using Functions.Shared.DTOs;
+using Functions.Shared.DTOs.Event;
 using Functions.Shared.Interfaces;
 using System.Text;
 using System.Text.Json;
 
-namespace Functions.Client.Proxys
+namespace Functions.Client.Proxys.Events
 {
     public class EventProxy(HttpClient httpClient,
                             AuthService authService) : IEventsProxy
     {
-        public async Task<List<EventsDTO>> GetEventsAsync()
+        public async Task<List<EventMasterPageDTO>> GetEventsAsync()
         {
             var response = await httpClient.GetAsync("api/events/getEvents");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<EventsDTO>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            return JsonSerializer.Deserialize<List<EventMasterPageDTO>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
 
         public async Task<HttpResponseMessage> PostEventAsync(EventsDTO request)
@@ -49,6 +49,22 @@ namespace Functions.Client.Proxys
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<List<EventsDTO>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+
+        public async Task<List<EventMasterPageDTO>> GetAllEventsByUserAsync()
+        {
+            var userToken = await authService.GetToken();
+            if (string.IsNullOrEmpty(userToken))
+            {
+                throw new UnauthorizedAccessException("User is not authenticated.");
+            }
+
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", userToken);
+
+            var response = await httpClient.GetAsync("api/events/getalleventsbyuser");
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<List<EventMasterPageDTO>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
     }
 }

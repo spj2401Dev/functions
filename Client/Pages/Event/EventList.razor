@@ -17,24 +17,7 @@
          <div class="rows">
              @foreach (var evt in events)
              {
-                <div class="card">
-                     @if (evt.FileId != null && evt.FileId != Guid.Empty)
-                     {
-                         <FnImage FileId="@evt.FileId.Value" CssClass=" card-img-top" />
-                     }
-                     <div class="card-body">
-                         <h2 class="card-title">@evt.Name</h2>
-                         <p class="card-text">Location: @evt.Location</p>
-                         <p class="card-text">Start: @evt.StartDateTime.ToString("g") - End: @evt.EndDateTime.ToString("g")</p>
-                         @if (!string.IsNullOrEmpty(evt.Description))
-                         {
-                             <p class="card-text">Description: @evt.Description</p>
-                         }                         
-                     </div>
-                     <div class="card-footer">
-                        <button class="detail-button" @onclick="() => OnDetailButtonClick(evt.Id)">Details</button>
-                     </div>
-                </div>
+                <EventCardComponent Event="evt" OnEventClicked="OnDetailButtonClick" />
              }
          </div>
      }

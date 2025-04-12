@@ -1,4 +1,4 @@
-﻿using Functions.Shared.DTOs;
+﻿using Functions.Shared.DTOs.Event;
 
 namespace Functions.Server.Interfaces.Event
 {

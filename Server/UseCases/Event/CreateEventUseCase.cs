@@ -2,7 +2,7 @@
 using Functions.Server.Interfaces.Event;
 using Functions.Server.Model;
 using Functions.Server.Services.File;
-using Functions.Shared.DTOs;
+using Functions.Shared.DTOs.Event;
 
 namespace Functions.Server.UseCases.Event
 {
