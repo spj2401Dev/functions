@@ -100,8 +100,16 @@ jobs:
     runs-on: ubuntu-latest
     environment: Production
     needs: [build-and-deploy, build-database]
-    
+
     steps:
+    - name: Install sshpass
+      run: sudo apt-get install -y sshpass
+    
+    - name: Add host key to known hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+    
     - name: Restart Application
       env:
         SSHPASS: ${{ secrets.SERVER_PASSWORD }}
