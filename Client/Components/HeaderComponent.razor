@@ -1,6 +1,3 @@
-@inject NavigationManager navigationManager
-@inject AuthService authService
-
 <div class="container-header">
     <div class="left-section">
         <div class="header">
@@ -26,44 +23,4 @@
     </div>
 </div>
 
-@code {
-    private bool isAuthenticated;
-    private string username = "";
 
-    protected override async Task OnInitializedAsync()
-    {
-        isAuthenticated = await authService.IsAuthenticated();
-        if (isAuthenticated)
-        {
-            username = "@" + await authService.GetUsername();
-        }
-    }
-
-    private void NavigateToRegister()
-    {
-        navigationManager.NavigateTo("register", false);
-    }
-
-    private void NavigateToLogin()
-    {
-        navigationManager.NavigateTo("login", false);
-    }
-
-    private async Task Logout()
-    {
-        await authService.Logout();
-        navigationManager.NavigateTo("/", true);
-    }
-
-    private void RedirectToNewEvent()
-    {
-        if (isAuthenticated)
-        {
-            navigationManager.NavigateTo("events/new", false);
-        }
-        else
-        {
-            navigationManager.NavigateTo("login/events/new", false);
-        }
-    }
-}
