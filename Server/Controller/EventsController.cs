@@ -9,7 +9,6 @@ using System.Net;
 [ApiController]
 public class EventsController(IConfiguration configuration,
                               IGetEventsUseCase getEventUseCase,
-                              IGetFilteredEventsUseCase getFilteredEventsUseCase,
                               IGetEventByIdUseCase getEventByIdUseCase,
                               ICreateEventUseCase createEventUseCase,
                               IGetAllEventsByUserUseCase getAllEventsByUserUseCase) : FunctionsControllerBase(configuration), IEventsProxy
@@ -25,12 +24,6 @@ public class EventsController(IConfiguration configuration,
     {
 
         return await getEventByIdUseCase.Handle(Id);
-    }
-
-    [HttpGet("getfilteredevents")]
-    public async Task<List<EventsDTO>> GetFilteredEventsAsync([FromQuery] bool isPublic)
-    {
-        return await getFilteredEventsUseCase.Handle(isPublic);
     }
 
     [HttpPost]

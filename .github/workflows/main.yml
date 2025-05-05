@@ -63,8 +63,8 @@ jobs:
       env:
         SSHPASS: ${{ secrets.SERVER_PASSWORD }}
       run: |
-        sshpass -e rsync -avz --delete publish/server/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/root/Functions/Server
-        sshpass -e rsync -avz --delete publish/client/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/root/Functions/Client
+        sshpass -e rsync -avz --delete publish/server/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/functions/Functions/Client
+        sshpass -e rsync -avz --delete publish/client/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/functions/Functions/Server
 
   build-database:
     runs-on: windows-latest
@@ -98,12 +98,21 @@ jobs:
 
   restart-server:
     runs-on: ubuntu-latest
+    environment: Production
     needs: [build-and-deploy, build-database]
-    
+
     steps:
+    - name: Install sshpass
+      run: sudo apt-get install -y sshpass
+    
+    - name: Add host key to known hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+    
     - name: Restart Application
       env:
         SSHPASS: ${{ secrets.SERVER_PASSWORD }}
       run: |
-        sshpass -e ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} 'sudo systemctl restart your-service-name'
+        sshpass -e ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} 'sudo systemctl restart functions-server.service'
         echo "Application restarted successfully"
