@@ -12,9 +12,9 @@ namespace Functions.Client.Components
         [Inject] HttpClient httpClient { get; set; } = default!;
 
         private string? lazyLoading => LazyLoading ? "lazy" : "eager";
-        private string srcUrl;
+        private string srcUrl = string.Empty;
 
-        protected override async Task OnParametersSetAsync()
+        protected override void OnParametersSet()
         {
             srcUrl = httpClient.BaseAddress + "api/file/downloadFile/?file=" + FileId;
         }

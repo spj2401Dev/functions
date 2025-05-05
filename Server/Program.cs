@@ -17,7 +17,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Functions.Server.Interfaces.Participation;
 using Functions.Server.Services.File;
+using Functions.Server.UseCases.Participation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +37,7 @@ builder.Services.AddScoped<IRepository<Events>, EventsRepository>();
 builder.Services.AddScoped<IRepository<Files>, FilesRepository>();
 builder.Services.AddScoped<IRepository<User>, UserRepository>();
 builder.Services.AddScoped<IRepository<Message>, MessageRepository>();
+builder.Services.AddScoped<IRepository<EventVisitor>, EventVisitorsRepository>();
 builder.Services.AddScoped<IRegistrationUseCase, RegistrationUseCase>();
 builder.Services.AddScoped<ILoginUseCase, LoginUseCase>();
 builder.Services.AddScoped<JwtService>();
@@ -44,10 +47,13 @@ builder.Services.AddScoped<IGetEventByIdUseCase, GetEventByIdUseCase>();
 builder.Services.AddScoped<ICreateEventUseCase, CreateEventUseCase>();
 builder.Services.AddScoped<IGetMessagesByEventIdQuery, GetMessagesByEventIdQuery>();
 builder.Services.AddScoped<IPostAnnouncementUseCase, PostAnnouncementUseCase>();
+builder.Services.AddScoped<IEventVisitorQuery,  EventVisitorQuery>();
 
 builder.Services.AddScoped<FilesService>();
 builder.Services.AddScoped<IGetUserByIdUseCase, GetUserByIdUseCase>();
 builder.Services.AddScoped<IUpdateUserUseCase, UpdateUserUseCase>();
+builder.Services.AddScoped<IGetAllEventsByUserUseCase, GetAllEventsByUserUseCase>();
+builder.Services.AddScoped<IPostParticipationUseCase, PostParticipationUseCase>();
 
 string[]? corsAllowedAddresses = builder.Configuration.GetSection("CORS:Allowed").Get<string[]>() ?? ["*"];
 builder.Services.AddCors(options =>

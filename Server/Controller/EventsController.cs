@@ -1,24 +1,20 @@
-﻿using Functions.Server.Interfaces;
-using Functions.Server.Interfaces.Event;
-using Functions.Server.Model;
+﻿using Functions.Server.Interfaces.Event;
 using Functions.Server.Services;
-using Functions.Shared.DTOs;
+using Functions.Shared.DTOs.Event;
 using Functions.Shared.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 [Route("api/[controller]")]
 [ApiController]
-public class EventsController(IRepository<Events> eventRepository,
-                              IRepository<Files> fileRepository,
-                              FunctionsControllerBase functionsControllerBase,
-                              IConfiguration configuration,
+public class EventsController(IConfiguration configuration,
                               IGetEventsUseCase getEventUseCase,
                               IGetEventByIdUseCase getEventByIdUseCase,
-                              ICreateEventUseCase createEventUseCase) : FunctionsControllerBase(configuration), IEventsProxy
+                              ICreateEventUseCase createEventUseCase,
+                              IGetAllEventsByUserUseCase getAllEventsByUserUseCase) : FunctionsControllerBase(configuration), IEventsProxy
 {
     [HttpGet("getEvents")]
-    public async Task<List<EventsDTO>> GetEventsAsync()
+    public async Task<List<EventMasterPageDTO>> GetEventsAsync()
     {
         return await getEventUseCase.Handle();
     }
@@ -26,7 +22,7 @@ public class EventsController(IRepository<Events> eventRepository,
     [HttpGet("getEventbyId")]
     public async Task<EventsDTO?> GetEventsbyIdAsync([FromQuery] Guid Id)
     {
-        
+
         return await getEventByIdUseCase.Handle(Id);
     }
 
@@ -42,5 +38,17 @@ public class EventsController(IRepository<Events> eventRepository,
         await createEventUseCase.Handle(request, userId.Value);
 
         return new HttpResponseMessage(HttpStatusCode.Created);
+    }
+
+    [HttpGet("getalleventsbyuser")]
+    public async Task<List<EventMasterPageDTO>> GetAllEventsByUserAsync()
+    {
+        var userId = await GetUserIdFromTokenAsync();
+        if (userId == null)
+        {
+            throw new ArgumentNullException(nameof(userId));
+        }
+
+        return await getAllEventsByUserUseCase.Handle(userId.Value);
     }
 }

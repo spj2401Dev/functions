@@ -1,5 +1,5 @@
 using Functions.Client.Services;
-using Functions.Shared.DTOs;
+using Functions.Shared.DTOs.Event;
 using Functions.Shared.Interfaces;
 using Microsoft.AspNetCore.Components;
 
@@ -15,7 +15,7 @@ namespace Functions.Client.Pages.Event
 
 
         private bool isAuthenticated;
-        private List<EventsDTO> events = new List<EventsDTO>();
+        private List<EventMasterPageDTO> events = new List<EventMasterPageDTO>();
 
         protected override async Task OnInitializedAsync()
         {
@@ -27,17 +27,17 @@ namespace Functions.Client.Pages.Event
         {
             events = await eventProxy.GetEventsAsync();
         }
-		private void OnDetailButtonClick(Guid eventID)
-		{
-            if(isAuthenticated)
+
+        private async Task OnDetailButtonClick(Guid eventID)
+        {
+            if (await authService.IsAuthenticated())
             {
                 navigationManager.NavigateTo($"/events/{eventID}");
-            } else
+            }
+            else
             {
                 navigationManager.NavigateTo($"/login/events/{eventID}");
             }
-
-
-		}
+        }
     }
 }

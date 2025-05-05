@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Components;
+﻿using Functions.Shared.DTOs.Event;
 using Functions.Shared.Interfaces;
-using Functions.Shared.DTOs;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace Functions.Client.Pages.Event
 {
