@@ -1,9 +1,11 @@
 ﻿@page "/events/{eventid:guid}"
+@using Functions.Client.Components.Comments
 @using Functions.Shared.DTOs
 @using Functions.Shared.Enum
 @using Functions.Shared.Extensions
 @using Functions.Shared.Interfaces
 @using Functions.Client.Components
+@using Functions.Shared.DTOs.Messages
 
 <div class="event-detail" >
     @if (eventItem?.Id != null)
@@ -51,7 +53,8 @@
             </div>
         }
 
-        @if (messages.Any()) {
+        @if (messages.Where(x => x.Type == MessageTypes.Announcement).Any())
+        {
             <h1>Ankündigungen</h1>
             <ul>
                 @foreach (var message in messages.Where(x => x.Type == MessageTypes.Announcement).ToList())
@@ -64,49 +67,31 @@
             </ul>
         }
 
-        <h1>Kommentare</h1>
-        @if (messages.Any())
-        {
-            <ul>
-                @foreach (var message in messages.Where(x => x.Type == MessageTypes.Comment && x.ParentId == null).ToList())
-                {
-                    <li>
-                        <p>@message.Text</p>
-                        <p style="font-size: 11px;">@message.Creator.FullName - @message.MessageDate</p>
-                        
-                        <button @onclick="() => ToggleReplyBox(message.Id)">Reply</button>
-                        
-                        @if (replyBoxOpen.ContainsKey(message.Id) && replyBoxOpen[message.Id])
-                        {
-                            <div class="reply-box" style="margin-left: 20px; margin-top: 10px;">
-                                <textarea @bind="@replyTexts[message.Id]" rows="3" cols="40" placeholder="Write a reply..."></textarea>
-                                <div style="margin-top: 5px;">
-                                    <button @onclick="() => PostReply(message.Id)">Submit</button>
-                                    <button @onclick="() => ToggleReplyBox(message.Id)">Cancel</button>
-                                </div>
-                            </div>
-                        }
-                        
-                        @* Display replies to this comment *@
-                        @if (messages.Any(x => x.ParentId == message.Id))
-                        {
-                            <ul style="margin-left: 40px;">
-                                @foreach (var reply in messages.Where(x => x.ParentId == message.Id).ToList())
-                                {
-                                    <li style="margin-top: 10px; border-left: 2px solid #ccc; padding-left: 10px;">
-                                        <p>@reply.Text</p>
-                                        <p style="font-size: 11px;">@reply.Creator.FullName - @reply.MessageDate</p>
-                                    </li>
-                                }
-                            </ul>
-                        }
-                    </li>
-                }
-            </ul>
-        }
+        <div class="comments-section">
+            <h1>Kommentare</h1>
+            @if (messages.Any())
+            {
+                <ul class="comments-list">
+                    @foreach (var message in messages.Where(x => x.Type == MessageTypes.Comment && x.ParentId == null).ToList())
+                    {
+                        <CommentComponent 
+                            Comment="@message" 
+                            AllComments="@messages.Where(x => x.Type == MessageTypes.Comment).ToList()" 
+                            OnPostReply="@HandleReplySubmission"
+                            IsAuthenticated="@isAuthenticated" />
+                    }
+                </ul>
+            }
 
-        <textarea @bind="comment" rows="4" cols="50"></textarea>
-        <button @onclick="() => PostComment(null)">Kommentar hinzufügen</button>
+            <div class="reply-box">
+                <textarea class="reply-textarea"
+                          @bind="@comment"
+                          placeholder="Beteilige dich an der Unterhaltung"></textarea>
+                <div class="reply-actions">
+                    <button class="reply-submit" @onclick="() => PostComment(null)">Hinzufügen</button>
+                </div>
+            </div>
+        </div>
 
         <br />
 

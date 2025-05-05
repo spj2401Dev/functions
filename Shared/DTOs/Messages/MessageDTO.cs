@@ -5,7 +5,7 @@ namespace Functions.Shared.DTOs.Messages
 {
     public class MessageDTO
     {
-        public Guid Id { get; set; } // Add this property
+        public Guid Id { get; set; }
         public string Text { get; set; } = string.Empty;
         public DateTime MessageDate { get; set; }
         public SafeUserResponseDTO? Creator { get; set; }

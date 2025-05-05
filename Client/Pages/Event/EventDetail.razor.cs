@@ -26,8 +26,6 @@ namespace Functions.Client.Pages.Event
         private Guid? userId = Guid.Empty;
         private bool isAuthenticated = false;
         private string comment = string.Empty;
-        private Dictionary<Guid, bool> replyBoxOpen = new();
-        private Dictionary<Guid, string> replyTexts = new();
 
         protected override async Task OnParametersSetAsync()
         {
@@ -123,30 +121,18 @@ namespace Functions.Client.Pages.Event
             };
 
             await messageProxy.PostMessage(requestDTO);
+            comment = string.Empty; // Clear the main comment box
             await LoadMessages();
         }
 
-        private void ToggleReplyBox(Guid messageId)
+        private async Task HandleReplySubmission((Guid ParentId, string Text) replyData)
         {
-            if (!replyBoxOpen.ContainsKey(messageId))
-            {
-                replyBoxOpen[messageId] = true;
-                replyTexts[messageId] = string.Empty;
-            }
-            else
-            {
-                replyBoxOpen[messageId] = !replyBoxOpen[messageId];
-            }
-        }
-
-        private async Task PostReply(Guid parentId)
-        {
-            if (!replyTexts.ContainsKey(parentId) || string.IsNullOrEmpty(replyTexts[parentId]))
+            if (string.IsNullOrEmpty(replyData.Text))
             {
                 return;
             }
 
-            if (!await authService.IsAuthenticated())
+            if (!isAuthenticated)
             {
                 navigationManager.NavigateTo($"/login/events/{eventItem?.Id}");
                 return;
@@ -155,18 +141,12 @@ namespace Functions.Client.Pages.Event
             var requestDTO = new CommentRequestDTO
             {
                 EventId = eventItem?.Id,
-                Comment = replyTexts[parentId],
-                ParentId = parentId
+                Comment = replyData.Text,
+                ParentId = replyData.ParentId
             };
 
             await messageProxy.PostMessage(requestDTO);
-            
-            // Clear the reply text and close the reply box
-            replyTexts[parentId] = string.Empty;
-            replyBoxOpen[parentId] = false;
-            
             await LoadMessages();
-            comment = string.Empty; // Clear the main comment box too
         }
     }
 }

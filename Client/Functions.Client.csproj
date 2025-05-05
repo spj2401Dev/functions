@@ -26,8 +26,4 @@
     <ProjectReference Include="..\Shared\Functions.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Components\Comments\" />
-  </ItemGroup>
-
 </Project>
