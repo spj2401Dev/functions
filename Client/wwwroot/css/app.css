@@ -1,5 +1,4 @@
 .header {
-    background-color: #026562;
     display: flex;
     align-items: center;
     height: 15%;
@@ -387,4 +386,7 @@ select {
 fieldset {
     border: 0;
     display: flex;
+}
+    }
+@media screen {
 }
