@@ -52,17 +52,63 @@
         }
 
         @if (messages.Any()) {
-            <h1>Messages</h1>
+            <h1>Ankündigungen</h1>
             <ul>
-                @foreach (var message in messages)
+                @foreach (var message in messages.Where(x => x.Type == MessageTypes.Announcement).ToList())
                 {
                     <li>
                         <p>@message.Text</p>
-                        <p style="font-size: 11px;">@message.MessageDate</p>
+                        <p style="font-size: 11px;">@message.Creator.FullName - @message.MessageDate</p>
                     </li>
                 }
             </ul>
         }
+
+        <h1>Kommentare</h1>
+        @if (messages.Any())
+        {
+            <ul>
+                @foreach (var message in messages.Where(x => x.Type == MessageTypes.Comment && x.ParentId == null).ToList())
+                {
+                    <li>
+                        <p>@message.Text</p>
+                        <p style="font-size: 11px;">@message.Creator.FullName - @message.MessageDate</p>
+                        
+                        <button @onclick="() => ToggleReplyBox(message.Id)">Reply</button>
+                        
+                        @if (replyBoxOpen.ContainsKey(message.Id) && replyBoxOpen[message.Id])
+                        {
+                            <div class="reply-box" style="margin-left: 20px; margin-top: 10px;">
+                                <textarea @bind="@replyTexts[message.Id]" rows="3" cols="40" placeholder="Write a reply..."></textarea>
+                                <div style="margin-top: 5px;">
+                                    <button @onclick="() => PostReply(message.Id)">Submit</button>
+                                    <button @onclick="() => ToggleReplyBox(message.Id)">Cancel</button>
+                                </div>
+                            </div>
+                        }
+                        
+                        @* Display replies to this comment *@
+                        @if (messages.Any(x => x.ParentId == message.Id))
+                        {
+                            <ul style="margin-left: 40px;">
+                                @foreach (var reply in messages.Where(x => x.ParentId == message.Id).ToList())
+                                {
+                                    <li style="margin-top: 10px; border-left: 2px solid #ccc; padding-left: 10px;">
+                                        <p>@reply.Text</p>
+                                        <p style="font-size: 11px;">@reply.Creator.FullName - @reply.MessageDate</p>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </li>
+                }
+            </ul>
+        }
+
+        <textarea @bind="comment" rows="4" cols="50"></textarea>
+        <button @onclick="() => PostComment(null)">Kommentar hinzufügen</button>
+
+        <br />
 
         <button @onclick="() => ReturnToMainPage()">Back to Main Page</button>
     }

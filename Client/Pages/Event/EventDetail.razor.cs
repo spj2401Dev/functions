@@ -25,6 +25,9 @@ namespace Functions.Client.Pages.Event
         private AnnouncementRequestDTO announcemenRequest = new();
         private Guid? userId = Guid.Empty;
         private bool isAuthenticated = false;
+        private string comment = string.Empty;
+        private Dictionary<Guid, bool> replyBoxOpen = new();
+        private Dictionary<Guid, string> replyTexts = new();
 
         protected override async Task OnParametersSetAsync()
         {
@@ -98,6 +101,72 @@ namespace Functions.Client.Pages.Event
 
             await participationProxy.PostParticipation(requestDTO);
             await LoadParticipation();
+        }
+
+        private async Task PostComment(Guid? ParentId = null)
+        {
+            if (comment == string.Empty || comment == null)
+            {
+                return;
+            }
+
+            if (!await authService.IsAuthenticated())
+            {
+                navigationManager.NavigateTo($"/login/events/{eventItem.Id}");
+            }
+
+            var requestDTO = new CommentRequestDTO
+            {
+                EventId = eventItem?.Id,
+                Comment = comment,
+                ParentId = ParentId
+            };
+
+            await messageProxy.PostMessage(requestDTO);
+            await LoadMessages();
+        }
+
+        private void ToggleReplyBox(Guid messageId)
+        {
+            if (!replyBoxOpen.ContainsKey(messageId))
+            {
+                replyBoxOpen[messageId] = true;
+                replyTexts[messageId] = string.Empty;
+            }
+            else
+            {
+                replyBoxOpen[messageId] = !replyBoxOpen[messageId];
+            }
+        }
+
+        private async Task PostReply(Guid parentId)
+        {
+            if (!replyTexts.ContainsKey(parentId) || string.IsNullOrEmpty(replyTexts[parentId]))
+            {
+                return;
+            }
+
+            if (!await authService.IsAuthenticated())
+            {
+                navigationManager.NavigateTo($"/login/events/{eventItem?.Id}");
+                return;
+            }
+
+            var requestDTO = new CommentRequestDTO
+            {
+                EventId = eventItem?.Id,
+                Comment = replyTexts[parentId],
+                ParentId = parentId
+            };
+
+            await messageProxy.PostMessage(requestDTO);
+            
+            // Clear the reply text and close the reply box
+            replyTexts[parentId] = string.Empty;
+            replyBoxOpen[parentId] = false;
+            
+            await LoadMessages();
+            comment = string.Empty; // Clear the main comment box too
         }
     }
 }
