@@ -43,14 +43,6 @@ namespace Functions.Client.Proxys.Events
             return JsonSerializer.Deserialize<EventsDTO>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
 
-        public async Task<List<EventsDTO>> GetFilteredEventsAsync(bool isPublic)
-        {
-            var response = await httpClient.GetAsync($"api/Events/getfilteredevents?isPublic={isPublic}");
-            response.EnsureSuccessStatusCode();
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<EventsDTO>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-        }
-
         public async Task<List<EventMasterPageDTO>> GetAllEventsByUserAsync()
         {
             var userToken = await authService.GetToken();
