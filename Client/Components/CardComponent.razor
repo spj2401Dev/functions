@@ -1,0 +1,9 @@
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

@@ -1,21 +1,26 @@
-<div class="header">
-    <div style="width:20%; display:block; padding-left: 1em">
-        <NavLink href="" class="headerLink" style="padding-right:1em">Start</NavLink>
+<div class="container-header">
+    <div class="left-section">
+        <div class="header">
+            <h1>
+                <NavLink href="" class="headerLink" style="padding-right:1em">Funktions</NavLink>
+            </h1>
+        </div>
         <NavLink href="events" class="headerLink" style="padding-right:1em">Events Overview</NavLink>
         <NavLink @onclick="RedirectToNewEvent" class="headerLink">New Event</NavLink>
     </div>
-    <h1>Functions</h1>
-    <div style="align-self:center; padding-right:1em; width:20%">
+    <div class="login">
         @if (isAuthenticated)
         {
-            <span @onclick="Logout"><i class="fa-solid fa-user" style="margin-right: 8px"></i>@username</span>
+            <span @onclick="Logout" style="cursor: pointer;">
+                <i class="fa-solid fa-user" style="margin-right: 8px"></i>@username
+            </span>
         }
         else
         {
-            <div>
-                <button @onclick="NavigateToRegister">Register</button>
-                <button @onclick="NavigateToLogin">Login</button>
-            </div>
+            <button @onclick="NavigateToRegister">Register</button>
+            <button @onclick="NavigateToLogin">Login</button>
         }
     </div>
 </div>
+
+
