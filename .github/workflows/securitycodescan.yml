@@ -20,10 +20,10 @@ jobs:
         uses: security-code-scan/security-code-scan-add-action@f8ff4f2763ed6f229eded80b1f9af82ae7f32a0d
 
       - name: Restore dependencies (excluding Database)
-        run: dotnet restore --no-dependencies ./YourSolutionOrProject.sln
+        run: dotnet restore --no-dependencies ./Functions.sln
 
       - name: Build (excluding Database)
-        run: dotnet build --no-restore ./YourSolutionOrProject.sln
+        run: dotnet build --no-restore ./Functions.sln
 
       - name: Convert sarif for uploading to GitHub
         uses: security-code-scan/security-code-scan-results-action@cdb3d5e639054395e45bf401cba8688fcaf7a687
