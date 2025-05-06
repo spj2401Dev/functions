@@ -11,7 +11,7 @@ public class EventsController(IConfiguration configuration,
                               IGetEventsUseCase getEventUseCase,
                               IGetEventByIdUseCase getEventByIdUseCase,
                               ICreateEventUseCase createEventUseCase,
-                              IGetAllEventsByUserUseCase getAllEventsByUserUseCase) : FunctionsControllerBase(configuration), IEventsProxy
+                              IHomePageDataQuery homePageDataQuery) : FunctionsControllerBase(configuration), IEventsProxy
 {
     [HttpGet("getEvents")]
     public async Task<List<EventMasterPageDTO>> GetEventsAsync()
@@ -37,14 +37,10 @@ public class EventsController(IConfiguration configuration,
     }
 
     [HttpGet("getalleventsbyuser")]
-    public async Task<List<EventMasterPageDTO>> GetAllEventsByUserAsync()
+    public async Task<HomePageResponseDTO> GetAllEventsByUserAsync()
     {
-        var userId = await GetUserIdFromTokenAsync();
-        if (userId == null)
-        {
-            throw new ArgumentNullException(nameof(userId));
-        }
+        var userId = await GetUserIdFromTokenAsync() ?? throw new UnauthorizedAccessException();
 
-        return await getAllEventsByUserUseCase.Handle(userId.Value);
+        return await homePageDataQuery.GetHomePageData(userId);
     }
 }

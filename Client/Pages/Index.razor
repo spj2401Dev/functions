@@ -6,10 +6,24 @@
 
 <h1>Hallo</h1>
 
-@if (userEvents.Any())
+@if (homePageData.Announcements.Any())
+{
+    <h2>Ankündigungen von Events, an denen du Teilgenommen hast</h2>
+
+    @foreach (var message in homePageData.Announcements)
+    {
+        <div @onclick="@(() => navigationManager.NavigateTo("/events/" + message.Event.Id))">
+            <p>@message.Text</p>
+            <p style="font-size: 11px;">@message.Creator.FullName - @message.MessageDate</p>
+            <p style="font-size: 11px">Von @message.Event.Name</p>
+        </div>
+    }
+}
+
+@if (homePageData.Events.Any())
 {
     <h2>Teilgenomme Events:</h2>
-    @foreach (var userEvent in userEvents)
+    @foreach (var userEvent in homePageData.Events)
     {
         <EventCardComponent Event="userEvent" OnEventClicked="@(id => navigationManager.NavigateTo($"/events/{id}"))" />
     }
