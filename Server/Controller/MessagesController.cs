@@ -11,7 +11,8 @@ namespace Functions.Server.Controller
     [ApiController]
     public class MessagesController(IConfiguration configuration,
                                     IPostAnnouncementUseCase postAnnouncementUseCase,
-                                    IGetMessagesByEventIdQuery getMessageQuery) : FunctionsControllerBase(configuration), IMessageProxy
+                                    IGetMessagesByEventIdQuery getMessageQuery,
+                                    IPostCommentUseCase postCommentUseCase) : FunctionsControllerBase(configuration), IMessageProxy
     {
         [HttpPost("PostAnnouncement")]
         public async Task<HttpResponseMessage> PostAnnouncement([FromBody] AnnouncementRequestDTO request)
@@ -26,6 +27,17 @@ namespace Functions.Server.Controller
             await postAnnouncementUseCase.Handle(request, userId.Value);
 
             return new HttpResponseMessage(HttpStatusCode.Created);
+        }
+
+        [HttpPost("PostMessage")]
+        public async Task<HttpResponseMessage> PostMessage([FromBody] CommentRequestDTO request)
+        {
+            var userId = await GetUserIdFromTokenAsync() ?? throw new UnauthorizedAccessException();
+
+            await postCommentUseCase.Handle(request, userId);
+
+            return new HttpResponseMessage(HttpStatusCode.Created);
+
         }
 
         [HttpGet("GetMessagesForEvent")]

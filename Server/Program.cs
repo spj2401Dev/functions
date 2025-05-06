@@ -55,6 +55,7 @@ builder.Services.AddScoped<IGetUserByIdUseCase, GetUserByIdUseCase>();
 builder.Services.AddScoped<IUpdateUserUseCase, UpdateUserUseCase>();
 builder.Services.AddScoped<IGetAllEventsByUserUseCase, GetAllEventsByUserUseCase>();
 builder.Services.AddScoped<IPostParticipationUseCase, PostParticipationUseCase>();
+builder.Services.AddScoped<IPostCommentUseCase, PostCommentUseCase>();
 
 string[]? corsAllowedAddresses = builder.Configuration.GetSection("CORS:Allowed").Get<string[]>() ?? ["*"];
 builder.Services.AddCors(options =>

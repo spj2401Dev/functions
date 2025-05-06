@@ -25,6 +25,7 @@ namespace Functions.Client.Pages.Event
         private AnnouncementRequestDTO announcemenRequest = new();
         private Guid? userId = Guid.Empty;
         private bool isAuthenticated = false;
+        private string comment = string.Empty;
 
         protected override async Task OnParametersSetAsync()
         {
@@ -103,6 +104,54 @@ namespace Functions.Client.Pages.Event
 
             await participationProxy.PostParticipation(requestDTO);
             await LoadParticipation();
+        }
+
+        private async Task PostComment(Guid? ParentId = null)
+        {
+            if (comment == string.Empty || comment == null)
+            {
+                return;
+            }
+
+            if (!await authService.IsAuthenticated())
+            {
+                navigationManager.NavigateTo($"/login/events/{eventItem.Id}");
+            }
+
+            var requestDTO = new CommentRequestDTO
+            {
+                EventId = eventItem?.Id,
+                Comment = comment,
+                ParentId = ParentId
+            };
+
+            await messageProxy.PostMessage(requestDTO);
+            comment = string.Empty; // Clear the main comment box
+            await LoadMessages();
+        }
+
+        private async Task HandleReplySubmission((Guid ParentId, string Text) replyData)
+        {
+            if (string.IsNullOrEmpty(replyData.Text))
+            {
+                return;
+            }
+
+            if (!isAuthenticated)
+            {
+                navigationManager.NavigateTo($"/login/events/{eventItem?.Id}");
+                return;
+            }
+
+            var requestDTO = new CommentRequestDTO
+            {
+                EventId = eventItem?.Id,
+                Comment = replyData.Text,
+                ParentId = replyData.ParentId
+            };
+
+            await messageProxy.PostMessage(requestDTO);
+            await LoadMessages();
         }
     }
 }

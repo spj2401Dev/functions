@@ -30,13 +30,9 @@ public class EventsController(IConfiguration configuration,
     [HttpPost]
     public async Task<HttpResponseMessage> PostEventAsync([FromBody] EventsDTO request)
     {
-        var userId = await GetUserIdFromTokenAsync();
-        if (userId == null)
-        {
-            throw new ArgumentNullException(nameof(userId));
-        }
+        var userId = await GetUserIdFromTokenAsync() ?? throw new UnauthorizedAccessException();
 
-        await createEventUseCase.Handle(request, userId.Value);
+        await createEventUseCase.Handle(request, userId);
 
         return new HttpResponseMessage(HttpStatusCode.Created);
     }

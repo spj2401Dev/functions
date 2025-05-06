@@ -32,3 +32,40 @@
     padding: 1em;
 }
 
+/*This here is duplicate, but the app.css does not seem to work :(*/
+
+.reply-box {
+    margin-left: 15px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    padding-left: 15px;
+}
+
+.reply-textarea {
+    width: calc(100% - 50px); /*Das kinda random aber klappt */
+    min-height: 100px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    resize: vertical;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.reply-actions {
+    display: flex;
+    margin-top: 8px;
+    gap: 8px;
+}
+
+.reply-submit {
+    background-color: #0079d3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    float: none !important;
+}
