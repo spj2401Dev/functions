@@ -5,9 +5,9 @@ using Functions.Shared.DTOs.Messages;
 
 namespace Functions.Server.UseCases.Messages
 {
-    public class PostAnnouncementUseCase(IRepository<Message> messageRepository) : IPostAnnouncementUseCase
+    public class PostCommentUseCase(IRepository<Message> messageRepository) : IPostCommentUseCase
     {
-        public async Task Handle(AnnouncementRequestDTO request, Guid userId)
+        public async Task Handle(CommentRequestDTO request, Guid userId)
         {
             if (request.EventId == null)
             {
@@ -18,9 +18,10 @@ namespace Functions.Server.UseCases.Messages
             {
                 MessageDate = DateTime.UtcNow,
                 CreatorId = userId,
-                Text = request.Message,
+                Text = request.Comment, 
                 EventId = request.EventId ?? Guid.Empty,
-                ParentId = null,
+                ParentId = request.ParentId ?? null,
+                Type = Shared.Enum.MessageTypes.Comment
             };
 
             await messageRepository.AddAsync(newMessage);

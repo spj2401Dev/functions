@@ -1,0 +1,169 @@
+﻿.comments-section {
+    margin-top: 20px;
+}
+
+    .comments-section h1 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+.comments-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.comment-item {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.comment-content {
+    padding: 10px 15px;
+    margin-bottom: 5px;
+}
+
+.comment-text {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #1c1c1c;
+}
+
+.comment-metadata {
+    font-size: 12px;
+    color: #787c7e;
+    margin: 0;
+}
+
+.comment-actions {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.reply-button {
+    background-color: transparent;
+    color: #878a8c;
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 2px;
+    float: none !important;
+}
+
+    .reply-button:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+        color: #1a1a1b;
+        text-decoration: none !important;
+    }
+
+.reply-cancel {
+    background-color: transparent;
+    color: #878a8c;
+    border: 1px solid #878a8c;
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    float: none !important;
+}
+
+.reply-submit:hover {
+    background-color: #005a9c;
+    text-decoration: none !important;
+}
+
+.reply-cancel:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    text-decoration: none !important;
+}
+
+.nested-comments {
+    margin-left: 15px;
+    margin-top: 10px;
+    list-style-type: none;
+    padding-left: 0;
+    border-left: 2px solid #edeff1;
+}
+
+.comment-form {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.comment-textarea {
+    width: 100%;
+    min-height: 120px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    resize: vertical;
+    font-family: inherit;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.comment-submit {
+    background-color: #0079d3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    float: none;
+    display: block;
+}
+
+    .comment-submit:hover {
+        background-color: #005a9c;
+        text-decoration: none !important;
+    }
+
+.event-detail {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/*This here is duplicate, but the app.css does not seem to work :(*/
+
+.reply-box {
+    margin-left: 15px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border-left: 2px solid #edeff1;
+    padding-left: 15px;
+}
+
+.reply-textarea {
+    width: calc(100% - 50px); /*Das kinda random aber klappt */
+    min-height: 100px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    resize: vertical;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.reply-actions {
+    display: flex;
+    margin-top: 8px;
+    gap: 8px;
+}
+
+.reply-submit {
+    background-color: #0079d3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    float: none !important;
+}

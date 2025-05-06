@@ -1,9 +1,11 @@
 ﻿@page "/events/{eventid:guid}"
+@using Functions.Client.Components.Comments
 @using Functions.Shared.DTOs
 @using Functions.Shared.Enum
 @using Functions.Shared.Extensions
 @using Functions.Shared.Interfaces
 @using Functions.Client.Components
+@using Functions.Shared.DTOs.Messages
 
 <div class="event-detail" >
     @if (eventItem?.Id != null)
@@ -51,18 +53,47 @@
             </div>
         }
 
-        @if (messages.Any()) {
-            <h1>Messages</h1>
+        @if (messages.Where(x => x.Type == MessageTypes.Announcement).Any())
+        {
+            <h1>Ankündigungen</h1>
             <ul>
-                @foreach (var message in messages)
+                @foreach (var message in messages.Where(x => x.Type == MessageTypes.Announcement).ToList())
                 {
                     <li>
                         <p>@message.Text</p>
-                        <p style="font-size: 11px;">@message.MessageDate</p>
+                        <p style="font-size: 11px;">@message.Creator.FullName - @message.MessageDate</p>
                     </li>
                 }
             </ul>
         }
+
+        <div class="comments-section">
+            <h1>Kommentare</h1>
+            @if (messages.Any())
+            {
+                <ul class="comments-list">
+                    @foreach (var message in messages.Where(x => x.Type == MessageTypes.Comment && x.ParentId == null).ToList())
+                    {
+                        <CommentComponent 
+                            Comment="@message" 
+                            AllComments="@messages.Where(x => x.Type == MessageTypes.Comment).ToList()" 
+                            OnPostReply="@HandleReplySubmission"
+                            IsAuthenticated="@isAuthenticated" />
+                    }
+                </ul>
+            }
+
+            <div class="reply-box">
+                <textarea class="reply-textarea"
+                          @bind="@comment"
+                          placeholder="Beteilige dich an der Unterhaltung"></textarea>
+                <div class="reply-actions">
+                    <button class="reply-submit" @onclick="() => PostComment(null)">Hinzufügen</button>
+                </div>
+            </div>
+        </div>
+
+        <br />
 
         <button @onclick="() => ReturnToMainPage()">Back to Main Page</button>
     }
