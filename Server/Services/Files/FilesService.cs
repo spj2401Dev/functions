@@ -1,7 +1,5 @@
-﻿using Azure.Core;
-using Functions.Server.Interfaces;
+﻿using Functions.Server.Interfaces;
 using Functions.Server.Model;
-using Functions.Server.Repsitorys;
 
 namespace Functions.Server.Services.File
 {
@@ -25,9 +23,9 @@ namespace Functions.Server.Services.File
                     FileContentId = fileContent.Id,
                     FileContent = fileContent
                 };
-                
+
                 await fileRepository.AddAsync(fileRecord);
-                return fileContent.Id;
+                return fileRecord.Id;
             }
             catch (Exception ex)
             {
