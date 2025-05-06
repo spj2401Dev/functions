@@ -64,6 +64,10 @@
             </ul>
         }
 
+        @if (eventItem.HostId == userId)
+        {
+            <button @onclick="() => EditEvent()">Edit Event</button>
+        }
         <button @onclick="() => ReturnToMainPage()">Back to Main Page</button>
     }
     else

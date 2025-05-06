@@ -6,8 +6,10 @@ namespace Functions.Shared.Interfaces
     {
         Task<List<EventMasterPageDTO>> GetEventsAsync();
 
-        Task<EventsDTO?> GetEventsbyIdAsync(Guid Id);
+        Task<EventsDTO?> GetEventById(Guid Id);
         Task<HttpResponseMessage> PostEventAsync(EventsDTO request);
+
+        Task<HttpResponseMessage> PutEventAsync(EventsDTO request);
 
         Task<List<EventMasterPageDTO>> GetAllEventsByUserAsync();
     }

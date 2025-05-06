@@ -35,7 +35,7 @@ namespace Functions.Client.Proxys.Events
             return response;
         }
 
-        public async Task<EventsDTO?> GetEventsbyIdAsync(Guid Id)
+        public async Task<EventsDTO?> GetEventById(Guid Id)
         {
             var response = await httpClient.GetAsync($"api/events/getEventbyId?id={Id}");
             response.EnsureSuccessStatusCode();
@@ -57,6 +57,25 @@ namespace Functions.Client.Proxys.Events
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<List<EventMasterPageDTO>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+
+        public async Task<HttpResponseMessage> PutEventAsync(EventsDTO request)
+        {
+            var userToken = await authService.GetToken();
+            if (string.IsNullOrEmpty(userToken))
+            {
+                throw new UnauthorizedAccessException("User is not authenticated.");
+            }
+
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", userToken);
+
+            var json = JsonSerializer.Serialize(request);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await httpClient.PutAsync("api/events/putEventById", data);
+            
+            response.EnsureSuccessStatusCode();
+            return response;
         }
     }
 }

@@ -45,6 +45,7 @@ builder.Services.AddScoped<FunctionsControllerBase>();
 builder.Services.AddScoped<IGetEventsUseCase, GetEventsUseCase>();
 builder.Services.AddScoped<IGetEventByIdUseCase, GetEventByIdUseCase>();
 builder.Services.AddScoped<ICreateEventUseCase, CreateEventUseCase>();
+builder.Services.AddScoped<IUpdateEventUseCase, UpdateEventUseCase>();
 builder.Services.AddScoped<IGetMessagesByEventIdQuery, GetMessagesByEventIdQuery>();
 builder.Services.AddScoped<IPostAnnouncementUseCase, PostAnnouncementUseCase>();
 builder.Services.AddScoped<IEventVisitorQuery,  EventVisitorQuery>();

@@ -2,9 +2,9 @@ CREATE TABLE [dbo].[Events]
 (
     Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT newId(),
     Host UNIQUEIDENTIFIER NOT NULL, 
-    [Name] NCHAR(255) NOT NULL, 
-    [Location] NCHAR(255) NOT NULL, 
-    [Description] NCHAR(255) NULL, 
+    [Name] NVARCHAR(255) NOT NULL, 
+    [Location] NVARCHAR(255) NOT NULL, 
+    [Description] NVARCHAR(255) NULL, 
     [StartDateTime] DATETIME2 NOT NULL, 
     [EndDateTime] DATETIME2 NOT NULL, 
     [PictureId] UNIQUEIDENTIFIER NULL
