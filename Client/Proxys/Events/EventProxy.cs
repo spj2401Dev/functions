@@ -43,7 +43,7 @@ namespace Functions.Client.Proxys.Events
             return JsonSerializer.Deserialize<EventsDTO>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
 
-        public async Task<List<EventMasterPageDTO>> GetAllEventsByUserAsync()
+        public async Task<HomePageResponseDTO> GetAllEventsByUserAsync()
         {
             var userToken = await authService.GetToken();
             if (string.IsNullOrEmpty(userToken))
@@ -56,7 +56,7 @@ namespace Functions.Client.Proxys.Events
             var response = await httpClient.GetAsync("api/events/getalleventsbyuser");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<EventMasterPageDTO>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            return JsonSerializer.Deserialize<HomePageResponseDTO>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
     }
 }

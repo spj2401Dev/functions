@@ -8,11 +8,11 @@ namespace Functions.Client.Pages
     {
         [Inject] IEventsProxy eventsProxy { get; set; } = default!;
 
-        private List<EventMasterPageDTO> userEvents { get; set; } = new();
+        private HomePageResponseDTO homePageData { get; set; } = new();
 
         protected override async Task OnInitializedAsync()
         {
-            userEvents = await eventsProxy.GetAllEventsByUserAsync();
+            homePageData = await eventsProxy.GetAllEventsByUserAsync();
         }
     }
 }

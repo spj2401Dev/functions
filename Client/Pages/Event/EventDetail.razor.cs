@@ -52,13 +52,7 @@ namespace Functions.Client.Pages.Event
 
             await messageProxy.PostAnnouncement(announcemenRequest);
 
-            MessageDTO newMessageDTO = new MessageDTO
-            {
-                Text = announcemenRequest.Message,
-                MessageDate = DateTime.Now,
-            };
-
-            messages.Add(newMessageDTO);
+            await LoadMessages();
         }
 
         private async Task LoadMessages()

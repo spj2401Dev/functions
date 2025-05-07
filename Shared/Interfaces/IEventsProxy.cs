@@ -9,6 +9,6 @@ namespace Functions.Shared.Interfaces
         Task<EventsDTO?> GetEventsbyIdAsync(Guid Id);
         Task<HttpResponseMessage> PostEventAsync(EventsDTO request);
 
-        Task<List<EventMasterPageDTO>> GetAllEventsByUserAsync();
+        Task<HomePageResponseDTO> GetAllEventsByUserAsync();
     }
 }
