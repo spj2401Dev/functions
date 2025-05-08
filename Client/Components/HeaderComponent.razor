@@ -5,10 +5,13 @@
                 <NavLink href="" class="headerLink" style="padding-right:1em">Funktions</NavLink>
             </h1>
         </div>
-        <NavLink href="events" class="headerLink" style="padding-right:1em">Events Overview</NavLink>
-        <NavLink @onclick="RedirectToNewEvent" class="headerLink">New Event</NavLink>
+        @* <NavLink href="events" class="headerLink" style="padding-right:1em">Events Overview</NavLink>
+        <NavLink @onclick="RedirectToNewEvent" class="headerLink">New Event</NavLink> *@
     </div>
-    <div class="login">
+    
+    @* brauch ich noch, kommt dann raus wenn benutzt wurde
+    
+     <div class="login">
         @if (isAuthenticated)
         {
             <span @onclick="Logout" style="cursor: pointer;">
@@ -20,7 +23,7 @@
             <button @onclick="NavigateToRegister">Register</button>
             <button @onclick="NavigateToLogin">Login</button>
         }
-    </div>
+    </div> *@
 </div>
 
 

@@ -2,7 +2,7 @@
 @page "/register/{*ReturnUrl}"
 @using Microsoft.AspNetCore.Components.Forms
 
-<EditForm Model="@request" OnValidSubmit="CreateUser">
+<EditForm Model="@request" OnValidSubmit="CreateUser" class="form">
     <DataAnnotationsValidator />
     <ValidationSummary />
 

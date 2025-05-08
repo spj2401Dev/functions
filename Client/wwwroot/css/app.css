@@ -79,6 +79,7 @@ body {
     background: hsl(176 99% 98%);
     margin: 0;
     padding: 0;
+    height:70%;
 }
 
 
@@ -275,7 +276,7 @@ body {
     align-items: flex-start;
     max-width: 500px;
     margin: auto;
-    padding: 10px;
+    padding-bottom: 15%;
 }
 
 
@@ -389,4 +390,19 @@ fieldset {
 }
     }
 @media screen {
+}
+
+.footer {
+    width: 100%;
+    height:15%;
+    box-sizing: border-box;
+    padding: 20px 0;
+    background-color: #ccc;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    padding: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    bottom:0;
 }
