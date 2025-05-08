@@ -23,7 +23,6 @@ namespace Functions.Shared.DTOs.Auth
         [MaxLength(50)]
         public string LastName { get; set; }
 
-        [Required]
         [MinLength(6)]
         [MaxLength(20)]
         public string Password { get; set; }

@@ -2,30 +2,31 @@
 using Functions.Server.Interfaces.Users;
 using Functions.Server.Model;
 using Functions.Shared.DTOs.Users;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Functions.Server.UseCases.Users
 {
     public class UpdateUserUseCase(IRepository<User> userRepository) : IUpdateUserUseCase
     {
-        public async Task Handle(UpdateUserRequestDTO updateUserRequestDTO)
+        public async Task Handle(UpdateUserRequestDTO updateUserRequestDTO, Guid userId)
         {
-            var user = await userRepository.GetByIdAsync(updateUserRequestDTO.UserId);
+
+            var user = await userRepository.GetByIdAsync(userId);
+
             if (user == null)
             {
-                throw new ArgumentNullException(nameof(updateUserRequestDTO.UserId));
+                throw new Exception("User not found");
             }
 
-            user.Firstname = updateUserRequestDTO.NewFirstName ?? user.Firstname;
-
-            user.Lastname = updateUserRequestDTO.NewLastName ?? user.Lastname;
-
-            user.Email = updateUserRequestDTO.NewEmail ?? user.Email;
-
-
+            // username cannot be changed
+            user.Firstname = updateUserRequestDTO.FirstName;
+            user.Lastname = updateUserRequestDTO.LastName;
+            user.Email = updateUserRequestDTO.Email;
+            if (updateUserRequestDTO.Password != string.Empty && updateUserRequestDTO.Password != null)
+            {
+                user.Password = updateUserRequestDTO.Password;
+            }
 
             await userRepository.UpdateAsync(user);
-
         }
     }
 }
