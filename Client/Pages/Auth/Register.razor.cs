@@ -1,8 +1,9 @@
 ﻿using Functions.Client.Services;
 using Functions.Shared.DTOs.Auth;
+using Functions.Shared.DTOs.Users;
 using Functions.Shared.Interfaces.Auth;
+using Functions.Shared.Interfaces.User;
 using Microsoft.AspNetCore.Components;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Functions.Client.Pages.Auth
 {
@@ -10,21 +11,51 @@ namespace Functions.Client.Pages.Auth
     {
         [Parameter] public string? ReturnUrl { get; set; }
         [Inject] private IAuthProxy authProxy { get; set; } = default!;
+        [Inject] private IUserProxy userProxy { get; set; } = default!;
         [Inject] private NavigationManager navigationManager { get; set; } = default!;
         [Inject] private AuthService authService { get; set; } = default!;
         private RegisterRequestDTO request = new();
         private string? message;
         private bool isLoading = false;
         private string? confirmPassword;
+        private bool isEditingUser = false;
+        private UserDTO user = new();
 
+
+        protected override async Task OnInitializedAsync()
+        {
+            var path = new Uri(navigationManager.Uri).AbsolutePath;
+
+            if (path == "/edituser")
+            {
+                if (!await authService.IsAuthenticated())
+                {
+                    navigationManager.NavigateTo("/login/edituser");
+                }
+
+                isEditingUser = true;
+
+                user = await userProxy.GetUser();
+                request.UserName = user.Username;
+                request.FirstName = user.Firstname;
+                request.LastName = user.Lastname;
+                request.Email = user.Email;
+            }
+        }
 
         private async Task CreateUser()
         {
             isLoading = true;
 
-            if (request.Password != confirmPassword)
+            if (request.Password != confirmPassword && (request.Password != null || request.Password != string.Empty))
             {
-                message = "Passwords do not match";
+                message = "Passwords do not match or is not set.";
+                return;
+            }
+
+            if (isEditingUser)
+            {
+                await EditUser();
                 return;
             }
 
@@ -57,6 +88,23 @@ namespace Functions.Client.Pages.Auth
             {
                 message = "Es ist ein fehler aufgetreten!";
             }
+        }
+
+        private async Task EditUser()
+        {
+            UpdateUserRequestDTO updatedUser = new()
+            {
+                Email = request.Email,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Password = request.Password
+            };
+
+            await userProxy.UpdateUser(updatedUser);
+
+            await authService.Logout();
+
+            navigationManager.NavigateTo("/login");
         }
     }
 }

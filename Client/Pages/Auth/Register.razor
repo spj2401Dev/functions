@@ -1,4 +1,5 @@
 ﻿@page "/register"
+@page "/edituser"
 @page "/register/{*ReturnUrl}"
 @using Microsoft.AspNetCore.Components.Forms
 
@@ -9,7 +10,7 @@
     <h3>Register</h3>
     <div class="mb-3">
         <label for="username" class="form-label">Username</label>
-        <InputText id="username" class="form-control" @bind-Value="@request.UserName" />
+        <InputText id="username" class="form-control" disabled="@isEditingUser" @bind-Value="@request.UserName" />
         <ValidationMessage For="@(() => request.UserName)" />
     </div>
     <div class="mb-3">
@@ -37,7 +38,7 @@
         <InputText id="confirmPassword" type="password" class="form-control" @bind-Value="@confirmPassword" />
         <ValidationMessage For="@(() => confirmPassword)" />
     </div>
-    <button type="submit" class="btn btn-primary">Register</button>
+    <button type="submit" class="btn btn-primary">@(isEditingUser ? "Ändern" : "Register")</button>
 </EditForm>
 <p>@message</p>
 @if (isLoading)

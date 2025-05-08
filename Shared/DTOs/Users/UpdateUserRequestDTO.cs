@@ -5,18 +5,18 @@ namespace Functions.Shared.DTOs.Users
     public class UpdateUserRequestDTO
     {
         [Required]
-        public Guid UserId { get; set; }
-
         [MinLength(3)]
         [MaxLength(50)]
-        public string? NewFirstName { get; set; } = null;
+        public string FirstName { get; set; } = string.Empty;
 
+        [Required]
         [MinLength(3)]
         [MaxLength(50)]
-        public string? NewLastName { get; set; } = null;
+        public string LastName { get; set; } = string.Empty;
 
+        [Required]
         [EmailAddress]
-        public string? NewEmail { get; set; } = null;
+        public string? Email { get; set; } = string.Empty;
 
         [MinLength(6)]
         [MaxLength(20)]

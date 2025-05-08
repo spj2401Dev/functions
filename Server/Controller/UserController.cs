@@ -1,9 +1,10 @@
-﻿using Azure.Core;
-using System.Net;
-using Functions.Server.Interfaces.Users;
+﻿using Functions.Server.Interfaces.Users;
+using Functions.Server.Services;
+using Functions.Shared.DTOs.Auth;
 using Functions.Shared.DTOs.Users;
 using Functions.Shared.Interfaces.User;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Functions.Server.Controller
 {
@@ -11,27 +12,25 @@ namespace Functions.Server.Controller
     [ApiController]
     public class UserController(
         IGetUserByIdUseCase getUserById,
-        IUpdateUserUseCase updateUserUseCase) : ControllerBase, IUserProxy
+        IUpdateUserUseCase updateUserUseCase,
+        IConfiguration configuration) : FunctionsControllerBase(configuration), IUserProxy
     {
 
-        [HttpGet("getuserbyid")]
-        public async Task<UserDTO> GetUserById([FromQuery] Guid id)
+        [HttpGet("getuser")]
+        public async Task<UserDTO> GetUser()
         {
-            return await getUserById.Handle(id);
+            var userId = await GetUserIdFromTokenAsync() ?? throw new UnauthorizedAccessException();
+
+            return await getUserById.Handle(userId);
         }
 
-        [HttpPost("updateuser")]
-        public async Task<HttpResponseMessage> UpdaetUser([FromBody] UpdateUserRequestDTO updateUserRequestDTO)
+        [HttpPut("updateuser")]
+        public async Task<HttpResponseMessage> UpdateUser([FromBody] UpdateUserRequestDTO updateUserRequestDTO)
         {
-            try
-            {
-                await updateUserUseCase.Handle(updateUserRequestDTO);
-                return new HttpResponseMessage(HttpStatusCode.OK);
-            }
-            catch (Exception e)
-            {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest);
-            }
+            var userId = await GetUserIdFromTokenAsync() ?? throw new UnauthorizedAccessException();
+
+            await updateUserUseCase.Handle(updateUserRequestDTO, userId);
+            return new HttpResponseMessage(HttpStatusCode.OK);
         }
     }
 }

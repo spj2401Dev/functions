@@ -1,25 +1,36 @@
-﻿using System.Net.Http;
-using System.Net.Http.Json;
-using System.Text.Json;
+﻿using Functions.Client.Services;
+using Functions.Shared.DTOs.Auth;
 using Functions.Shared.DTOs.Users;
 using Functions.Shared.Interfaces.User;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace Functions.Client.Proxys.Users
 {
-    public class UserProxy(HttpClient httpClient) : IUserProxy
+    public class UserProxy(HttpClient httpClient,
+                           AuthService authService) : IUserProxy
     {
 
-        public async Task<UserDTO> GetUserById(Guid id)
+        public async Task<UserDTO> GetUser()
         {
-            var response = await httpClient.GetAsync($"api/user/getuserbyid?id={id}");
+            var userToken = await authService.GetToken() ?? throw new UnauthorizedAccessException();
+
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userToken);
+
+            var response = await httpClient.GetAsync($"api/user/getuser");
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<UserDTO>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
 
-        public async Task<HttpResponseMessage> UpdaetUser(UpdateUserRequestDTO updateUserRequestDTO)
+        public async Task<HttpResponseMessage> UpdateUser(UpdateUserRequestDTO updateUserRequestDTO)
         {
-            return await httpClient.PostAsJsonAsync("api/user/updateuser", updateUserRequestDTO);
+            var userToken = await authService.GetToken() ?? throw new UnauthorizedAccessException();
+
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userToken);
+
+            return await httpClient.PutAsJsonAsync("api/user/updateuser", updateUserRequestDTO);
         }
     }
 }
