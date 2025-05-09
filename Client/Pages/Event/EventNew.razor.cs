@@ -1,4 +1,5 @@
-﻿using Functions.Shared.DTOs.Event;
+﻿using Functions.Client.Services;
+using Functions.Shared.DTOs.Event;
 using Functions.Shared.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -11,18 +12,46 @@ namespace Functions.Client.Pages.Event
 
         [Inject] private NavigationManager navigationManager { get; set; }
 
+        [Inject] private AuthService authService { get; set; } = default!;
+
+        [Parameter] public Guid eventId { get; set; }
+
+        private EventsDTO? eventItem;
+        private string title = "Create New Event";
         private string newEventName = string.Empty;
         private string newEventLocation = string.Empty;
         private string newEventDescription = string.Empty;
-        private DateTime newEventStartDateTime = DateTime.Now;
-        private DateTime newEventEndDateTime = DateTime.Now.AddHours(1);
+        private DateTime newEventStartDateTime = DateTime.Now.AddHours(1);
+        private DateTime newEventEndDateTime = DateTime.Now.AddHours(2);
         private string? profilePictureBase64 = null;
         private string? profilePictureFileName = null;
         private string? profilePictureContentType = null;
         private IBrowserFile? selectedFile = null;
         private bool isPublic = false;
         private string uploadStatusMessage = string.Empty;
+        private Guid? userId = Guid.Empty;
 
+        protected override async Task OnParametersSetAsync()
+        {
+            userId = await authService.GetUserId() ?? Guid.Empty;
+            await LoadData();
+        }
+
+        private async Task LoadData()
+        {
+            eventItem = await eventProxy.GetEventById(eventId);
+            if (eventItem != null)
+            {
+                title = "Change Event";
+                newEventName = eventItem.Name;
+                newEventLocation = eventItem.Location;
+                newEventDescription = eventItem.Description;
+                newEventStartDateTime = eventItem.StartDateTime;
+                newEventEndDateTime = eventItem.EndDateTime;
+                isPublic = eventItem.isPublic;
+            }
+
+        }
         private async Task HandleFileSelection(InputFileChangeEventArgs e)
         {
             selectedFile = e.File;
@@ -73,6 +102,22 @@ namespace Functions.Client.Pages.Event
 
             ResetForm();
             navigationManager.NavigateTo("/events");
+        }
+
+        private async Task Save()
+        {
+            var updatedEvent = new EventsDTO(
+                eventItem!.Id,
+                userId ?? Guid.Empty,
+                newEventName,
+                newEventLocation,
+                newEventDescription,
+                newEventStartDateTime,
+                newEventEndDateTime,
+                isPublic
+            );
+            await eventProxy.PutEventAsync(updatedEvent!);
+            navigationManager.NavigateTo($"/events/{eventItem.Id}");
         }
 
         private async Task Cancel()

@@ -1,12 +1,50 @@
 ﻿@page "/events/new"
+@page "/events/edit/{eventid:guid}"
 @using Functions.Shared.DTOs
 @using Functions.Shared.Interfaces
 
-<PageTitle>New Event</PageTitle>
+<PageTitle>@title</PageTitle>
 
-<h1>Create New Event</h1>
-    
+<h1>@title</h1>
 
+
+<EditForm Model="@eventItem" OnValidSubmit="CreateUser">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <h3>Register</h3>
+    <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <InputText id="username" class="form-control" @bind-Value="@request.UserName" />
+        <ValidationMessage For="@(() => request.UserName)" />
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <InputText id="email" type="email" class="form-control" @bind-Value="@request.Email" />
+        <ValidationMessage For="@(() => request.Email)" />
+    </div>
+    <div>
+        <label for="FirstName" class="form-label">First Name</label>
+        <InputText id="FirstName" class="form-control" @bind-Value="@request.FirstName" />
+        <ValidationMessage For="@(() => request.FirstName)" />
+    </div>
+    <div>
+        <label for="LastName" class="form-label">Last Name</label>
+        <InputText id="LastName" class="form-control" @bind-Value="@request.LastName" />
+        <ValidationMessage For="@(() => request.LastName)" />
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <InputText id="password" type="password" class="form-control" @bind-Value="@request.Password" />
+        <ValidationMessage For="@(() => request.Password)" />
+    </div>
+    <div class="mb-3">
+        <label for="confirmPassword" class="form-label">Confirm Password</label>
+        <InputText id="confirmPassword" type="password" class="form-control" @bind-Value="@confirmPassword" />
+        <ValidationMessage For="@(() => confirmPassword)" />
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</EditForm>
 <div class="card">
     <div class="card-body">
         <div class="mb-3">
@@ -29,28 +67,38 @@
             <label for="eventEndDate" class="form-label">End Date/Time</label>
             <input type="datetime-local" class="form-control" id="eventEndDate" @bind="newEventEndDateTime" />
         </div>
-        <div class="mb-3">
-            <label for="eventPicture" class="form-label">Event Picture</label>
-            <Microsoft.AspNetCore.Components.Forms.InputFile OnChange="HandleFileSelection" class="form-control" id="eventPicture" accept="image/*" />
-            @if (!string.IsNullOrEmpty(uploadStatusMessage))
-            {
-                <div class="mt-2 @(uploadStatusMessage.Contains("Error") ? "text-danger" : "text-success")">
-                    @uploadStatusMessage
-                </div>
-            }
-            @if (!string.IsNullOrEmpty(profilePictureBase64))
-            {
-                <div class="mt-2">
-                    <img src="data:@profilePictureContentType;base64,@profilePictureBase64" style="max-width: 200px; max-height: 200px;" />
-                </div>
-            }
-        </div>
+        @if (eventItem == null)
+        {
+            <div class="mb-3">
+                <label for="eventPicture" class="form-label">Event Picture</label>
+                <Microsoft.AspNetCore.Components.Forms.InputFile OnChange="HandleFileSelection" class="form-control" id="eventPicture" accept="image/*" />
+                @if (!string.IsNullOrEmpty(uploadStatusMessage))
+                {
+                    <div class="mt-2 @(uploadStatusMessage.Contains("Error") ? "text-danger" : "text-success")">
+                        @uploadStatusMessage
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(profilePictureBase64))
+                {
+                    <div class="mt-2">
+                        <img src="data:@profilePictureContentType;base64,@profilePictureBase64" style="max-width: 200px; max-height: 200px;" />
+                    </div>
+                }
+            </div>
+        }
         <div class="IsPublic">
             <label for="eventIsPublic" class="form-label">Public:</label>
-           <input type="checkbox" class="isPublicInput" id="eventIsPublic" @bind="isPublic" />
+            <input type="checkbox" class="isPublicInput" id="eventIsPublic" @bind="isPublic" />
         </div>
         <div class="card-buttons">
-            <button class="btn btn-primary" @onclick="Submit">Create Event</button>
+            @if (eventItem != null)
+            {
+                <button class="btn btn-primary" @onclick="Save">Save Changes</button>
+            }
+            else
+            {
+                <button class="btn btn-primary" @onclick="Submit">Create Event</button>
+            }
             <button class="btn btn-primary" @onclick="Cancel">Cancel</button>
         </div>
         
