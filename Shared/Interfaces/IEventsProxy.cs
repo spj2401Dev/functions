@@ -5,13 +5,9 @@ namespace Functions.Shared.Interfaces
     public interface IEventsProxy
     {
         Task<List<EventMasterPageDTO>> GetEventsAsync();
-
         Task<EventsDTO?> GetEventById(Guid Id);
         Task<HttpResponseMessage> PostEventAsync(EventsDTO request);
-
         Task<HttpResponseMessage> PutEventAsync(EventsDTO request);
-
-        Task<List<EventMasterPageDTO>> GetAllEventsByUserAsync();
         Task<HomePageResponseDTO> GetAllEventsByUserAsync();
     }
 }

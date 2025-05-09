@@ -16,42 +16,27 @@ namespace Functions.Client.Pages.Event
 
         [Parameter] public Guid eventId { get; set; }
 
-        private EventsDTO? eventItem;
+        private EventsDTO? eventItem = new();
         private string title = "Create New Event";
-        private string newEventName = string.Empty;
-        private string newEventLocation = string.Empty;
-        private string newEventDescription = string.Empty;
-        private DateTime newEventStartDateTime = DateTime.Now.AddHours(1);
-        private DateTime newEventEndDateTime = DateTime.Now.AddHours(2);
         private string? profilePictureBase64 = null;
-        private string? profilePictureFileName = null;
-        private string? profilePictureContentType = null;
         private IBrowserFile? selectedFile = null;
-        private bool isPublic = false;
         private string uploadStatusMessage = string.Empty;
-        private Guid? userId = Guid.Empty;
 
         protected override async Task OnParametersSetAsync()
         {
-            userId = await authService.GetUserId() ?? Guid.Empty;
+            eventItem.StartDateTime = DateTime.Now.AddDays(1);
+            eventItem.EndDateTime = DateTime.Now.AddDays(1).AddHours(2);
             await LoadData();
         }
 
         private async Task LoadData()
         {
-            eventItem = await eventProxy.GetEventById(eventId);
-            if (eventItem != null)
+            if (eventId != Guid.Empty)
             {
-                title = "Change Event";
-                newEventName = eventItem.Name;
-                newEventLocation = eventItem.Location;
-                newEventDescription = eventItem.Description;
-                newEventStartDateTime = eventItem.StartDateTime;
-                newEventEndDateTime = eventItem.EndDateTime;
-                isPublic = eventItem.isPublic;
+                eventItem = await eventProxy.GetEventById(eventId);
             }
-
         }
+
         private async Task HandleFileSelection(InputFileChangeEventArgs e)
         {
             selectedFile = e.File;
@@ -64,9 +49,9 @@ namespace Functions.Client.Pages.Event
                     using var memoryStream = new MemoryStream();
                     await selectedFile.OpenReadStream(maxAllowedSize: 10485760).CopyToAsync(memoryStream); // 10MB max
 
-                    profilePictureBase64 = Convert.ToBase64String(memoryStream.ToArray());
-                    profilePictureFileName = selectedFile.Name;
-                    profilePictureContentType = selectedFile.ContentType;
+                    eventItem.ProfilePictureBase64 = Convert.ToBase64String(memoryStream.ToArray());
+                    eventItem.FileName = selectedFile.Name;
+                    eventItem.FileType = selectedFile.ContentType;
 
                     uploadStatusMessage = "File ready to upload!";
                     StateHasChanged();
@@ -74,49 +59,36 @@ namespace Functions.Client.Pages.Event
                 catch (Exception ex)
                 {
                     uploadStatusMessage = $"Error processing file: {ex.Message}";
-                    profilePictureBase64 = null;
-                    profilePictureFileName = null;
-                    profilePictureContentType = null;
+                    eventItem.ProfilePictureBase64 = null;
+                    eventItem.FileName = null;
+                    eventItem.FileType = null;
                 }
             }
         }
 
-        private async Task Submit()
+        private async Task Save()
         {
-            var newEvent = new EventsDTO(
-                Guid.Empty, //TODO
-                Guid.Empty, //TODO
-                newEventName,
-                newEventLocation,
-                newEventDescription,
-                newEventStartDateTime,
-                newEventEndDateTime,
-                isPublic,
-                profilePictureBase64,
-                profilePictureFileName,
-                profilePictureContentType,
-                null
-            );
+            if (eventId != Guid.Empty)
+            {
+                await UpdateEvent();
+            }
+            else
+            {
+                await CreateEvent();
+            }
+        }
 
-            await eventProxy.PostEventAsync(newEvent);
+        private async Task CreateEvent()
+        {
+            await eventProxy.PostEventAsync(eventItem);
 
             ResetForm();
             navigationManager.NavigateTo("/events");
         }
 
-        private async Task Save()
+        private async Task UpdateEvent()
         {
-            var updatedEvent = new EventsDTO(
-                eventItem!.Id,
-                userId ?? Guid.Empty,
-                newEventName,
-                newEventLocation,
-                newEventDescription,
-                newEventStartDateTime,
-                newEventEndDateTime,
-                isPublic
-            );
-            await eventProxy.PutEventAsync(updatedEvent!);
+            await eventProxy.PutEventAsync(eventItem!);
             navigationManager.NavigateTo($"/events/{eventItem.Id}");
         }
 
@@ -128,19 +100,13 @@ namespace Functions.Client.Pages.Event
 
         private void ResetForm()
         {
+            eventItem = new();
             // Reset form
-            newEventName = string.Empty;
-            newEventLocation = string.Empty;
-            newEventDescription = string.Empty;
-            newEventStartDateTime = DateTime.Now;
-            newEventEndDateTime = DateTime.Now.AddHours(1);
-            profilePictureBase64 = null;
-            profilePictureFileName = null;
-            profilePictureContentType = null;
+            eventItem.StartDateTime = DateTime.Now.AddHours(1);
+            eventItem.EndDateTime = DateTime.Now.AddHours(2);
             selectedFile = null;
             uploadStatusMessage = string.Empty;
-            isPublic = false;
+            eventItem.isPublic = false;
         }
-
     }
 }

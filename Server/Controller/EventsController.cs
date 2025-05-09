@@ -41,13 +41,9 @@ public class EventsController(IConfiguration configuration,
     [HttpPut ("putEventById")]
     public async Task<HttpResponseMessage> PutEventAsync([FromBody] EventsDTO request)
     {
-        var userId = await GetUserIdFromTokenAsync();
-        if (userId == null)
-        {
-            throw new ArgumentNullException(nameof(userId));
-        };
+        var userId = await GetUserIdFromTokenAsync() ?? throw new UnauthorizedAccessException();
 
-        await updateEventUseCase.Handle(request, userId.Value);
+        await updateEventUseCase.Handle(request, userId);
 
         return new HttpResponseMessage(HttpStatusCode.OK);
     }

@@ -15,19 +15,21 @@ namespace Functions.Server.UseCases.Event
                 throw new ArgumentNullException(nameof(@event));
             }
 
-            return new EventsDTO(
-                @event.Id,
-                @event.Host,
-                @event.Name,
-                @event.Location,
-                @event.Description ?? string.Empty,
-                @event.StartDateTime,
-                @event.EndDateTime,
-                @event.IsPublic,
-                null,
-                null,
-                null,
-                @event.PictureId);
+            return new EventsDTO()
+            {
+                Id = @event.Id,
+                HostId = @event.Host,
+                Name = @event.Name,
+                Location = @event.Location,
+                Description = @event.Description ?? string.Empty,
+                StartDateTime = @event.StartDateTime,
+                EndDateTime = @event.EndDateTime,
+                isPublic = @event.IsPublic,
+                ProfilePictureBase64 = null,
+                FileName = null,
+                FileType = null,
+                FileId = @event.PictureId
+            };
         }
     }
 }

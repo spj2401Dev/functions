@@ -61,11 +61,7 @@ namespace Functions.Client.Proxys.Events
 
         public async Task<HttpResponseMessage> PutEventAsync(EventsDTO request)
         {
-            var userToken = await authService.GetToken();
-            if (string.IsNullOrEmpty(userToken))
-            {
-                throw new UnauthorizedAccessException("User is not authenticated.");
-            }
+            var userToken = await authService.GetToken() ?? throw new UnauthorizedAccessException();
 
             httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", userToken);
 
