@@ -9,7 +9,6 @@ namespace Functions.Server.UseCases.Event
     {
         public async Task Handle(EventsDTO request, Guid userId)
         {
-            // TODO: Bitte machen und in event controller reinschreiben und so
             var Event = new Events
             {
                 Id = request.Id,
