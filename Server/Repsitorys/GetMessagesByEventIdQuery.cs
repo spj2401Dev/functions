@@ -1,7 +1,7 @@
 ﻿using Functions.Server.Interfaces.Messages;
-using Functions.Server.Model;
 using Functions.Server.Services;
 using Functions.Shared.DTOs.Messages;
+using Functions.Shared.DTOs.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace Functions.Server.Repsitorys
@@ -16,9 +16,21 @@ namespace Functions.Server.Repsitorys
                 .AsNoTracking()
                 .Select(x => new MessageDTO
                 {
+                    Id = x.Id, // Add this property
                     Text = x.Text,
                     MessageDate = x.MessageDate,
-                    ParentId = x.ParentId
+                    ParentId = x.ParentId,
+                    Type = x.Type,
+                    Creator = context.Users
+                        .Where(u => u.Id == x.CreatorId)
+                        .Select(u => new SafeUserResponseDTO
+                        {
+                            UserId = u.Id,
+                            FirstName = u.Firstname,
+                            LastName = u.Lastname,
+                            UserName = u.Username
+                        })
+                        .FirstOrDefault()
                 })
                 .ToListAsync();
         }

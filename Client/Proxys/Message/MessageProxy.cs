@@ -33,5 +33,18 @@ namespace Functions.Client.Proxys.Message
             var content = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<List<MessageDTO>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new List<MessageDTO>();
         }
+
+        public async Task<HttpResponseMessage> PostMessage(CommentRequestDTO request)
+        {
+            var userToken = await authService.GetToken() ?? throw new UnauthorizedAccessException();
+
+            var json = JsonSerializer.Serialize(request);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", userToken);
+            var response = await httpClient.PostAsync("api/messages/PostMessage", data);
+            response.EnsureSuccessStatusCode();
+            return response;
+        }
     }
 }

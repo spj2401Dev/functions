@@ -1,4 +1,4 @@
-﻿using Functions.Client.Services;
+using Functions.Client.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace Functions.Client.Components

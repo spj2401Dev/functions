@@ -1,0 +1,43 @@
+﻿@using Functions.Shared.DTOs.Messages
+@using Functions.Shared.DTOs.Users
+@using Functions.Shared.Enum
+
+<li class="comment-item">
+    <div class="comment-content">
+        <p class="comment-text">@Comment.Text</p>
+        <p class="comment-metadata">@Comment.Creator.FullName - @Comment.MessageDate.ToString("MMM dd, yyyy • HH:mm")</p>
+    </div>
+
+    <div class="comment-actions">
+        <button class="reply-button" @onclick="() => ToggleReplyBox()">
+            <i class="fa fa-reply"></i> Antworten
+        </button>
+    </div>
+
+    @if (IsReplyBoxOpen)
+    {
+        <div class="reply-box">
+            <textarea class="reply-textarea"
+                      @bind="@ReplyText"
+                      placeholder="Beteilige dich an der Unterhaltung"></textarea>
+            <div class="reply-actions">
+                <button class="reply-submit" @onclick="() => PostReply()">Hinzufügen</button>
+                <button class="reply-cancel" @onclick="() => ToggleReplyBox()">Abbrechen</button>
+            </div>
+        </div>
+    }
+
+    @if (ChildComments.Any())
+    {
+        <ul class="nested-comments">
+            @foreach (var childComment in ChildComments)
+            {
+                <CommentComponent Comment="@childComment"
+                                  AllComments="@AllComments"
+                                  OnPostReply="@OnPostReply"
+                                  IsAuthenticated="@IsAuthenticated" />
+            }
+        </ul>
+    }
+</li>
+
