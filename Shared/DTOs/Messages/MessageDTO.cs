@@ -1,4 +1,5 @@
-﻿using Functions.Shared.DTOs.Users;
+﻿using Functions.Shared.DTOs.Event;
+using Functions.Shared.DTOs.Users;
 using Functions.Shared.Enum;
 
 namespace Functions.Shared.DTOs.Messages

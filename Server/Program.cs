@@ -49,6 +49,7 @@ builder.Services.AddScoped<IUpdateEventUseCase, UpdateEventUseCase>();
 builder.Services.AddScoped<IGetMessagesByEventIdQuery, GetMessagesByEventIdQuery>();
 builder.Services.AddScoped<IPostAnnouncementUseCase, PostAnnouncementUseCase>();
 builder.Services.AddScoped<IEventVisitorQuery,  EventVisitorQuery>();
+builder.Services.AddScoped<IHomePageDataQuery, HomePageDataQuery>();
 
 builder.Services.AddScoped<FilesService>();
 builder.Services.AddScoped<IGetUserByIdUseCase, GetUserByIdUseCase>();

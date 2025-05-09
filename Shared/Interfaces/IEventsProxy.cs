@@ -12,5 +12,6 @@ namespace Functions.Shared.Interfaces
         Task<HttpResponseMessage> PutEventAsync(EventsDTO request);
 
         Task<List<EventMasterPageDTO>> GetAllEventsByUserAsync();
+        Task<HomePageResponseDTO> GetAllEventsByUserAsync();
     }
 }
