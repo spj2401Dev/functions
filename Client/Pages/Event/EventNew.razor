@@ -1,58 +1,77 @@
 ﻿@page "/events/new"
+@page "/events/edit/{eventid:guid}"
 @using Functions.Shared.DTOs
 @using Functions.Shared.Interfaces
+@using Microsoft.AspNetCore.Components.Forms
 
-<PageTitle>New Event</PageTitle>
+<PageTitle>@title</PageTitle>
 
-<h1>Create New Event</h1>
-    
+<h1>@title</h1>
+
 
 <div class="card">
     <div class="card-body">
-        <div class="mb-3">
-            <label for="eventName" class="form-label">Event Name</label>
-            <input type="text" class="form-control" id="eventName" @bind="newEventName" />
-        </div>
-        <div class="mb-3">
-            <label for="eventLocation" class="form-label">Location</label>
-            <input type="text" class="form-control" id="eventLocation" @bind="newEventLocation" />
-        </div>
-        <div class="mb-3">
-            <label for="eventDescription" class="form-label">Description</label>
-            <input class="form-control" id="eventDescription" @bind="newEventDescription"></input>
-        </div>
-        <div class="mb-3">
-            <label for="eventStartDate" class="form-label">Start Date/Time</label>
-            <input type="datetime-local" class="form-control" id="eventStartDate" @bind="newEventStartDateTime" />
-        </div>
-        <div class="mb-3">
-            <label for="eventEndDate" class="form-label">End Date/Time</label>
-            <input type="datetime-local" class="form-control" id="eventEndDate" @bind="newEventEndDateTime" />
-        </div>
-        <div class="mb-3">
-            <label for="eventPicture" class="form-label">Event Picture</label>
-            <Microsoft.AspNetCore.Components.Forms.InputFile OnChange="HandleFileSelection" class="form-control" id="eventPicture" accept="image/*" />
-            @if (!string.IsNullOrEmpty(uploadStatusMessage))
-            {
-                <div class="mt-2 @(uploadStatusMessage.Contains("Error") ? "text-danger" : "text-success")">
-                    @uploadStatusMessage
-                </div>
-            }
-            @if (!string.IsNullOrEmpty(profilePictureBase64))
-            {
-                <div class="mt-2">
-                    <img src="data:@profilePictureContentType;base64,@profilePictureBase64" style="max-width: 200px; max-height: 200px;" />
-                </div>
-            }
-        </div>
-        <div class="IsPublic">
-            <label for="eventIsPublic" class="form-label">Public:</label>
-           <input type="checkbox" class="isPublicInput" id="eventIsPublic" @bind="isPublic" />
-        </div>
-        <div class="card-buttons">
-            <button class="btn btn-primary" @onclick="Submit">Create Event</button>
-            <button class="btn btn-primary" @onclick="Cancel">Cancel</button>
-        </div>
-        
+        <EditForm Model="@eventItem" OnValidSubmit="Save">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3">
+                <label for="eventName" class="form-label">Event Name</label>
+                <InputText class="form-control" id="eventName" @bind-Value="@eventItem.Name" />
+                <ValidationMessage For="@(() => eventItem.Name)" />"
+            </div>
+            <div class="mb-3">
+                <label for="eventLocation" class="form-label">Location</label>
+                <InputText class="form-control" id="eventLocation" @bind-Value="@eventItem.Location" />
+				<ValidationMessage For="@(() => eventItem.Location)" />
+            </div>
+            <div class="mb-3">
+                <label for="eventDescription" class="form-label">Description</label>
+                <InputText class="form-control" id="eventDescription" @bind-Value="@eventItem.Description" />
+				<ValidationMessage For="@(() => eventItem.Description)" />
+            </div>
+            <div class="mb-3">
+                <label for="eventStartDate" class="form-label">Start Date/Time</label>
+                <input type="datetime" class="form-control" id="eventStartDate" @bind="@eventItem.StartDateTime" />
+				<ValidationMessage For="@(() => eventItem.StartDateTime)" />
+            </div>
+            <div class="mb-3">
+                <label for="eventEndDate" class="form-label">End Date/Time</label>
+                <input type="datetime" class="form-control" id="eventEndDate" @bind="@eventItem.EndDateTime" />
+				<ValidationMessage For="@(() => eventItem.EndDateTime)" />
+            </div>
+            <div class="mb-3">
+                <label for="eventPicture" class="form-label">Event Picture</label>
+                <Microsoft.AspNetCore.Components.Forms.InputFile OnChange="HandleFileSelection" class="form-control" id="eventPicture" accept="image/*" />
+                @if (!string.IsNullOrEmpty(uploadStatusMessage))
+                {
+                    <div class="mt-2 @(uploadStatusMessage.Contains("Error") ? "text-danger" : "text-success")">
+                        @uploadStatusMessage
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(profilePictureBase64))
+                {
+                    <div class="mt-2">
+                        <img src="data:@eventItem.FileType;base64,@eventItem.ProfilePictureBase64" style="max-width: 200px; max-height: 200px;" />
+                    </div>
+                }
+            </div>
+            <div class="IsPublic">
+                <label for="eventIsPublic" class="form-label">Public:</label>
+                <InputCheckbox type="checkbox" class="isPublicInput" id="eventIsPublic" @bind-Value="@eventItem.isPublic" />
+                <ValidationMessage For="@(() => eventItem.isPublic)" />
+            </div>
+            <div class="card-buttons">
+                @if (eventId != Guid.Empty)
+                {
+                    <button class="btn btn-primary" type="submit">Änderungen Speichern</button>
+                }
+                else
+                {
+                    <button class="btn btn-primary" type="submit">Event Erstellen</button>
+                }
+                <button class="btn btn-primary" @onclick="Cancel">Abbrechen</button>
+            </div>
+        </EditForm>
     </div>
 </div>
