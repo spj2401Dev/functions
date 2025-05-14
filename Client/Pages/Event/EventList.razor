@@ -5,20 +5,25 @@
 
 <PageTitle>Events</PageTitle>
 
-<h1 class="page-name" >Event List</h1>
-
 <div class="list">
-     @if (events.Count == 0)
-     {
-         <p class="no-events">No events available.</p>
-     }
-     else
-     {
-         <div class="rows">
-             @foreach (var evt in events)
-             {
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 20px; margin-bottom: 20px;">
+        <h1 class="page-name" style="margin: 0;">Veranstaltungen</h1>
+        <button @onclick="NewEvent" class="fn-button icon small" style="margin-left: auto;"><i class="fa-solid fa-plus"></i></button>
+    </div>
+
+    @if (events.Count == 0)
+    {
+        <p class="no-events">No events available.</p>
+    }
+    else
+    {
+        <div class="rows">
+            @foreach (var evt in events)
+            {
                 <EventCardComponent Event="evt" OnEventClicked="OnDetailButtonClick" />
-             }
-         </div>
-     }
+            }
+        </div>
+    }
+
+    <button @onclick="NewEvent" class="fn-button center"><i class="fa-solid fa-plus"/> Erstellen</button>
 </div>

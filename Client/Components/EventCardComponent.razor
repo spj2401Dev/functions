@@ -1,18 +1,21 @@
-﻿<div class="card">
+﻿<div class="card" @onclick="() => OnEventClicked.InvokeAsync(Event.Id)">
     @if (Event.ImageId != null && Event.ImageId != Guid.Empty)
     {
-        <FnImage FileId="@Event.ImageId.Value" CssClass=" card-img-top" />
+        <FnImage FileId="@Event.ImageId.Value" CssClass="card-img-top" />
     }
     <div class="card-body">
         <h2 class="card-title">@Event.Name</h2>
-        <p class="card-text">Location: @Event.Location</p>
-        <p class="card-text">Start: @Event.StartDate.ToString("g") - End: @Event.EndDate.ToString("g")</p>
+        <p class="card-text"><i class="fa-solid fa-location-dot"></i> @Event.Location</p>
+        <p class="card-text">
+            <i class="fa-solid fa-clock"></i>
+            @FormatEventDate(Event.StartDate, Event.EndDate)
+        </p>
         @if (!string.IsNullOrEmpty(Event.Description))
         {
-            <p class="card-text">Description: @Event.Description</p>
+            <p class="card-text">@Event.Description</p>
         }
     </div>
     <div class="card-footer">
-        <button class="detail-button" @onclick="() => OnEventClicked.InvokeAsync(Event.Id)">Details</button>
+        <p></p>
     </div>
 </div>

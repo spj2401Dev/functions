@@ -2,6 +2,7 @@ using Functions.Client.Services;
 using Functions.Shared.DTOs.Event;
 using Functions.Shared.Interfaces;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 
 namespace Functions.Client.Pages.Event
 {
@@ -37,6 +38,18 @@ namespace Functions.Client.Pages.Event
             else
             {
                 navigationManager.NavigateTo($"/login/events/{eventID}");
+            }
+        }
+
+        private async Task NewEvent()
+        {
+            if (await authService.IsAuthenticated())
+            {
+                navigationManager.NavigateTo($"/events/new");
+            }
+            else
+            {
+                navigationManager.NavigateTo($"/events/new");
             }
         }
     }
