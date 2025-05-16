@@ -23,7 +23,7 @@ namespace Functions.Client.Pages
             } 
             else
             {
-                navigationManager.NavigateTo("/events");
+                navigationManager.NavigateTo("/landing");
             }
         }
 

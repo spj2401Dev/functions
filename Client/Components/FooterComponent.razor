@@ -1,28 +1,28 @@
 <footer class="footer">
-  <div class="footer-group-home">
-    <NavLink href="/" class="footer-item" activeClass="active">
-      <i class="footer-icon fa-solid fa-house"></i>
+    <div class="footer-group-home">
+        <NavLink href="/" class="footer-item" activeClass="active">
+            <i class="footer-icon fa-solid fa-house"></i>
+        </NavLink>
+    </div>
+    <div class="footer-group-calendar">
+        <NavLink href="events" class="footer-item" activeClass="active">
+            <i class="footer-icon fa-solid fa-calendar-days"></i>
+        </NavLink>
+    </div>
+    <NavLink @onclick="RedirectToNewEvent" class="footer-add fn-button icon small" style="text-decoration: none" activeClass="active">
+        <span class="footer-add-icon-container">
+            <i class="footer-add-icon fa-solid fa-plus"></i>
+        </span>
     </NavLink>
-  </div>
-  <div class="footer-group-calendar">
-    <NavLink href="events" class="footer-item" activeClass="active">
-      <i class="footer-icon fa-solid fa-calendar-days"></i>
-    </NavLink>
-  </div>
-    <NavLink href="events/new" class="footer-add fn-button icon small" style="text-decoration: none" activeClass="active">
-    <span class="footer-add-icon-container">
-      <i class="footer-add-icon fa-solid fa-plus"></i>
-    </span>
-  </NavLink>
 
-  <div class="footer-group-explore">
-    <NavLink href="explore" class="footer-item" activeClass="active">
-      <i class="footer-icon fa-solid fa-magnifying-glass"></i>
-    </NavLink>
-  </div>
-  <div class="footer-group-user">
-    <NavLink href="edituser" class="footer-item" activeClass="active">
-      <i class="footer-icon fa-solid fa-circle-user"></i>
-    </NavLink>
-  </div>
+    <div class="footer-group-explore">
+        <NavLink href="explore" class="footer-item" activeClass="active">
+            <i class="footer-icon fa-solid fa-magnifying-glass"></i>
+        </NavLink>
+    </div>
+    <div class="footer-group-user">
+        <NavLink @onclick="RedirectToUseEditPage" class="footer-item" activeClass="active">
+            <i class="footer-icon fa-solid fa-circle-user"></i>
+        </NavLink>
+    </div>
 </footer>

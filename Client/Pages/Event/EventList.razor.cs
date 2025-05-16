@@ -1,7 +1,7 @@
+using Functions.Client.Services;
 using Functions.Shared.DTOs.Event;
 using Functions.Shared.Interfaces;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
 
 namespace Functions.Client.Pages.Event
 {
@@ -9,7 +9,8 @@ namespace Functions.Client.Pages.Event
     {
         [Inject] private IEventsProxy eventProxy { get; set; } = default!;
 
-        [Inject] private NavigationManager NavigationManager { get; set; } = default!;
+        [Inject] private NavigationManager navigationManager { get; set; } = default!;
+        [Inject] private AuthService authService { get; set; } = default!;
 
         private List<EventMasterPageDTO> events = new List<EventMasterPageDTO>();
 
@@ -23,10 +24,10 @@ namespace Functions.Client.Pages.Event
             events = await eventProxy.GetEventsAsync();
         }
 
-        private async Task OnDetailButtonClick(Guid eventId)
+        private void OnDetailButtonClick(Guid eventId)
         {
 
-            NavigationManager.NavigateTo($"/events/{eventId}");
+            navigationManager.NavigateTo($"/events/{eventId}");
         }
 
         private async Task NewEvent()
@@ -37,7 +38,7 @@ namespace Functions.Client.Pages.Event
             }
             else
             {
-                navigationManager.NavigateTo($"/events/new");
+                navigationManager.NavigateTo($"/login/events/new");
             }
         }
     }

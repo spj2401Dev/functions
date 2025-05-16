@@ -88,6 +88,7 @@ namespace Functions.Client.Pages.Event
             if (!await authService.IsAuthenticated())
             {
                 navigationManager.NavigateTo($"/login/events/{eventItem.Id}");
+                return;
             }
 
             var requestDTO = new PostParticipationDTO
@@ -110,6 +111,7 @@ namespace Functions.Client.Pages.Event
             if (!await authService.IsAuthenticated())
             {
                 navigationManager.NavigateTo($"/login/events/{eventItem.Id}");
+                return;
             }
 
             var requestDTO = new CommentRequestDTO

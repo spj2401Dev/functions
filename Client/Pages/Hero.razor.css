@@ -1,0 +1,139 @@
+﻿.hero-wrapper {
+    padding: 4rem 1rem;
+    position: relative;
+    overflow: hidden;
+    height: calc(100vh - 80px - 50px - 8rem - 5px); /*80 px header, 50px footer, 8 rem padding and no clue why there needs to be 5px*/
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #223a63;
+    margin-bottom: 2rem;
+    z-index: 1;
+    position: relative;
+    text-align: center;
+}
+
+.falling-cards-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+}
+
+.falling-card {
+    position: absolute;
+    top: -250px;
+    width: 400px;
+    animation: gentle-fall var(--duration, 8s) linear forwards;
+    pointer-events: auto;
+    opacity: 0;
+    z-index: 0
+}
+
+.falling-inner {
+    animation: slow-drift 12s ease-in-out infinite alternate;
+}
+
+@media (max-width: 768px) {
+    .falling-cards-container {
+        transform: scale(0.8);
+        transform-origin: top;
+    }
+}
+
+@keyframes gentle-fall {
+    0% {
+        transform: translateY(-250px) rotate(0deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(110vh) rotate(10deg);
+        opacity: 0;
+    }
+}
+
+@keyframes slow-drift {
+    0% {
+        transform: translateX(0px);
+    }
+
+    100% {
+        transform: translateX(10px);
+    }
+}
+
+.hero-title {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 800;
+    color: #111;
+    text-align: center;
+    position: relative;
+    z-index: 3;
+    line-height: 1.2;
+    letter-spacing: -1px;
+    background: linear-gradient(120deg, #000 30%, #333 70%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding-left: 25px;
+    padding-right: 25px;
+    top: calc(100vh / 2 - 400px);
+}
+
+    .hero-title::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        width: 120%;
+        height: 80%;
+        background: radial-gradient(circle, rgba(0, 0, 0, 0.05) 0%, transparent 70%);
+        transform: translate(-50%, -50%);
+        z-index: -1;
+        filter: blur(10px);
+        border-radius: 999px;
+    }
+
+.hero-subtitle {
+    z-index: 8;
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+    color: #444;
+    text-align: center;
+    max-width: 700px;
+    margin: 10rem auto 0 auto;
+    line-height: 1.6;
+    padding-left: 30px;
+    padding-right: 30px;
+    font-weight: 400;
+    background: linear-gradient(120deg, #444, #666);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 768px) {
+    .hero-subtitle {
+        margin: 8rem auto 0 auto;
+    }
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    z-index: 2;
+    position: relative;
+}
