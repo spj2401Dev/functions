@@ -38,7 +38,12 @@ namespace Functions.Client.Pages.Event
 
         private async Task LoadData()
         {
-            eventItem = await eventProxy.GetEventsbyIdAsync(eventId);
+            eventItem = await eventProxy.GetEventById(eventId);
+        }
+
+        private void EditEvent()
+        {
+            navigationManager.NavigateTo($"/events/edit/{eventId}");
         }
 
         private void ReturnToMainPage()

@@ -4,31 +4,33 @@
 <PageTitle>Start</PageTitle>
 
 <h1>Hallo</h1>
-
-@if (homePageData.Announcements.Any())
-{
-    <h2>Ankündigungen von Events, an denen du Teilgenommen hast</h2>
-
-    @foreach (var message in homePageData.Announcements)
+<div class="list">
+    @if (homePageData.Announcements.Any())
     {
-        <div @onclick="@(() => navigationManager.NavigateTo("/events/" + message.Event.Id))">
-            <p>@message.Text</p>
-            <p style="font-size: 11px;">@message.Creator.FullName - @message.MessageDate</p>
-            <p style="font-size: 11px">Von @message.Event.Name</p>
-        </div>
-    }
-}
+        <h2>Ankündigungen von Events, an denen du Teilgenommen hast</h2>
 
-@if (homePageData.Events.Any())
-{
-    <h2>Teilgenomme Events:</h2>
-    @foreach (var userEvent in homePageData.Events)
-    {
-        <EventCardComponent Event="userEvent" OnEventClicked="@(id => navigationManager.NavigateTo($"/events/{id}"))" />
+        @foreach (var message in homePageData.Announcements)
+        {
+            <div @onclick="@(() => navigationManager.NavigateTo("/events/" + message.Event.Id))">
+                <p>@message.Text</p>
+                <p style="font-size: 11px;">@message.Creator.FullName - @message.MessageDate</p>
+                <p style="font-size: 11px">Von @message.Event.Name</p>
+            </div>
+        }
     }
-} else
-{
-    <h2>Du hast noch an keinem Event Teilgenommen!</h2>
-    <p>Hier kannst du nach öffentlichen Events suchen</p>
-    <button class="btn btn-primary" @onclick="@(() => navigationManager.NavigateTo("/events"))">Öffentliche Events</button>
-}
+
+    @if (homePageData.Events.Any())
+    {
+        <h2>Teilgenomme Events:</h2>
+        @foreach (var userEvent in homePageData.Events)
+        {
+            <EventCardComponent Event="userEvent" OnEventClicked="@(id => navigationManager.NavigateTo($"/events/{id}"))" />
+        }
+    }
+    else
+    {
+        <h2>Du hast noch an keinem Event Teilgenommen!</h2>
+        <p>Hier kannst du nach öffentlichen Events suchen</p>
+        <button class="btn btn-primary" @onclick="@(() => navigationManager.NavigateTo("/events"))">Öffentliche Events</button>
+    }
+</div>

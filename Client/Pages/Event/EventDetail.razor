@@ -7,7 +7,7 @@
 @using Functions.Client.Components
 @using Functions.Shared.DTOs.Messages
 
-<div class="event-detail" >
+<div class="event-detail">
     @if (eventItem?.Id != null)
     {
         <PageTitle>@eventItem.Name</PageTitle>
@@ -67,6 +67,10 @@
             </ul>
         }
 
+        @if (eventItem.HostId == userId)
+        {
+            <button @onclick="() => EditEvent()">Edit Event</button>
+        }
         <div class="comments-section">
             <h1>Kommentare</h1>
             @if (messages.Any())

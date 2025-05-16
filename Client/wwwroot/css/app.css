@@ -4,20 +4,20 @@
     height: 15%;
 }
 
-.header h1 {
-    margin-left:auto;
-    margin-right:auto
-}
+    .header h1 {
+        margin-left: auto;
+        margin-right: auto
+    }
 
-.header button {
-    float: right;
-    padding: 6px;
-    border: 1px solid black;
-    border-radius: 10px 10px;
-    background-color: aliceblue;
-    color: black;
-    margin-left: 3px;
-}
+    .header button {
+        float: right;
+        padding: 6px;
+        border: 1px solid black;
+        border-radius: 10px 10px;
+        background-color: aliceblue;
+        color: black;
+        margin-left: 3px;
+    }
 
 .headerLink {
     color: aliceblue;
@@ -25,10 +25,10 @@
     padding-right: 1em;
 }
 
-.headerLink:hover {
-    color: #befeea;
-    text-decoration: underline;
-}
+    .headerLink:hover {
+        color: #befeea;
+        text-decoration: underline;
+    }
 
 h1:focus {
     outline: none;
@@ -74,13 +74,16 @@ h1:focus {
 }
 
 body {
-    color: #cbcbcb !important;
-    font-family: 'Montserrat' !important;
+    color: black;
+    font-family: "Quicksand", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
     background: hsl(176 99% 98%);
     margin: 0;
     padding: 0;
+    height: 100vh;
 }
-
 
 /*Scroll bars*/
 * {
@@ -103,64 +106,104 @@ body {
         border: 3px solid #ffffff;
     }
 
-
-
-/* Default buttons/labels/etc. */
-.button-pill {
-    padding: 10px 20px;
+.fn-button {
+    min-width: 200px;
+    height: 50px;
+    border-radius: 99px;
+    background-color: black;
+    color: white;
+    padding: 5px 20px;
+    border: none;
+    font-family: "Quicksand", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 14px;
     cursor: pointer;
-    background-color: #4c6e8e;
-    border: 1px solid #4b6e8f;
-    color: #fff;
-    transition: all ease 0.2s;
-    min-width: 180px;
-    border-radius: 25px;
-    height: 40px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-    .button-pill:hover, .button-pill:active {
-        background-color: #00305e;
+    .fn-button.slim {
+        height: 35px;
+        min-width: 160px;
+        padding: 3px 15px;
+        font-size: 0.9em;
     }
 
-    .button-pill:disabled {
-        background-color: #829ab0;
-        cursor: default;
-        border: 1px solid #708ba5;
+    .fn-button.icon {
+        min-width: unset;
+        width: 50px;
+        height: 50px;
+        padding: 0;
+        border-radius: 50%;
+        justify-content: center;
     }
 
-.btn-outline {
-    background-color: transparent;
-    border: 1px solid #4b6e8f;
-    color: #00305e;
-}
+        .fn-button.icon.small {
+            width: 35px;
+            height: 35px;
+        }
 
-    .btn-outline:hover {
-        background-color: #00305e;
-        border: 1px solid #00305e;
-        color: #fff;
+    .fn-button i {
+        margin-right: 8px;
+        font-size: 16px;
+        vertical-align: middle;
+        transition: transform 0.3s ease;
     }
 
-.button-secoundary {
-    padding: 10px 20px;
-    cursor: pointer;
-    background-color: transparent;
-    border: 1px solid #4b6e8f;
-    transition: all ease 0.2s;
-    min-width: 180px;
-    border-radius: 25px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+    .fn-button.slim i {
+        font-size: 14px;
+        margin-right: 6px;
+    }
 
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+    .fn-button.icon i {
+        margin-right: 0;
+        font-size: 18px;
+    }
+
+    .fn-button.icon.small i {
+        font-size: 16px;
+    }
+
+    .fn-button:hover {
+        background-color: #333;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        transform: translateY(-2px);
+    }
+
+        .fn-button:hover i {
+            transform: rotate(10deg) scale(1.2);
+        }
+
+    .fn-button.slim:hover {
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .fn-button.icon:hover {
+        transform: translateY(-2px) scale(1.05);
+    }
+
+    .fn-button:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .fn-button.slim:active {
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    }
+
+    .fn-button.icon:active {
+        transform: scale(0.95);
+    }
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .home-card {
@@ -246,14 +289,13 @@ body {
     height: 150px;
 }
 
-
-.teamsofttec {
-    margin-top: 0px;
-    color: transparent;
-    font-size: clamp(3rem, 6vw + 1rem, 12rem);
-    font-weight: 800;
-    background-clip: text;
-    background-image: linear-gradient(90deg, #325f89 30%, #03203a 100%);
+.list {
+    max-width: 500px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 15px;
 }
 
 .partof {
@@ -275,9 +317,8 @@ body {
     align-items: flex-start;
     max-width: 500px;
     margin: auto;
-    padding: 10px;
+    padding-bottom: 15%;
 }
-
 
 label {
     font-size: 1rem;
@@ -319,20 +360,6 @@ select {
     margin-top: -20px;
     margin-left: 15px;
     margin-bottom: 10px
-}
-
-.person-input {
-    width: 100%;
-    opacity: 0;
-    transition: opacity 0.5s ease; /* Smooth transition */
-}
-
-    .person-input.show-input {
-        opacity: 1;
-        .fadeout
-
-{
-    animation: fadeOutAnimation 0.5s forwards;
 }
 
 .FadeIn {
@@ -386,7 +413,4 @@ select {
 fieldset {
     border: 0;
     display: flex;
-}
-    }
-@media screen {
 }

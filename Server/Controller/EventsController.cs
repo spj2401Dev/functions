@@ -11,6 +11,8 @@ public class EventsController(IConfiguration configuration,
                               IGetEventsUseCase getEventUseCase,
                               IGetEventByIdUseCase getEventByIdUseCase,
                               ICreateEventUseCase createEventUseCase,
+                              IUpdateEventUseCase updateEventUseCase,
+                              IGetAllEventsByUserUseCase getAllEventsByUserUseCase,
                               IHomePageDataQuery homePageDataQuery) : FunctionsControllerBase(configuration), IEventsProxy
 {
     [HttpGet("getEvents")]
@@ -20,7 +22,7 @@ public class EventsController(IConfiguration configuration,
     }
 
     [HttpGet("getEventbyId")]
-    public async Task<EventsDTO?> GetEventsbyIdAsync([FromQuery] Guid Id)
+    public async Task<EventsDTO?> GetEventById([FromQuery] Guid Id)
     {
 
         return await getEventByIdUseCase.Handle(Id);
@@ -34,6 +36,16 @@ public class EventsController(IConfiguration configuration,
         await createEventUseCase.Handle(request, userId);
 
         return new HttpResponseMessage(HttpStatusCode.Created);
+    }
+
+    [HttpPut ("putEventById")]
+    public async Task<HttpResponseMessage> PutEventAsync([FromBody] EventsDTO request)
+    {
+        var userId = await GetUserIdFromTokenAsync() ?? throw new UnauthorizedAccessException();
+
+        await updateEventUseCase.Handle(request, userId);
+
+        return new HttpResponseMessage(HttpStatusCode.OK);
     }
 
     [HttpGet("getalleventsbyuser")]

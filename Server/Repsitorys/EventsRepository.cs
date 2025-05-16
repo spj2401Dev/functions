@@ -14,7 +14,7 @@ namespace Functions.Server.Repsitorys
 
         public async Task<Events> GetByIdAsync(Guid id)
         {
-            return await context.Events.FindAsync(id);
+            return await context.Events.AsNoTracking().FirstAsync(x=> x.Id == id);
         }
 
         public async Task AddAsync(Events entity)

@@ -7,72 +7,75 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     environment: Production
-    
+
     steps:
-    - uses: actions/checkout@v3
-    
+    - uses: actions/checkout@v4
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.0.x'
-    
+
     - name: Restore dependencies
       run: |
         dotnet restore Server/
         dotnet restore Client/
-    
+
     - name: Build Server
       run: dotnet build Server/ --configuration Release --no-restore
-    
+
     - name: Build Client
       run: dotnet build Client/ --configuration Release --no-restore
-    
+
     - name: Publish Server
       run: dotnet publish Server/ --configuration Release --no-build --output publish/server
-    
+
     - name: Publish Client
       run: dotnet publish Client/ --configuration Release --no-build --output publish/client
-    
+
     - name: Create server appsettings.json from secrets
       env:
         SERVER_APP_SETTINGS: ${{ secrets.SERVER_APP_SETTINGS }}
       run: |
         echo "$SERVER_APP_SETTINGS" > publish/server/appsettings.json
-        echo "Overwritten server appsettings.json with secrets"
-        
+        echo "Wrote server appsettings.json from secrets"
+
     - name: Create client appsettings.json from secrets
       env:
         CLIENT_APP_SETTINGS: ${{ secrets.CLIENT_APP_SETTINGS }}
       run: |
         echo "$CLIENT_APP_SETTINGS" > publish/client/wwwroot/appsettings.json
-        echo "Overwritten client appsettings.json with secrets"
-    
+        echo "Wrote client appsettings.json from secrets"
+
     - name: Install sshpass
       run: sudo apt-get install -y sshpass
-    
+
     - name: Add host key to known hosts
       run: |
         mkdir -p ~/.ssh
         ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
-    
+
     - name: Deploy to Ubuntu Server
       env:
         SSHPASS: ${{ secrets.SERVER_PASSWORD }}
       run: |
-        sshpass -e rsync -avz --delete publish/server/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/functions/Functions/Client
-        sshpass -e rsync -avz --delete publish/client/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/functions/Functions/Server
+        sshpass -e rsync -avz --delete publish/server/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/functions/Functions/Server
+        sshpass -e rsync -avz --delete publish/client/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/functions/Functions/Client
 
   build-database:
     runs-on: windows-latest
     environment: Production
-    
+
     steps:
-    - uses: actions/checkout@v3
-    
+    - uses: actions/checkout@v4
+
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1
 
@@ -81,10 +84,10 @@ jobs:
         Invoke-WebRequest -Uri "https://aka.ms/sqlpackage-windows" -OutFile "sqlpackage.zip"
         Expand-Archive -Path "sqlpackage.zip" -DestinationPath "C:\\sqlpackage"
         echo "C:\\sqlpackage" | Out-File -Append -FilePath $env:GITHUB_PATH
-    
+
     - name: Build Database Project
       run: msbuild Functions.Database/Functions.Database.sqlproj /p:Configuration=Release /t:Build
-    
+
     - name: Deploy Database Changes
       env:
         DB_SERVER: ${{ secrets.DB_SERVER }}
@@ -104,12 +107,12 @@ jobs:
     steps:
     - name: Install sshpass
       run: sudo apt-get install -y sshpass
-    
+
     - name: Add host key to known hosts
       run: |
         mkdir -p ~/.ssh
         ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
-    
+
     - name: Restart Application
       env:
         SSHPASS: ${{ secrets.SERVER_PASSWORD }}

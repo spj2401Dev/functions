@@ -2,60 +2,18 @@
     width: 100%;
     box-sizing: border-box;
     padding: 20px 0;
-    background-color: #ccc;
+    background-color: rgb(43, 148, 218);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: flex;
     padding: 1rem;
-    border-bottom: 2px solid #000;
+    border-bottom: 1px solid #ccc;
     justify-content: space-between;
     align-items: center;
+    height:80px;
   }
-  
-  .container-header .header {
-    display: flex; /* Make header a flex container */
-    align-items: center; /* Vertically align items within the header */
-  }
-  
-  .container-header .header h1 {
-    font-size: 2.5em;
-    color: #000;
-    text-shadow: 2px 2px 0 #000;
-    margin-bottom: 0; /* Remove default bottom margin that might cause misalignment */
-  }
-  .container-header .left-section {
+  .right-section {
     display: flex;
     align-items: center;
-  }
-  .container-header .events-header {
-    display: flex;
-    align-items: center; /* Vertically align items within events-header */
-    padding-left: 8px;
-  }
-  .container-header .login {
-    align-self: center;
-    padding-right: 8px;
-  }
-  .container-header a {
-    display: block; /* Make links block-level elements for consistent height */
-    padding: 8px 0; /* Add some vertical padding */
-  }
-  .container-header a:hover {
-    text-decoration: underline;
-    color: white;
-  }
-  .container-header button {
-    display: inline-block;
-    padding: 12px 25px;
-    background-color: #ccc;
-    color: #000;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    border: 2px solid #000;
-    transition: all 0.3s ease;
+    padding-right: 20px;
   }
   
-  .container-header button:hover {
-    background-color: transparent;
-    color: #aaa;
-  }
