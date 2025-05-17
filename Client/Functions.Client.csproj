@@ -26,4 +26,8 @@
     <ProjectReference Include="..\Shared\Functions.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\Landing\" />
+  </ItemGroup>
+
 </Project>

@@ -25,11 +25,8 @@ namespace Functions.Client.Proxys.Participation
 
         public async Task<GetParticipationResponseDTO> GetParticipaton(Guid EventId)
         {
-            var userToken = await authService.GetToken();
-            if (string.IsNullOrEmpty(userToken))
-            {
-                throw new UnauthorizedAccessException("User is not authenticated.");
-            }
+            // User might be unauthenticated, but here we allow this. If user isnt authed, we do not reurn per user result.
+            string? userToken = await authService.GetToken();
 
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", userToken);
 

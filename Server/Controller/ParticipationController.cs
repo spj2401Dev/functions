@@ -1,6 +1,7 @@
 ﻿using Functions.Server.Interfaces.Participation;
 using Functions.Server.Services;
 using Functions.Shared.DTOs.Participation;
+using Functions.Shared.Enum;
 using Functions.Shared.Interfaces.Participation;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,9 +23,15 @@ namespace Functions.Server.Controller
         [HttpGet("GetParticipation")]
         public async Task<GetParticipationResponseDTO> GetParticipaton([FromQuery] Guid EventId)
         {
-            var userId = await GetUserIdFromTokenAsync() ?? throw new UnauthorizedAccessException();
+            Guid? userId = await GetUserIdFromTokenAsync();
             var eventVisitors = await eventVisitorQuery.GetAllByEventId(EventId);
-            var requestorStatus = await eventVisitorQuery.GetUserStatusByEventId(userId, EventId);
+
+            ParticipationStatus? requestorStatus = null;
+
+            if (userId != null && userId != Guid.Empty)
+            {
+                requestorStatus = await eventVisitorQuery.GetUserStatusByEventId(userId ?? throw new UnauthorizedAccessException(), EventId);
+            }
 
             return new GetParticipationResponseDTO()
             {

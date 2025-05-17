@@ -1,0 +1,23 @@
+﻿@page "/landing"
+@using Functions.Client.Components
+
+<div class="hero-wrapper">
+    <h1 class="hero-title">Event Plannung einfach gemacht!</h1>
+    <p class="hero-subtitle">
+        Erstelle jetzt eine Seite für deine Veranstaltung und halte deine Gäste auf dem laufenden
+    </p>
+    <div class="buttons-container">
+        <button class="fn-button" @onclick="NavigateToEvents"><i class="fa-solid fa-magnifying-glass"></i>Entdecke Events</button>
+        <button class="fn-button" @onclick="NavigateToRegister"><i class="fa-solid fa-user"></i>Jetzt Registrieren</button>
+    </div>
+    <div class="falling-cards-container">
+        @foreach (var card in visibleCards)
+        {
+            <div class="falling-card" style="left: @card.X; --duration: @card.Duration;">
+                <div class="falling-inner">
+                    <EventCardComponent Event="card.Event" OnEventClicked="OnDetailButtonClick" />
+                </div>
+            </div>
+        }
+    </div>
+</div>

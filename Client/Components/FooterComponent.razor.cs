@@ -31,5 +31,17 @@ namespace Functions.Client.Components
                 navigationManager.NavigateTo("login/events/new", false);
             }
         }
+
+        private void RedirectToUseEditPage()
+        {
+            if (isAuthenticated)
+            {
+                navigationManager.NavigateTo("/edituser", false);
+            }
+            else
+            {
+                navigationManager.NavigateTo("/login", false);
+            }
+        }
     }
 }
