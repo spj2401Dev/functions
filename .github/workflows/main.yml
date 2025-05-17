@@ -66,8 +66,8 @@ jobs:
       env:
         SSHPASS: ${{ secrets.SERVER_PASSWORD }}
       run: |
-        sshpass -e rsync -avz --delete publish/server/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/functions/Functions/Server
-        sshpass -e rsync -avz --delete publish/client/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/functions/Functions/Client
+        sshpass -e rsync -avz --delete publish/server/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/functions/Functions/Client
+        sshpass -e rsync -avz --delete publish/client/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/functions/Functions/Server
 
   build-database:
     runs-on: windows-latest
