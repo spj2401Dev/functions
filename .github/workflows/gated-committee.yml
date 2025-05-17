@@ -6,26 +6,60 @@ on:
       - master
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  restore:
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup .NET
+      - name: Setup .NET SDK with Caching
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+          cache: true  
+
+      - name: Cache NuGet Packages (extra safety)
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore All Dependencies
+        run: |
+          dotnet restore Server/Functions.Server.csproj
+          dotnet restore Client/Functions.Client.csproj
+
+  build-server:
+    runs-on: ubuntu-22.04
+    needs: restore
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
 
-      - name: Restore Dependencies (Server)
-        run: dotnet restore Server/Functions.Server.csproj
-
-      - name: Restore Dependencies (Client)
-        run: dotnet restore Client/Functions.Client.csproj
-
-      - name: Build Server
+      - name: Build Server Project
         run: dotnet build Server/Functions.Server.csproj --configuration Release --no-restore
 
-      - name: Build Client
+  build-client:
+    runs-on: ubuntu-22.04
+    needs: restore
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build Client Project
         run: dotnet build Client/Functions.Client.csproj --configuration Release --no-restore
