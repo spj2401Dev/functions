@@ -4,6 +4,7 @@ using Functions.Shared.DTOs.Users;
 using Functions.Shared.Interfaces.Auth;
 using Functions.Shared.Interfaces.User;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace Functions.Client.Pages.Auth
 {
@@ -97,7 +98,10 @@ namespace Functions.Client.Pages.Auth
                 Email = request.Email,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                Password = request.Password
+                Password = request.Password,
+                ProfilePicture = request.ProfilePicture,
+                FileName = request.FileName,
+                ContentType = request.ContentType
             };
 
             await userProxy.UpdateUser(updatedUser);
@@ -105,6 +109,21 @@ namespace Functions.Client.Pages.Auth
             await authService.Logout();
 
             navigationManager.NavigateTo("/login");
+        }
+
+        private async Task HandleFileSelected(InputFileChangeEventArgs e)
+        {
+            const long maxFileSize = 10 * 1024 * 1024; // 10MB
+
+            var selectedFile = e.File;
+
+            using var stream = selectedFile.OpenReadStream(maxFileSize);
+            using var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            
+            request.ProfilePicture = memoryStream.ToArray();
+            request.FileName = selectedFile.Name;
+            request.ContentType = selectedFile.ContentType;
         }
     }
 }

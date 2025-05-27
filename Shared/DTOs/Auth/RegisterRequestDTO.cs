@@ -27,8 +27,8 @@ namespace Functions.Shared.DTOs.Auth
         [MaxLength(20)]
         public string Password { get; set; }
 
-        public string? ProfilePictureBase64 { get; set; }
+        public byte[]? ProfilePicture { get; set; }
         public string? FileName { get; set; }
-        public string? FileType { get; set; }
+        public string? ContentType { get; set; }
     }
 }

@@ -3,8 +3,15 @@
 
 <PageTitle>Start</PageTitle>
 
-<h1>Hallo</h1>
 <div class="list">
+    <div class="inline-align" style="margin-top: 10px">
+        <ProfilePictureComponent UserFirstName="@authedUser.Firstname"
+                                 UserLastName="@authedUser.Lastname"
+                                 UserProfilePictureId="@authedUser.profilePictureId"
+                                 Size="40" />
+        <h1 style="margin:0">Hallo @authedUser.Firstname</h1>
+    </div>
+
     @if (homePageData.Announcements.Any())
     {
         <h2>Ankündigungen von Events, an denen du Teilgenommen hast</h2>

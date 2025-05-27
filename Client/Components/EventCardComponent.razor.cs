@@ -1,5 +1,4 @@
-﻿using Functions.Client.Services;
-using Functions.Shared.DTOs.Event;
+﻿using Functions.Shared.DTOs.Event;
 using Microsoft.AspNetCore.Components;
 
 namespace Functions.Client.Components
@@ -8,9 +7,8 @@ namespace Functions.Client.Components
     {
         [Parameter] public EventMasterPageDTO Event { get; set; } = default!;
         [Parameter] public EventCallback<Guid> OnEventClicked { get; set; }
-        [Inject] private NavigationManager navigationManager { get; set; } = default!;
 
-        string FormatEventDate(DateTime start, DateTime end)
+        private static string FormatEventDate(DateTime start, DateTime end)
         {
             var now = DateTime.Now;
             bool sameYear = start.Year == now.Year && end.Year == now.Year;
@@ -37,6 +35,5 @@ namespace Functions.Client.Components
 
             return $"{startFormat} - {endFormat}";
         }
-
     }
 }
