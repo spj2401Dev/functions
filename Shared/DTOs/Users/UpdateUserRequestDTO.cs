@@ -21,5 +21,9 @@ namespace Functions.Shared.DTOs.Users
         [MinLength(6)]
         [MaxLength(20)]
         public string? Password { get; set; } = null;
+
+        public byte[]? ProfilePicture { get; set; }
+        public string? ContentType { get; set; } = string.Empty;
+        public string? FileName { get; set; } = string.Empty;
     }
 }

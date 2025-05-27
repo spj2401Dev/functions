@@ -1,7 +1,6 @@
 ﻿using Functions.Server.Interfaces;
 using Functions.Server.Interfaces.Auth;
 using Functions.Server.Model;
-using Functions.Server.Repsitorys;
 using Functions.Server.Services.File;
 using Functions.Shared.DTOs.Auth;
 
@@ -32,11 +31,15 @@ namespace Functions.Server.UseCases
                 Password = request.Password,
             };
 
-            if (!string.IsNullOrEmpty(request.ProfilePictureBase64) &&
+            if (request.ProfilePicture != null &&
                 !string.IsNullOrEmpty(request.FileName) &&
-                !string.IsNullOrEmpty(request.FileType))
+                !string.IsNullOrEmpty(request.ContentType))
             {
-                var fileid = await filesService.SaveFileAsync(request.ProfilePictureBase64, request.FileName, request.FileType);
+                var profilePictureBase64 = request.ProfilePicture != null
+                    ? Convert.ToBase64String(request.ProfilePicture)
+                    : null;
+
+                var fileid = await filesService.SaveFileAsync(profilePictureBase64, request.FileName, request.ContentType);
                 user.ProfilePictureId = fileid;
             }
 

@@ -1,0 +1,21 @@
+﻿.profile-picture-initials {
+    background-color: darkslateblue;
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    color: white;
+    overflow: hidden;
+    text-transform: uppercase;
+    user-select: none;
+}
+
+.initials {
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+}

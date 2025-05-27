@@ -414,3 +414,14 @@ fieldset {
     border: 0;
     display: flex;
 }
+
+.profilePictureImage {
+    object-fit: cover;
+    border-radius: 999px;
+}
+
+.inline-align {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}

@@ -1,5 +1,4 @@
-﻿using Functions.Shared.DTOs.Auth;
-using Functions.Shared.DTOs.Users;
+﻿using Functions.Shared.DTOs.Users;
 
 namespace Functions.Server.Interfaces.Users
 {

@@ -7,7 +7,7 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <h3>Register</h3>
+    <h3>@(isEditingUser ? "Konto bearbeiten" : "Register")</h3>
     <div class="mb-3">
         <label for="username" class="form-label">Username</label>
         <InputText id="username" class="form-control" disabled="@isEditingUser" @bind-Value="@request.UserName" />
@@ -37,6 +37,10 @@
         <label for="confirmPassword" class="form-label">Confirm Password</label>
         <InputText id="confirmPassword" type="password" class="form-control" @bind-Value="@confirmPassword" />
         <ValidationMessage For="@(() => confirmPassword)" />
+    </div>
+    <div class="mb-3">
+        <label for="profilePicture" class="form-lable">Profilbild</label>
+        <InputFile id="profilePicture" class="form-controll" onchange="HandleFileSelected"></InputFile>
     </div>
     <button type="submit" class="btn btn-primary">@(isEditingUser ? "Ändern" : "Register")</button>
 </EditForm>
