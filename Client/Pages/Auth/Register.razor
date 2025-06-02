@@ -42,7 +42,7 @@
         <label for="profilePicture" class="form-lable">Profilbild</label>
         <InputFile id="profilePicture" class="form-controll" onchange="HandleFileSelected"></InputFile>
     </div>
-    <button type="submit" class="fn-button">@(isEditingUser ? "Ändern" : "Register")</button>
+    <button type="submit" class="fn-button slim">@(isEditingUser ? "Ändern" : "Register")</button>
 </EditForm>
 <p>@message</p>
 @if (isLoading)

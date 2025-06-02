@@ -22,7 +22,7 @@
         <ValidationMessage For="@(() => loginRequest.Password)" />
     </div>
     
-    <button type="submit" class="fn-button" disabled="@isLoading">
+    <button type="submit" class="fn-button slim" disabled="@isLoading">
         @if (isLoading)
         {
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -35,12 +35,12 @@
     </button>
 </EditForm>
 
-<div>
+@* <div>
     <h1>Your Login Infos:</h1>
     <p>IsAuthenticated: @isAuthenticated</p>
     <p>Username: @username</p>
     <p>UserId: @userId</p>
-</div>
+</div> *@
 
 @if (!string.IsNullOrEmpty(message))
 {
