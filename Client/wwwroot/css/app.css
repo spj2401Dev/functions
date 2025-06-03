@@ -337,6 +337,7 @@ input, select {
     font-size: 1rem;
     color: #00305E;
     width: 100%;
+    max-width: 500px;
     box-sizing: border-box;
 }
 
@@ -424,4 +425,13 @@ fieldset {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.mb-3 {
+  width: 95%;
+  max-width: 500px;
+  margin: 0 auto 15px auto;
+}
+.mt-3 {
+  margin-left: 15px ;
 }

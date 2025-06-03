@@ -4,7 +4,7 @@
 @using Microsoft.AspNetCore.Components.Forms
 @inject AuthService jwtAuthService
 
-<h3>Login</h3>
+<h3 style="margin-left: 15px;">Login</h3>
 
 <EditForm Model="@loginRequest" OnValidSubmit="HandleLogin">
     <DataAnnotationsValidator />
@@ -22,7 +22,7 @@
         <ValidationMessage For="@(() => loginRequest.Password)" />
     </div>
     
-    <button type="submit" class="fn-button slim" disabled="@isLoading">
+    <button type="submit" class="fn-button slim" disabled="@isLoading" style="margin-left: 15px;">
         @if (isLoading)
         {
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
