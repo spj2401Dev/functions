@@ -40,8 +40,8 @@
         <ValidationMessage For="@(() => confirmPassword)" />
     </div>
     <div class="mb-3">
-        <label for="profilePicture" class="form-lable">Profilbild</label><br>
-        <InputFile id="profilePicture" class="form-controll" onchange="HandleFileSelected"></InputFile>
+        <label for="profilePicture" class="form-lable">Profilbild</label>
+        <InputFile id="profilePicture" class="custom-file-input" onchange="HandleFileSelected"></InputFile>
     </div>
     <button type="submit" class="fn-button slim" style="margin-left: 15px;">
         @(isEditingUser ? "Ändern" : "Register")</button>
