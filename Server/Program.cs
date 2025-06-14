@@ -48,7 +48,7 @@ builder.Services.AddScoped<ICreateEventUseCase, CreateEventUseCase>();
 builder.Services.AddScoped<IUpdateEventUseCase, UpdateEventUseCase>();
 builder.Services.AddScoped<IGetMessagesByEventIdQuery, GetMessagesByEventIdQuery>();
 builder.Services.AddScoped<IPostAnnouncementUseCase, PostAnnouncementUseCase>();
-builder.Services.AddScoped<IEventVisitorQuery,  EventVisitorQuery>();
+builder.Services.AddScoped<IEventVisitorQuery, EventVisitorQuery>();
 builder.Services.AddScoped<IHomePageDataQuery, HomePageDataQuery>();
 
 builder.Services.AddScoped<FilesService>();
@@ -57,6 +57,11 @@ builder.Services.AddScoped<IUpdateUserUseCase, UpdateUserUseCase>();
 builder.Services.AddScoped<IGetAllEventsByUserUseCase, GetAllEventsByUserUseCase>();
 builder.Services.AddScoped<IPostParticipationUseCase, PostParticipationUseCase>();
 builder.Services.AddScoped<IPostCommentUseCase, PostCommentUseCase>();
+
+builder.Services.AddSingleton<LuceneEventSearchService>();
+
+// Register the EventInitializationService
+builder.Services.AddScoped<EventInitializationService>();
 
 string[]? corsAllowedAddresses = builder.Configuration.GetSection("CORS:Allowed").Get<string[]>() ?? ["*"];
 builder.Services.AddCors(options =>
@@ -113,6 +118,21 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Initialize events during startup
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var eventInitializationService = services.GetRequiredService<EventInitializationService>();
+        await eventInitializationService.InitializeEventsAsync();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error during event initialization: {ex.Message}");
+    }
+}
 
 app.MapControllers();
 

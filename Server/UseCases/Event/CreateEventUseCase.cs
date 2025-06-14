@@ -2,12 +2,27 @@
 using Functions.Server.Interfaces.Event;
 using Functions.Server.Model;
 using Functions.Server.Services.File;
+using Functions.Server.Services;
 using Functions.Shared.DTOs.Event;
 
 namespace Functions.Server.UseCases.Event
 {
-    public class CreateEventUseCase(IRepository<Events> eventRepository, FilesService filesService) : ICreateEventUseCase
+    public class CreateEventUseCase : ICreateEventUseCase
     {
+        private readonly IRepository<Events> _eventRepository;
+        private readonly LuceneEventSearchService _luceneService;
+        private readonly FilesService _filesService;
+
+        public CreateEventUseCase(
+            IRepository<Events> eventRepository,
+            LuceneEventSearchService luceneService,
+            FilesService filesService)
+        {
+            _eventRepository = eventRepository;
+            _luceneService = luceneService;
+            _filesService = filesService;
+        }
+
         public async Task Handle(EventsDTO request, Guid userId)
         {
             var newEvent = new Events
@@ -26,12 +41,13 @@ namespace Functions.Server.UseCases.Event
                 !string.IsNullOrEmpty(request.FileName) &&
                 !string.IsNullOrEmpty(request.FileType))
             {
-                var fileId = await filesService.SaveFileAsync(request.ProfilePictureBase64, request.FileName, request.FileType);
+                var fileId = await _filesService.SaveFileAsync(request.ProfilePictureBase64, request.FileName, request.FileType);
                 
                 newEvent.PictureId = fileId;
             }
 
-            await eventRepository.AddAsync(newEvent);
+            await _eventRepository.AddAsync(newEvent);
+            _luceneService.IndexEvent(newEvent);
         }
     }
 }

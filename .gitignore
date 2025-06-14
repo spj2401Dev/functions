@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Lucene Index is used for Search. This Search Index is stored on Disk.
+lucene_index

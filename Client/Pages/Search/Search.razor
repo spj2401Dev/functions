@@ -1,0 +1,36 @@
+﻿@page "/search"
+@using Functions.Shared.DTOs.Event
+@using Functions.Shared.Interfaces.Search
+@using Functions.Client.Components
+@using Microsoft.AspNetCore.Components.Forms
+
+<h3>Search</h3>
+<PageTitle>Search</PageTitle>
+
+<div class="search-page">
+    <div class="search-bar">
+        <input type="text"
+               @bind="searchQuery"
+               @oninput="OnSearchInput"
+               class="search-input form-control"
+               placeholder="Suche nach..." />
+    </div>
+
+    @if (isSearching)
+    {
+        <p>Searching...</p>
+    }
+    else if (searchResults.Count == 0 && !string.IsNullOrWhiteSpace(searchQuery) && searchQuery.Length > 3)
+    {
+        <p class="no-results">No results found for "@searchQuery".</p>
+    }
+    else if (searchResults.Count > 0)
+    {
+        <div class="results">
+            @foreach (var result in searchResults)
+            {
+                <EventCardComponent Event="result" OnEventClicked="NavigateToEventDetail" />
+            }
+        </div>
+    }
+</div>
