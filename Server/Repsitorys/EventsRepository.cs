@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Functions.Server.Repsitorys
 {
-    public class EventsRepository(FunctionsDbContext context) : IRepository<Events>
+    public class EventsRepository(FunctionsDbContext context, LuceneEventSearchService luceneService) : IRepository<Events>
     {
         public async Task<IEnumerable<Events>> GetAllAsync()
         {
@@ -14,19 +14,21 @@ namespace Functions.Server.Repsitorys
 
         public async Task<Events> GetByIdAsync(Guid id)
         {
-            return await context.Events.AsNoTracking().FirstAsync(x=> x.Id == id);
+            return await context.Events.AsNoTracking().FirstAsync(x => x.Id == id);
         }
 
         public async Task AddAsync(Events entity)
         {
             await context.Events.AddAsync(entity);
             await context.SaveChangesAsync();
+            luceneService.IndexEvent(entity);
         }
 
         public async Task UpdateAsync(Events entity)
         {
             context.Events.Update(entity);
             await context.SaveChangesAsync();
+            luceneService.IndexEvent(entity);
         }
 
         public async Task DeleteAsync(Guid id)
@@ -36,6 +38,7 @@ namespace Functions.Server.Repsitorys
             {
                 context.Events.Remove(entity);
                 await context.SaveChangesAsync();
+                luceneService.DeleteEvent(id);
             }
         }
     }

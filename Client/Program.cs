@@ -4,12 +4,14 @@ using Functions.Client.Proxys.Auth;
 using Functions.Client.Proxys.Events;
 using Functions.Client.Proxys.Message;
 using Functions.Client.Proxys.Participation;
+using Functions.Client.Proxys.Search;
 using Functions.Client.Proxys.Users;
 using Functions.Client.Services;
 using Functions.Shared.Interfaces;
 using Functions.Shared.Interfaces.Auth;
 using Functions.Shared.Interfaces.Messages;
 using Functions.Shared.Interfaces.Participation;
+using Functions.Shared.Interfaces.Search;
 using Functions.Shared.Interfaces.User;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -25,6 +27,7 @@ builder.Services.AddScoped<IAuthProxy, AuthProxy>();
 builder.Services.AddScoped<IMessageProxy, MessageProxy>();
 builder.Services.AddScoped<IParticipationProxy, ParticipationProxy>();
 builder.Services.AddScoped<IUserProxy, UserProxy>();
+builder.Services.AddScoped<ISearchProxy, SearchProxy>();
 
 builder.Services.AddBlazoredLocalStorage();
 
