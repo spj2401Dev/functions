@@ -106,9 +106,15 @@ namespace Functions.Client.Pages.Auth
 
             await userProxy.UpdateUser(updatedUser);
 
-            await authService.Logout();
-
-            navigationManager.NavigateTo("/login");
+            if (request.Password != null)
+            {
+                await authService.Logout();
+                navigationManager.NavigateTo("/login");
+            }
+            else
+            {
+                navigationManager.NavigateTo("/");
+            }
         }
 
         private async Task HandleFileSelected(InputFileChangeEventArgs e)
