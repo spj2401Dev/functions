@@ -8,7 +8,6 @@
 
 <h1>@title</h1>
 
-
 <div class="card">
     <div class="card-body">
         <EditForm Model="@eventItem" OnValidSubmit="Save">
@@ -18,7 +17,7 @@
             <div class="mb-3">
                 <label for="eventName" class="form-label">Event Name</label>
                 <InputText class="form-control" id="eventName" @bind-Value="@eventItem.Name" />
-                <ValidationMessage For="@(() => eventItem.Name)" />"
+                <ValidationMessage For="@(() => eventItem.Name)" />
             </div>
             <div class="mb-3">
                 <label for="eventLocation" class="form-label">Location</label>

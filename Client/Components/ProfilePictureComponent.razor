@@ -1,19 +1,16 @@
 ﻿<div class="profile-picture-container">
-    @if (!hasImage)
-    {
-    <div class="profile-picture-initials">
-        <span class="initials">
-            @(string.IsNullOrWhiteSpace(UserFirstName) ? "" : UserFirstName.Substring(0, 1).ToUpper())@(string.IsNullOrWhiteSpace(UserLastName) ? "" : UserLastName.Substring(0, 1).ToUpper())
-        </span>
-    </div>
-    }
-    else
-    {
-        <div class="profile-picture-image">
-
-            <FnImage FileId="UserProfilePictureId ?? Guid.Empty"
+    <div class="profile-picture-image">
+        @if (!hasImage)
+        {
+            <FnImage ImageUrl=@($"https://ui-avatars.com/api/?name={UserFirstName} {UserLastName}&background=28bd4f&color=fff")
                      CssClass="profilePictureImage"
                      CssStyle=@($"width:{Size}px; height:{Size}px;") />
-        </div>
-    }
+        }
+        else
+        {
+            <FnImage FileId="@(UserProfilePictureId ?? Guid.Empty)"
+                     CssClass="profilePictureImage"
+                     CssStyle=@($"width:{Size}px; height:{Size}px;") />
+        }
+    </div>
 </div>
