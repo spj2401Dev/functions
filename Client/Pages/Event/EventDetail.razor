@@ -26,12 +26,12 @@
         </div>
 
         <div>
-            <button @onclick="() => PostParticipation(ParticipationStatus.Accepted)" style="font-weight: @(participations.Status == ParticipationStatus.Accepted ? "bold" : "normal")">Ich komme</button>
-            <button @onclick="() => PostParticipation(ParticipationStatus.Unsure)" style="font-weight: @(participations.Status == ParticipationStatus.Unsure ? "bold" : "normal")">Ich komme vielleicht</button>
-            <button @onclick="() => PostParticipation(ParticipationStatus.Declined)" style="font-weight: @(participations.Status == ParticipationStatus.Declined ? "bold" : "normal")">Ich kann nicht</button>
+            <button class="fn-button slim" @onclick="() => PostParticipation(ParticipationStatus.Accepted)" style="font-weight: @(participations.Status == ParticipationStatus.Accepted ? "bold" : "normal")">Ich komme</button>
+            <button class="fn-button slim" @onclick="() => PostParticipation(ParticipationStatus.Unsure)" style="font-weight: @(participations.Status == ParticipationStatus.Unsure ? "bold" : "normal")">Ich komme vielleicht</button>
+            <button class="fn-button slim" @onclick="() => PostParticipation(ParticipationStatus.Declined)" style="font-weight: @(participations.Status == ParticipationStatus.Declined ? "bold" : "normal")">Ich kann nicht</button>
         </div>
 
-        <div>
+        <div class="teilnehmer">
             <h1>Teilnehmer</h1>
             <ul>
                 @foreach (var participant in participations.Users.OrderBy(x => x.Status))
@@ -92,14 +92,14 @@
                           @bind="@comment"
                           placeholder="Beteilige dich an der Unterhaltung"></textarea>
                 <div class="reply-actions">
-                    <button class="reply-submit" @onclick="() => PostComment(null)">Hinzufügen</button>
+                    <button class="fn-button slim" @onclick="() => PostComment(null)">Hinzufügen</button>
                 </div>
             </div>
         </div>
 
         <br />
 
-        <button @onclick="() => ReturnToMainPage()">Back to Main Page</button>
+        <button class="fn-button slim" @onclick="() => ReturnToMainPage()">Back to Main Page</button>
     }
     else
     {
@@ -107,7 +107,7 @@
 
         <div class="event-detail-content">
             <h1>No Event</h1>
-            <button @onclick="() => ReturnToMainPage()">Back to Main Page</button>
+            <button class="fn-button slim" @onclick="() => ReturnToMainPage()">Back to Main Page</button>
         </div>
     }
 </div>

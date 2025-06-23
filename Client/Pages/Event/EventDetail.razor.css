@@ -69,3 +69,12 @@
     cursor: pointer;
     float: none !important;
 }
+
+.teilnehmer {
+    margin-top:10px;
+}
+
+.comments-section{
+      border: 2px solid #c8c8c8;
+
+}
