@@ -455,3 +455,22 @@ fieldset {
 .custom-file-input::file-selector-button:hover {
   background-color: #374151; 
 }
+
+.search-bar{
+  margin-top: 20px;
+}
+
+.search-input form-control{
+  margin-top: 5px;
+  margin-bottom: 20px;
+  height: 40px;
+  border-radius: 99px;
+  border: 2px solid #c8c8c8;
+  padding: 0 20px;
+  font-size: 1rem;
+  color: #00305e;
+  width: 100%;
+  max-width: 350px;
+  box-sizing: border-box;
+  align-items: center;
+}
