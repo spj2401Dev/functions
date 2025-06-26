@@ -49,7 +49,7 @@
             <div>
                 <h1>Ankündigung schreiben</h1>
                 <textarea @bind="@announcemenRequest.Message" rows="4" cols="50"></textarea>
-                <button @onclick="CreateAnnouncement">Erstellen</button>
+                <button class="fn-button slim" @onclick="CreateAnnouncement">Erstellen</button>
             </div>
         }
 
@@ -69,7 +69,7 @@
 
         @if (eventItem.HostId == userId)
         {
-            <button @onclick="() => EditEvent()">Edit Event</button>
+            <button class="fn-button slim" @onclick="() => EditEvent()">Edit Event</button>
         }
         <div class="comments-section">
             <h1>Kommentare</h1>
