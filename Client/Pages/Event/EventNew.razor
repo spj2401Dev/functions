@@ -63,13 +63,13 @@
             <div class="card-buttons">
                 @if (eventId != Guid.Empty)
                 {
-                    <button class="btn btn-primary" type="submit">Änderungen Speichern</button>
+                    <button class="fn-button slim" type="submit">Änderungen Speichern</button>
                 }
                 else
                 {
-                    <button class="btn btn-primary" type="submit">Event Erstellen</button>
+                    <button class="fn-button slim" type="submit">Event Erstellen</button>
                 }
-                <button class="btn btn-primary" @onclick="Cancel">Abbrechen</button>
+                <button class="fn-button slim" @onclick="Cancel">Abbrechen</button>
             </div>
         </EditForm>
     </div>
