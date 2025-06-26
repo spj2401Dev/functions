@@ -71,10 +71,10 @@
 }
 
 .teilnehmer {
-    margin-top:10px;
+    margin-top: 24px;
 }
-
-.comments-section{
-      border: 2px solid #c8c8c8;
-
+.ankündigung {
+    margin: 24px auto;
+    padding: 1em;
+    max-width: 800px;
 }
