@@ -474,3 +474,18 @@ fieldset {
   box-sizing: border-box;
   align-items: center;
 }
+
+.login-form,
+.register-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 100px); /* oder passe an je nach Headerhöhe */
+}
+
+.login-form .form,
+.register-form .form {
+  width: 100%;
+  max-width: 400px;
+}
